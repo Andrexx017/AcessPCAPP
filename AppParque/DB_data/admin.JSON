@@ -1,0 +1,312 @@
+{
+  "users": {
+    "admin": {
+      "username": "administrator",
+      "password": "admin123",
+      "role": "admin",
+      "NurseName": "Administrador General"
+    },
+    "krater": {
+      "username": "krater",
+      "password": "user123",
+      "role": "user",
+      "NurseName": "Enfermero Carlos"
+    }
+  },
+  "resources": {
+    "images": {
+      "logo": "https://parquedelcafe.co/wp-content/uploads/2021/05/Logo-Parque-Del-Cafe.png",
+      "mapa": "https://parquedelcafe.co/wp-content/uploads/2024/12/Mapa-web-min-scaled.jpg"
+    }
+  },
+  "atracciones": {
+    "Barco_del_cafe": {
+      "nombre": "Barco del Café",
+      "descripcion": "Una vez ingresas a nuestro Barco del Café, se pondrá en marcha y empezará a realizar movimientos oscilatorios hacia adelante y hacia atrás, esto hará que experimentes una increíble sensación de ingravidez que te dejará sin aliento, convirtiéndose en un verdadero reto hasta para los(as) más valientes.",
+      "altura_minima": 110,
+      "altura_maxima": 190,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2021/05/Barco-del-cafe-atraccion.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Baron_Rojo": {
+      "nombre": "Barón Rojo",
+      "descripcion": "Los más chicos de la familia podrán disfrutar de esta linda y divertida atracción, a bordo de 8 avioncitos con capacidad para dos tripulantes cada uno. Giros y movimientos hacia arriba y abajo hacen sonreír, gritar, y soñar con ser grandes, una experiencia inolvidable llena de aventura.",
+      "altura_minima": 90,
+      "altura_maxima": 130,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2021/05/Baron-Rojo.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Karts_Sencillos": {
+      "nombre": "Karts Sencillos",
+      "descripcion": "Esta atracción, se compone de una fascinante pista de 110 metros, en la que podrás poner a prueba tus destrezas como piloto y disfrutar de la velocidad en un entorno seguro.",
+      "altura_minima": 150,
+      "altura_maxima": null,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2021/05/Atraccion-Karts-Parque-del-Cafe-Quindio.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": false,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": false,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": true,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Botes_Chocones": {
+      "nombre": "Botes Chocones",
+      "descripcion": "Cada atracción se hace más divertida si le agregas agua; y sin duda, los Botes Chocones no son la excepción. Por eso, si te gustan los carros chocones y las atracciones acuáticas, no deberías pensarlo dos veces para disfrutar de está refrescante y emocionante aventura. Así que súbete a bordo de un bote con o sin acompañante y aprovecha esta oportunidad para salpicar, mojar y darle un baño a otros tripulantes mientras empujas su bote hasta los chorros que decoran este inmenso lago de 1640 m2 y hacen más entretenida esta experiencia. Una experiencia ideal para que grandes y pequeños compartan.",
+      "altura_minima": 90,
+      "altura_maxima": null,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2021/05/Editada.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Carros_Chocones": {
+      "nombre": "Carros Chocones",
+      "descripcion": "Juega a chocar a tus compañeros de viaje en los Carros Chocones; una de las atracciones clásicas más divertidas y emocionantes que existen. Allí, una pista rectangular de 10,90m x 12,90m se convierte en el único escenario donde los golpes entre carros son permitidos. Además, la interacción entre los 10 coches hace que las risas y los gritos sean inevitables. Sin duda, una atracción infaltable para asegurar la diversión.",
+      "altura_minima": 125,
+      "altura_maxima": 190,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2021/05/Editada-2.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": true,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Carrusel_Cafeteritos": {
+      "nombre": "Carrusel Cafeteritos",
+      "descripcion": "Carrusel Cafeteritos es una tradicional y pintoresco carrusel, diseñado especialmente para el disfrute de los más pequeños. Los más chicos tendrán la oportunidad de subirse y montar en lindos caballos de fantasía que se moverán verticalmente simulando el galope de un caballo real. Todo esto, mientras el carrusel gira lentamente sobre su propio eje dando una agradable sensación de movimiento. Una experiencia llena de risas, recuerdos y momentos en familia.",
+      "altura_minima": null,
+      "altura_maxima": 140,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2024/01/Editada-2-8.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": true,
+          "grupo_1_1": true,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": true
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": true,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Montaña_Rusa_Avix": {
+      "nombre": "Montaña Rusa Avix",
+      "descripcion": "¡Prepárate para experimentar un vuelo extremo en Avix, la primera montaña rusa invertida en Colombia! que desafía la gravedad y despierta tu espíritu aventurero. Inspirada en la riqueza de aves de nuestro país, Avix te lleva en un majestuoso viaje a través de los cielos, donde la adrenalina y la emoción se combinan en una experiencia sin igual. Disfruta de 355 metros, entre curvas que te harán gritar, giros cerrados que te dejarán sin aliento, caídas que harán que tu corazón lata como nunca, inversiones y semi-loops que te harán sentir un mundo al revés, todo esto con los pies al aire, mientras te deleitas con las impresionantes vistas del cielo azul y el vibrante verde del paisaje cafetero. ¿Estás listo para volar?",
+      "altura_minima": 90,
+      "altura_maxima": null,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2024/12/PDC-Avix-Experiencia-011-scaled.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": true,
+          "grupo_5_1": false,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Rápidos": {
+      "nombre": "Rápidos",
+      "descripcion": "Navega a través de aguas turbulentas en Rápidos, una atracción única en Colombia, cuyo nombre rinde homenaje a los caudalosos ríos de nuestro país. Esta atracción se compone de un recorrido de 400 metros a bordo de un bote que te transportará junto a tu familia y amigos entre rocas, cuevas y cascadas burbujeantes. La furiosa corriente te llevará a chocar contra un lector de rocas, ambientado con la flora y fauna del Quindío. Todo para emular la experiencia de atravesar un rio en un entorno seguro y emocionante. ¿Estás preparado(a) para mojarte y aliviar las altas temperaturas del día en una de las atracciones más populares de nuestro Parque del Café?",
+      "altura_minima": 107,
+      "altura_maxima": null,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2021/05/ParqueDelCafe_AtraccionesAcuaticas__09-scaled.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Tren_del_Café": {
+      "nombre": "Tren del Café",
+      "descripcion": "Transita 2360 m de recorrido con tu familia y amigos a bordo de los vagones de nuestro clásico Tren del Café, mientras disfrutas de un ambiente natural entre hermosos guaduales y verdes cafetales. Durante el recorrido atravesarás el parque en un tranquilo viaje que te permitirá apreciar algunas de las atracciones mecánicas y culturales que adornan nuestro paisaje cultural cafetero. Sus estaciones son dos imponentes construcciones de arquitectura republicana, réplicas a escala de las estaciones originales que existían en la ciudad de Armenia y en el municipio de Montenegro. Una experiencia enriquecedora que le rinde homenaje a un importante medio de transporte, protagonista en la historia y desarrollo de nuestro país.",
+      "altura_minima": null,
+      "altura_maxima": null,
+      "imagenURL": "https://parquedelcafe.co/wp-content/uploads/2021/05/Tren-del-Cafe-Parque-del-Cafe-Quindio.jpg",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": true,
+          "grupo_1_1": true,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": true
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": true,
+          "problemas_cardiacos": true,
+          "problemas_columna": true,
+          "mareo_vertigo": true,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    }
+  }
+}

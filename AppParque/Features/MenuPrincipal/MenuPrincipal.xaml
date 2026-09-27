@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Features.MenuPrincipal.MenuPrincipal"
+             Title="Menú Principal"
+             BackgroundColor="#f5f7fa">
+
+    <Grid RowDefinitions="auto,*,auto"
+          Padding="20"
+          RowSpacing="20">
+
+        <!-- Barra superior con logo y botón hamburguesa -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,auto" Padding="0,20,0,0">
+            <!-- Logo centrado -->
+            <Image Source="logo.png"
+                   WidthRequest="180"
+                   HeightRequest="130"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+
+            <!-- Botón hamburguesa -->
+            <ImageButton Grid.Column="1"
+                         Source="hamburguesa.png"
+                         WidthRequest="35"
+                         HeightRequest="35"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         Clicked="OnHamburguesaClicked"/>
+        </Grid>
+
+        <!-- Botones principales estilo icono -->
+        <HorizontalStackLayout Grid.Row="1"
+                               Spacing="50"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center">
+
+            <!-- Botón Iniciar Test -->
+            <VerticalStackLayout HorizontalOptions="Center">
+                <ImageButton Source="test.png"
+                             WidthRequest="120"
+                             HeightRequest="120"
+                             BackgroundColor="White"
+                             CornerRadius="25"
+                             Clicked="OnIniciarTestClicked">
+                    <ImageButton.Shadow>
+                        <Shadow Brush="Black" Offset="4,4" Radius="10" Opacity="0.5"/>
+                    </ImageButton.Shadow>
+                </ImageButton>
+                <Label Text="Realizar Test"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="#333"
+                       HorizontalOptions="Center"
+                       Margin="0,8,0,0"/>
+            </VerticalStackLayout>
+
+            <!-- Botón Historial -->
+            <VerticalStackLayout HorizontalOptions="Center">
+                <ImageButton Source="historial.png"
+                             WidthRequest="120"
+                             HeightRequest="120"
+                             BackgroundColor="White"
+                             CornerRadius="25"
+                             Clicked="OnHistorialClicked">
+                    <ImageButton.Shadow>
+                        <Shadow Brush="Black" Offset="4,4" Radius="10" Opacity="0.5"/>
+                    </ImageButton.Shadow>
+                </ImageButton>
+                <Label Text="Historial"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="#333"
+                       HorizontalOptions="Center"
+                       Margin="0,8,0,0"/>
+            </VerticalStackLayout>
+
+        </HorizontalStackLayout>
+
+        <!-- Pie de página opcional -->
+        <Label Grid.Row="2"
+               Text="Parque de Atracciones - Área de Enfermería"
+               FontSize="14"
+               TextColor="#777"
+               HorizontalOptions="Center"
+               VerticalOptions="End"
+               Margin="0,10,0,10"/>
+    </Grid>
+</ContentPage>

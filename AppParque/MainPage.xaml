@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.MainPage"
+             Title="Parque del Café">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="30">
+
+            <Image Source="logo_parque.png"
+                   HeightRequest="100"
+                   HorizontalOptions="Center"
+                   Aspect="AspectFit"/>
+
+            <Label Text="Bienvenido al Parque del Café"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="#2E7D32"/>
+
+            <Label Text="Generador de PDF de Atracciones"
+                   FontSize="18"
+                   HorizontalOptions="Center"
+                   TextColor="#388E3C"/>
+
+            <!-- Botón para generar PDF -->
+            <Button Text="📄 Generar PDF de Atracciones"
+                    Command="{Binding GenerarPDFCommand}"
+                    HorizontalOptions="Center"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    Padding="20,10"/>
+
+            <!-- Botón para compartir PDF -->
+            <Button Text="📤 Compartir PDF"
+                    Command="{Binding CompartirPDFCommand}"
+                    HorizontalOptions="Center"
+                    BackgroundColor="#2196F3"
+                    TextColor="White"
+                    Padding="20,10"/>
+
+            <!-- Indicador de carga -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#4CAF50"
+                               HorizontalOptions="Center"/>
+
+            <!-- Etiqueta de estado -->
+            <Label Text="{Binding StatusMessage}"
+                   IsVisible="{Binding IsStatusVisible}"
+                   HorizontalOptions="Center"
+                   FontSize="14"/>
+
+            <!-- Separador -->
+            <BoxView HeightRequest="2"
+                     Color="#E0E0E0"
+                     HorizontalOptions="Fill"
+                     Margin="0,20"/>
+
+            <!-- Tu botón contador original -->
+            <Button x:Name="CounterBtn"
+                    Text="Click me"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

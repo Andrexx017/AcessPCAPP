@@ -1,0 +1,27 @@
+## .NET / Visual Studio
+bin/
+obj/
+*.user
+*.suo
+.vs/
+msbuild.binlog
+
+## Publicación / empaquetado
+publish/
+*.apk
+*.aab
+*.msix
+*.appxbundle
+
+## MAUI
+Platforms/**/bin/
+Platforms/**/obj/
+
+## Secretos / entorno
+.env
+*.env.local
+appsettings.*.local.json
+
+## Otros
+*.log
+.idea/

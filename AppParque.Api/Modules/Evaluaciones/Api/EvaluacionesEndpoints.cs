@@ -1,0 +1,137 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using AppParque.Api.Data;
+using AppParque.Api.Modules.Evaluaciones.Application;
+using AppParque.Api.Modules.Evaluaciones.Domain;
+using Microsoft.EntityFrameworkCore;
+
+namespace AppParque.Api.Modules.Evaluaciones.Api;
+
+public static class EvaluacionesEndpoints
+{
+    public static void MapEvaluacionesEndpoints(this IEndpointRouteBuilder app)
+    {
+        var group = app.MapGroup("/api/evaluaciones").WithTags("Evaluaciones").RequireAuthorization();
+
+        group.MapPost("/", CrearAsync);
+        group.MapGet("/{id:int}", ObtenerAsync);
+        group.MapPut("/{id:int}/atracciones/{atraccionId:int}", AjustarAsync);
+    }
+
+    private static async Task<IResult> CrearAsync(CrearEvaluacionRequest request, AppDbContext db, ClaimsPrincipal user)
+    {
+        var visitante = await db.Visitantes.FindAsync(request.VisitanteId);
+        if (visitante is null)
+            return Results.NotFound($"No existe el visitante {request.VisitanteId}.");
+
+        var opcionesIds = request.OpcionesRespuestaIds?.Distinct().ToList() ?? [];
+        if (opcionesIds.Count == 0)
+            return Results.BadRequest("Debe enviar al menos una respuesta del test.");
+
+        var opciones = await db.OpcionesRespuesta
+            .Where(o => opcionesIds.Contains(o.Id))
+            .ToListAsync();
+
+        if (opciones.Count != opcionesIds.Count)
+            return Results.BadRequest("Una o más opciones de respuesta no existen.");
+
+        var usuarioIdTexto = user.FindFirstValue(ClaimTypes.NameIdentifier) ?? user.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (!int.TryParse(usuarioIdTexto, out var usuarioId))
+            return Results.Unauthorized();
+
+        var codigosRespuesta = opciones.Select(o => o.Codigo).ToHashSet();
+        var (gruposActivados, condicionesActivadas) = MotorReglas.Evaluar(codigosRespuesta);
+
+        var grupos = await db.Grupos.Where(g => gruposActivados.Contains(g.Codigo)).ToListAsync();
+        var condiciones = await db.Condiciones.Where(c => condicionesActivadas.Contains(c.Codigo)).ToListAsync();
+
+        var atracciones = await db.Atracciones
+            .Where(a => a.Activa)
+            .Include(a => a.RestriccionesGrupo).ThenInclude(r => r.Grupo)
+            .Include(a => a.RestriccionesCondicion).ThenInclude(r => r.Condicion)
+            .ToListAsync();
+
+        var evaluacion = new Evaluacion
+        {
+            VisitanteId = visitante.Id,
+            UsuarioId = usuarioId,
+            Fecha = DateTime.UtcNow,
+            Edad = request.Edad,
+            Estatura = request.Estatura,
+        };
+
+        foreach (var opcion in opciones)
+            evaluacion.Respuestas.Add(new EvaluacionRespuesta { OpcionRespuestaId = opcion.Id });
+
+        foreach (var grupo in grupos)
+            evaluacion.Grupos.Add(new EvaluacionGrupo { GrupoId = grupo.Id });
+
+        foreach (var condicion in condiciones)
+            evaluacion.Condiciones.Add(new EvaluacionCondicion { CondicionId = condicion.Id });
+
+        foreach (var atraccion in atracciones)
+        {
+            var esSegura = PreseleccionService.EsSeguraPara(atraccion, gruposActivados, condicionesActivadas, request.Estatura);
+            evaluacion.AtraccionResultados.Add(new EvaluacionAtraccionResultado
+            {
+                AtraccionId = atraccion.Id,
+                PreseleccionadaAutomatica = esSegura,
+            });
+        }
+
+        db.Evaluaciones.Add(evaluacion);
+        await db.SaveChangesAsync();
+
+        var response = await BuildResponseAsync(db, evaluacion.Id);
+        return Results.Created($"/api/evaluaciones/{evaluacion.Id}", response);
+    }
+
+    private static async Task<IResult> ObtenerAsync(int id, AppDbContext db)
+    {
+        var response = await BuildResponseAsync(db, id);
+        return response is null ? Results.NotFound() : Results.Ok(response);
+    }
+
+    private static async Task<IResult> AjustarAsync(int id, int atraccionId, AjustarPreseleccionRequest request, AppDbContext db)
+    {
+        var resultado = await db.EvaluacionAtraccionResultados
+            .SingleOrDefaultAsync(r => r.EvaluacionId == id && r.AtraccionId == atraccionId);
+
+        if (resultado is null)
+            return Results.NotFound();
+
+        resultado.ValidadaPersonal = request.ValidadaPersonal;
+        resultado.Comentario = request.Comentario;
+
+        await db.SaveChangesAsync();
+
+        var response = await BuildResponseAsync(db, id);
+        return Results.Ok(response);
+    }
+
+    private static async Task<EvaluacionResponse?> BuildResponseAsync(AppDbContext db, int evaluacionId)
+    {
+        var evaluacion = await db.Evaluaciones
+            .Include(e => e.Grupos).ThenInclude(g => g.Grupo)
+            .Include(e => e.Condiciones).ThenInclude(c => c.Condicion)
+            .Include(e => e.AtraccionResultados).ThenInclude(r => r.Atraccion)
+            .SingleOrDefaultAsync(e => e.Id == evaluacionId);
+
+        if (evaluacion is null)
+            return null;
+
+        return new EvaluacionResponse(
+            evaluacion.Id,
+            evaluacion.VisitanteId,
+            evaluacion.UsuarioId,
+            evaluacion.Fecha,
+            evaluacion.Edad,
+            evaluacion.Estatura,
+            evaluacion.Grupos.Select(g => g.Grupo.Codigo).ToList(),
+            evaluacion.Condiciones.Select(c => c.Condicion.Codigo).ToList(),
+            evaluacion.AtraccionResultados
+                .OrderBy(r => r.Atraccion.Nombre)
+                .Select(r => new AtraccionResultadoResponse(r.AtraccionId, r.Atraccion.Nombre, r.PreseleccionadaAutomatica, r.ValidadaPersonal, r.Comentario))
+                .ToList());
+    }
+}

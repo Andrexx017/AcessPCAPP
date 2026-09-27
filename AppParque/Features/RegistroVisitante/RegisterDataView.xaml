@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Features.RegistroVisitante.RegisterDataView"
+             Title="Formulario">
+
+    <ScrollView>
+        <Grid Padding="20" RowSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Nombre Completo -->
+            <VerticalStackLayout Grid.Row="0">
+                <Label Text="Nombre Completo:" FontAttributes="Bold"/>
+                <Entry x:Name="entryNombre" Placeholder="Ingrese el nombre del visitante"/>
+            </VerticalStackLayout>
+
+            <!-- Tipo de Identificación -->
+            <VerticalStackLayout Grid.Row="1">
+                <Label Text="Tipo de Identificación:" FontAttributes="Bold"/>
+                <Picker x:Name="pickerTipoId" Title="Seleccione...">
+                    <Picker.Items>
+                        <x:String>Cédula de Ciudadanía</x:String>
+                        <x:String>Cédula de Extranjería</x:String>
+                        <x:String>Pasaporte</x:String>
+                        <x:String>Tarjeta de Identidad</x:String>
+                    </Picker.Items>
+                </Picker>
+            </VerticalStackLayout>
+
+            <!-- Número de Identificación -->
+            <VerticalStackLayout Grid.Row="2">
+                <Label Text="Número de Identificación:" FontAttributes="Bold"/>
+                <Entry x:Name="entryNumeroId" Placeholder="Ingrese su número" Keyboard="Numeric"/>
+            </VerticalStackLayout>
+
+            <!-- Edad -->
+            <VerticalStackLayout Grid.Row="3">
+                <Label Text="Edad:" FontAttributes="Bold"/>
+                <Entry x:Name="entryEdad" Placeholder="Ingrese su edad" Keyboard="Numeric"/>
+            </VerticalStackLayout>
+
+            <!-- Estatura -->
+            <VerticalStackLayout Grid.Row="4">
+                <Label Text="Estatura (cm):" FontAttributes="Bold"/>
+                <Entry x:Name="entryEstatura" Placeholder="Ingrese su estatura" Keyboard="Numeric"/>
+            </VerticalStackLayout>
+
+            <!-- Enviar -->
+            <Button Grid.Row="5"
+                    Text="Enviar"
+                    FontSize="18"
+                    Margin="0,10,0,0"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    CornerRadius="20"
+                    HeightRequest="45"
+                    Clicked="OnRegisterClicked"/>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

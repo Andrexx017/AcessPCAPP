@@ -1,0 +1,84 @@
+@HostAddress = http://localhost:8080
+@AccessToken = pega-aqui-el-accessToken-de-login
+@RefreshToken = pega-aqui-el-refreshToken-de-login
+@VisitanteId = 1
+@EvaluacionId = 1
+
+### Login
+POST {{HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "administrator",
+  "password": "admin123"
+}
+
+### Endpoint protegido de prueba (requiere el accessToken de arriba)
+GET {{HostAddress}}/api/auth/me
+Authorization: Bearer {{AccessToken}}
+
+### Renovar tokens (rotación: el refreshToken usado queda revocado)
+POST {{HostAddress}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{RefreshToken}}"
+}
+
+### Cerrar sesión (revoca el refreshToken)
+POST {{HostAddress}}/api/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{RefreshToken}}"
+}
+
+### Listar preguntas del test guiado
+GET {{HostAddress}}/api/preguntas
+Authorization: Bearer {{AccessToken}}
+
+### Buscar visitante por documento (RF-02)
+GET {{HostAddress}}/api/visitantes/buscar?tipoDocumento=CC&numeroDocumento=1000000001
+Authorization: Bearer {{AccessToken}}
+
+### Crear visitante nuevo
+POST {{HostAddress}}/api/visitantes
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+{
+  "tipoDocumento": "CC",
+  "numeroDocumento": "1000000001",
+  "nombre": "Visitante de Prueba"
+}
+
+### Historial de evaluaciones de un visitante
+GET {{HostAddress}}/api/visitantes/{{VisitanteId}}/evaluaciones
+Authorization: Bearer {{AccessToken}}
+
+### Crear evaluación (motor de reglas + preselección automática)
+# opcionesRespuestaIds: ids de OpcionRespuesta devueltos por GET /api/preguntas
+POST {{HostAddress}}/api/evaluaciones
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+{
+  "visitanteId": {{VisitanteId}},
+  "edad": 30,
+  "estatura": 170,
+  "opcionesRespuestaIds": [1, 3, 7, 10, 13, 17, 20, 22, 24, 31]
+}
+
+### Ver el resultado completo de una evaluación
+GET {{HostAddress}}/api/evaluaciones/{{EvaluacionId}}
+Authorization: Bearer {{AccessToken}}
+
+### Ajustar manualmente la preselección de una atracción (RF-06)
+PUT {{HostAddress}}/api/evaluaciones/{{EvaluacionId}}/atracciones/1
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+{
+  "validadaPersonal": true,
+  "comentario": "Autorizado por el enfermero tras revisión manual."
+}
