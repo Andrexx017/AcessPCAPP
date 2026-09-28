@@ -16,27 +16,27 @@ public partial class TestView : ContentPage
             if (question == null) return;
 
             var checkbox = (CheckBox)sender;
-            var optionText = (string)checkbox.BindingContext;
+            var option = (OptionDisplay)checkbox.BindingContext;
 
             if (question.IsMultipleChoice)
             {
                 // ✅ Permite varias respuestas
                 if (e.Value)
                 {
-                    if (!question.SelectedAnswers.Contains(optionText))
-                        question.SelectedAnswers.Add(optionText);
+                    if (!question.SelectedOptionIds.Contains(option.Id))
+                        question.SelectedOptionIds.Add(option.Id);
                 }
                 else
                 {
-                    question.SelectedAnswers.Remove(optionText);
+                    question.SelectedOptionIds.Remove(option.Id);
                 }
             }
             else
             {
                 // ❌ Solo una respuesta
-                question.SelectedAnswers.Clear();
+                question.SelectedOptionIds.Clear();
                 if (e.Value)
-                    question.SelectedAnswers.Add(optionText);
+                    question.SelectedOptionIds.Add(option.Id);
 
                 // 🔄 Desmarcar manualmente otros checkboxes dentro del mismo StackLayout
                 if (checkbox.Parent is Layout parentLayout)

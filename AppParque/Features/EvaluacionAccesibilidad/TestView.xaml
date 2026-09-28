@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
              x:Class="AppParque.Features.EvaluacionAccesibilidad.TestView"
              Title="Test de Atracciones">
 
     <ContentPage.Content>
-        <StackLayout Padding="20" Spacing="15">
+        <StackLayout Padding="20" Spacing="12">
+
+            <shared:ThemeSwitchView />
 
             <Label Text="{Binding ProgressText}" FontAttributes="Bold" FontSize="18" HorizontalOptions="Center" />
 
@@ -19,7 +22,7 @@
                             <Frame CornerRadius="12" Padding="8" HasShadow="True">
                                 <HorizontalStackLayout Spacing="10">
                                     <CheckBox CheckedChanged="OnOptionCheckedChanged" />
-                                    <Label Text="{Binding .}" VerticalOptions="Center" />
+                                    <Label Text="{Binding Texto}" VerticalOptions="Center" />
                                 </HorizontalStackLayout>
                             </Frame>
                         </DataTemplate>

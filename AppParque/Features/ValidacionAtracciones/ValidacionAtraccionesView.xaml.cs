@@ -4,9 +4,9 @@ namespace AppParque.Features.ValidacionAtracciones;
 
 public partial class ValidacionAtraccionesView : ContentPage
 {
-    public ValidacionAtraccionesView(Restrictions restricciones, int estatura)
+    public ValidacionAtraccionesView(EvaluacionResponseDto evaluacion)
     {
         InitializeComponent();
-        BindingContext = new ValidacionAtraccionesViewModel(restricciones, estatura);
+        BindingContext = new ValidacionAtraccionesViewModel(evaluacion);
     }
 }

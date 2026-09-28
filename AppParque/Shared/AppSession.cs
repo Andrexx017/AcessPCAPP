@@ -1,13 +1,17 @@
-﻿namespace AppParque.Shared
+namespace AppParque.Shared
 {
     public static class UsuarioGlobal
     {
-        // Asignar en el login real
-        public static string Uid { get; set; }      // uid del usuario logueado
-        public static string Role { get; set; }     // "admin" o "user"
+        // Asignados en el login contra AppParque.Api (ver Features/Auth/LoginViewModel.cs)
+        public static int UsuarioId { get; set; }
+        public static string Role { get; set; }      // "Admin" o "Enfermero" (RolUsuario del backend)
         public static string nurseName { get; set; } // nombre de usuario logueado (médico/enfermero)
 
-        // Datos del visitante capturados en el formulario
+        public static bool EsAdmin => Role == "Admin";
+
+        // Datos del visitante capturados en el formulario, y su Id ya persistido en AppParque.Api
+        // (ver Features/RegistroVisitante/RegisterDataView.xaml.cs)
+        public static int VisitanteId { get; set; }
         public static string Name { get; set; }
         public static string TypeId { get; set; }
         public static string IdNumber { get; set; }

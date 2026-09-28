@@ -1,13 +1,6 @@
-﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using AppParque.Services;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage;
-using Microsoft.Maui.ApplicationModel;
-using System.IO;
 using AppParque.Shared;
 using AppParque.Shared.Models;
 
@@ -15,127 +8,50 @@ namespace AppParque.Features.ValidacionAtracciones
 {
     public class ValidacionAtraccionesViewModel : BaseViewModel
     {
-        private readonly FireBaseService _firebaseService;
-        private readonly PdfGeneratorService _pdfService;
-        private readonly Restrictions _restricciones;
-        private readonly int _estatura;
+        private readonly PdfGeneratorService _pdfService = new();
+        private readonly int _evaluacionId;
 
         public ObservableCollection<AttractionSelectable> Atracciones { get; } = new();
 
         public ICommand GenerarPDFCommand { get; }
 
-        public ValidacionAtraccionesViewModel(Restrictions restricciones, int estatura)
+        public ValidacionAtraccionesViewModel(EvaluacionResponseDto evaluacion)
         {
-            _restricciones = restricciones;
-            _estatura = estatura;
-
-            _firebaseService = new FireBaseService();
-            _pdfService = new PdfGeneratorService();
+            _evaluacionId = evaluacion.Id;
 
             GenerarPDFCommand = new Command(async () => await GenerarPDFAsync());
 
-            _ = LoadAtraccionesAsync();
+            foreach (var a in evaluacion.Atracciones)
+            {
+                var seleccionInicial = a.ValidadaPersonal ?? a.PreseleccionadaAutomatica;
+                Atracciones.Add(new AttractionSelectable(a, seleccionInicial, OnToggledAsync));
+            }
         }
 
-        private async Task LoadAtraccionesAsync()
+        private async Task OnToggledAsync(AttractionSelectable item)
         {
-            try
+            var resultado = await ApiClient.PutAsync<EvaluacionResponseDto>(
+                $"/api/evaluaciones/{_evaluacionId}/atracciones/{item.Model.AtraccionId}",
+                new { validadaPersonal = item.IsSelected, comentario = (string?)null });
+
+            if (!resultado.Success)
             {
-                var dict = await _firebaseService.GetAttractionsAsync();
-                if (dict == null || dict.Count == 0) return;
-
-                foreach (var a in dict.Values)
-                {
-                    // ✅ Filtro por estatura
-                    if (a.stature_min.HasValue && _estatura < a.stature_min.Value) continue;
-                    if (a.stature_max.HasValue && _estatura > a.stature_max.Value) continue;
-
-                    // Por defecto la atracción se marca seleccionada
-                    var selectable = new AttractionSelectable(a) { IsSelected = true };
-
-                    if (a.restrictions != null)
-                    {
-                        bool cumpleCondiciones = true;
-
-                        // 🟢 CASO ESPECIAL: todas las condiciones/grupos en true => atracción libre
-                        bool todasCondicionesTrue = a.restrictions.condiciones != null &&
-                                                    a.restrictions.condiciones.All(c => c.Value == true);
-                        bool todosGruposTrue = a.restrictions.grupos != null &&
-                                               a.restrictions.grupos.All(g => g.Value == true);
-
-                        if (!(todasCondicionesTrue && todosGruposTrue))
-                        {
-                            // 🚫 1. Validar bloqueos (false en JSON)
-                            if (a.restrictions.condiciones != null)
-                            {
-                                foreach (var kv in a.restrictions.condiciones)
-                                {
-                                    if (kv.Value == false &&   // atracción no permite esta condición
-                                        _restricciones.condiciones.ContainsKey(kv.Key) &&
-                                        _restricciones.condiciones[kv.Key]) // usuario tiene esa condición
-                                    {
-                                        cumpleCondiciones = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // ✅ 2. Validar inclusiones (true en JSON)
-                            if (cumpleCondiciones && a.restrictions.condiciones != null)
-                            {
-                                var inclusiones = a.restrictions.condiciones.Where(c => c.Value == true).ToList();
-
-                                if (inclusiones.Any())
-                                {
-                                    bool esExclusiva = inclusiones.Count == a.restrictions.condiciones.Count;
-
-                                    if (esExclusiva)
-                                    {
-                                        bool usuarioCumpleAlguna = inclusiones.Any(c =>
-                                            _restricciones.condiciones.ContainsKey(c.Key) &&
-                                            _restricciones.condiciones[c.Key]);
-
-                                        if (!usuarioCumpleAlguna)
-                                            cumpleCondiciones = false;
-                                    }
-                                }
-                            }
-
-                            // 🚦 3. Validar grupos
-                            if (cumpleCondiciones && a.restrictions.grupos != null)
-                            {
-                                foreach (var kv in a.restrictions.grupos)
-                                {
-                                    if (kv.Value == false &&
-                                        _restricciones.grupos.ContainsKey(kv.Key) &&
-                                        _restricciones.grupos[kv.Key])
-                                    {
-                                        cumpleCondiciones = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        selectable.IsSelected = cumpleCondiciones;
-                    }
-
-                    Atracciones.Add(selectable);
-                }
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", $"No se pudieron cargar atracciones: {ex.Message}", "OK");
+                await Application.Current.MainPage.DisplayAlert(
+                    "Aviso",
+                    "No se pudo guardar el ajuste en el servidor. Verifica tu conexión e inténtalo de nuevo.",
+                    "OK");
             }
         }
-
-
 
         private async Task GenerarPDFAsync()
         {
+            if (IsBusy) return; // evita doble-tap mientras ya se está generando
+
             try
             {
-                var seleccionadas = Atracciones.Where(x => x.IsSelected).Select(x => x.Model).ToList();
+                IsBusy = true;
+
+                var seleccionadas = Atracciones.Where(x => x.IsSelected).Select(x => x.ToPdfInfo()).ToList();
                 if (seleccionadas.Count == 0)
                 {
                     await Application.Current.MainPage.DisplayAlert("Aviso", "Selecciona al menos una atracción.", "OK");
@@ -160,14 +76,19 @@ namespace AppParque.Features.ValidacionAtracciones
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo generar el PDF: {ex.Message}", "OK");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 
     public class AttractionSelectable : BaseViewModel
     {
+        private readonly Func<AttractionSelectable, Task> _onToggled;
         private bool _isSelected;
 
-        public Attraction Model { get; }
+        public AtraccionResultadoDto Model { get; }
 
         public bool IsSelected
         {
@@ -177,18 +98,29 @@ namespace AppParque.Features.ValidacionAtracciones
                 if (_isSelected == value) return;
                 _isSelected = value;
                 OnPropertyChanged(nameof(IsSelected));
+                _ = _onToggled(this);
             }
         }
 
-        // ✅ Nueva propiedad para enlazar en XAML
-        public string Name => Model.name;
+        public string Name => Model.AtraccionNombre;
 
         public string Alturas =>
-            $"Altura mínima: {Model.stature_min?.ToString() ?? "N/A"} cm | Altura máxima: {Model.stature_max?.ToString() ?? "N/A"} cm";
+            $"Altura mínima: {Model.AtraccionAlturaMinima?.ToString() ?? "N/A"} cm | Altura máxima: {Model.AtraccionAlturaMaxima?.ToString() ?? "N/A"} cm";
 
-        public AttractionSelectable(Attraction model)
+        public AttractionSelectable(AtraccionResultadoDto model, bool seleccionInicial, Func<AttractionSelectable, Task> onToggled)
         {
             Model = model;
+            _isSelected = seleccionInicial; // set directo: no debe disparar _onToggled al construir la lista
+            _onToggled = onToggled;
         }
+
+        public AtraccionPdfInfo ToPdfInfo() => new()
+        {
+            Nombre = Model.AtraccionNombre,
+            Descripcion = Model.AtraccionDescripcion,
+            ImagenUrl = Model.AtraccionImagenUrl,
+            AlturaMinima = Model.AtraccionAlturaMinima,
+            AlturaMaxima = Model.AtraccionAlturaMaxima,
+        };
     }
 }

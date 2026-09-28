@@ -1,110 +1,133 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
              x:Class="AppParque.Features.Auth.LoginView"
-             BackgroundColor="#f5f7fa"
+             BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource OffBlack}}"
              Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="auto, auto, auto, auto, *"
-          Padding="30"
-          RowSpacing="15">
+    <Grid>
+        <Grid x:Name="rootGrid">
 
-        <!-- Logo -->
-        <Image Grid.Row="0"
-               Source="logo.png"
-               WidthRequest="250"
-               HeightRequest="200"
-               HorizontalOptions="Center"
-               VerticalOptions="End"
-               Margin="0,60,0,45"/>
+            <!-- Panel de marca: cede a un bloque apilado arriba en pantallas angostas (celular) -->
+            <Grid x:Name="brandPanel"
+                  BackgroundColor="{AppThemeBinding Light=#F2E8D8, Dark={StaticResource Gray900}}">
 
-        <!-- Campo Usuario -->
-        <Border Grid.Row="2"
-                Stroke="#e0e0e0"
-                StrokeThickness="2"
-                BackgroundColor="White"
-                StrokeShape="RoundRectangle 30"
-                Padding="15"
-                Margin="0,10">
-            <Grid ColumnDefinitions="auto,*"
-                  VerticalOptions="Center">
+                <Border StrokeShape="Ellipse" StrokeThickness="0" BackgroundColor="#1AD5271C"
+                        WidthRequest="320" HeightRequest="320"
+                        HorizontalOptions="End" VerticalOptions="Start" Margin="0,-140,-160,0"/>
+                <Border StrokeShape="Ellipse" StrokeThickness="0" BackgroundColor="#268BC540"
+                        WidthRequest="260" HeightRequest="260"
+                        HorizontalOptions="Start" VerticalOptions="End" Margin="-130,0,0,-110"/>
 
-                <Image WidthRequest="24" HeightRequest="24" VerticalOptions="Center"
-                       Source="user_icon.png"/>
-                <!-- Ícono reemplazable -->
+                <VerticalStackLayout x:Name="brandContent" Padding="36" Spacing="16" VerticalOptions="Center">
+                    <Image Source="logo.png" WidthRequest="180" HeightRequest="84" Aspect="AspectFit" HorizontalOptions="Start"/>
 
-                <Entry x:Name="entryUser"
-                       Grid.Column="1"
-                       Placeholder="Usuario"
-                       FontSize="16"
-                       TextColor="#222"
-                       PlaceholderColor="#999"
-                       BackgroundColor="Transparent"
-                       Margin="10,0,0,0"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="Center"/>
+                    <Label x:Name="lblTagline"
+                           Text="Cuidamos cada visita, desde la entrada."
+                           FontSize="24"
+                           FontAttributes="Bold,Italic"
+                           TextColor="{AppThemeBinding Light=#3A2A1A, Dark=White}"/>
+
+                    <Label x:Name="lblSupport"
+                           Text="Portal interno para el personal de enfermería: registro de visitantes, evaluación de accesibilidad y validación de atracciones seguras."
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                </VerticalStackLayout>
+
+                <Label x:Name="lblCaption"
+                       Text="Acceso exclusivo para personal autorizado del Parque del Café"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light=#9C8E78, Dark={StaticResource Gray400}}"
+                       Margin="36"
+                       VerticalOptions="End"/>
             </Grid>
-        </Border>
 
-        <!-- Campo Contraseña -->
-        <Border Grid.Row="3"
-                Stroke="#e0e0e0"
-                StrokeThickness="2"
-                BackgroundColor="White"
-                StrokeShape="RoundRectangle 30"
-                Padding="15"
-                Margin="0,10">
-            <Grid ColumnDefinitions="auto,*,auto"
-                  VerticalOptions="Center">
+            <!-- Panel de formulario -->
+            <ScrollView x:Name="formPanel">
+                <VerticalStackLayout Padding="36" Spacing="16" MaximumWidthRequest="380"
+                                     HorizontalOptions="Center" VerticalOptions="Center">
 
-                <!-- Ícono Candado -->
-                <Image WidthRequest="24" HeightRequest="24" VerticalOptions="Center"
-                       Source="lock_icon.png"/>
-                <!-- Ícono reemplazable -->
+                    <VerticalStackLayout Spacing="4" Margin="0,0,0,4">
+                        <Label Text="Iniciar sesión"
+                               FontSize="26"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#26221C, Dark=White}"/>
+                        <Label x:Name="lblFormSubtitle"
+                               Text="Portal interno de personal"
+                               FontSize="13.5"
+                               TextColor="{AppThemeBinding Light=#9A9186, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
 
-                <!-- Entry -->
-                <Entry x:Name="entryPassword"
-                       Grid.Column="1"
-                       Placeholder="Contraseña"
-                       IsPassword="True"
-                       FontSize="16"
-                       TextColor="#222"
-                       PlaceholderColor="#999"
-                       BackgroundColor="Transparent"
-                       Margin="10,0,0,0"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="Center"/>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="USUARIO" FontSize="11.5" FontAttributes="Bold" CharacterSpacing="0.6"
+                               TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 12"
+                                BackgroundColor="{AppThemeBinding Light=#F7F3EC, Dark={StaticResource Gray950}}"
+                                Padding="16,14">
+                            <Grid ColumnDefinitions="auto,*" ColumnSpacing="12">
+                                <Image WidthRequest="21" HeightRequest="21" Aspect="AspectFit" VerticalOptions="Center" Source="user_icon.png"/>
+                                <Entry x:Name="entryUser"
+                                       Grid.Column="1"
+                                       Placeholder="nombre.apellido"
+                                       FontSize="15"
+                                       TextColor="{AppThemeBinding Light=#26221C, Dark=White}"
+                                       PlaceholderColor="{AppThemeBinding Light=#A39A8C, Dark={StaticResource Gray400}}"
+                                       BackgroundColor="Transparent"
+                                       VerticalOptions="Center"/>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
 
-                <!-- Botón Mostrar/Ocultar -->
-                <ImageButton Grid.Column="2"
-                             x:Name="btnTogglePassword"
-                             Source="eye_open.png"
-                             WidthRequest="20"
-                             HeightRequest="20"
-                             BackgroundColor="Transparent"
-                             Clicked="OnTogglePasswordClicked"/>
-            </Grid>
-        </Border>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CONTRASEÑA" FontSize="11.5" FontAttributes="Bold" CharacterSpacing="0.6"
+                               TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 12"
+                                BackgroundColor="{AppThemeBinding Light=#F7F3EC, Dark={StaticResource Gray950}}"
+                                Padding="16,14">
+                            <Grid ColumnDefinitions="auto,*,auto" ColumnSpacing="12">
+                                <Image WidthRequest="21" HeightRequest="21" Aspect="AspectFit" VerticalOptions="Center" Source="lock_icon.png"/>
+                                <Entry x:Name="entryPassword"
+                                       Grid.Column="1"
+                                       Placeholder="Contraseña"
+                                       IsPassword="True"
+                                       FontSize="15"
+                                       TextColor="{AppThemeBinding Light=#26221C, Dark=White}"
+                                       PlaceholderColor="{AppThemeBinding Light=#A39A8C, Dark={StaticResource Gray400}}"
+                                       BackgroundColor="Transparent"
+                                       VerticalOptions="Center"/>
+                                <ImageButton Grid.Column="2"
+                                             x:Name="btnTogglePassword"
+                                             Source="eye_open.png"
+                                             WidthRequest="21" HeightRequest="21" Aspect="AspectFit"
+                                             BackgroundColor="Transparent"
+                                             Clicked="OnTogglePasswordClicked"/>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
 
-        <!-- Botón Iniciar sesión -->
-        <Button Grid.Row="4"
-                Text="Iniciar sesión"
-                WidthRequest="180"
-                HeightRequest="50"
-                CornerRadius="25"
-                FontSize="16"
-                BackgroundColor="#4CAF50"
-                TextColor="White"
-                VerticalOptions="Start"
-                HorizontalOptions="Center"
-                Clicked="OnLoginClicked">
-            <Button.Shadow>
-                <Shadow Brush="Black"
-                        Offset="3,3"
-                        Radius="8"
-                        Opacity="0.3" />
-            </Button.Shadow>
-        </Button>
+                    <Button Text="Iniciar sesión"
+                            HeightRequest="50"
+                            CornerRadius="12"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            BackgroundColor="#4CAF50"
+                            TextColor="White"
+                            HorizontalOptions="Fill"
+                            Margin="0,8,0,0"
+                            Clicked="OnLoginClicked"/>
 
+                    <Label x:Name="lblFormFooter"
+                           Text="Acceso exclusivo para personal autorizado"
+                           FontSize="12"
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light=#A39A8C, Dark={StaticResource Gray400}}"
+                           Margin="0,6,0,0"/>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <shared:ThemeSwitchView HorizontalOptions="End" VerticalOptions="Start" Margin="16"/>
     </Grid>
 </ContentPage>

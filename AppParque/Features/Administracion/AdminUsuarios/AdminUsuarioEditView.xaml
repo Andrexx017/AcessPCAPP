@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.AdminUsuarios.AdminUsuarioEditView"
+             Title="Usuario"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <shared:ThemeSwitchView />
+
+            <VerticalStackLayout>
+                <Label Text="Nombre completo:" FontAttributes="Bold"/>
+                <Entry x:Name="entryNombre" Placeholder="Nombre y apellido"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="stackUsername">
+                <Label Text="Username:" FontAttributes="Bold"/>
+                <Entry x:Name="entryUsername" Placeholder="usuario.login"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="stackPassword">
+                <Label x:Name="labelPassword" Text="Contraseña:" FontAttributes="Bold"/>
+                <Entry x:Name="entryPassword" Placeholder="Contraseña" IsPassword="True"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Rol:" FontAttributes="Bold"/>
+                <Picker x:Name="pickerRol" Title="Seleccione...">
+                    <Picker.Items>
+                        <x:String>Admin</x:String>
+                        <x:String>Enfermero</x:String>
+                    </Picker.Items>
+                </Picker>
+            </VerticalStackLayout>
+
+            <HorizontalStackLayout x:Name="stackActivo" Spacing="10">
+                <Label Text="Activo:" FontAttributes="Bold" VerticalOptions="Center"/>
+                <Switch x:Name="switchActivo"/>
+            </HorizontalStackLayout>
+
+            <Button Text="Guardar"
+                    FontSize="18"
+                    Margin="0,10,0,0"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    CornerRadius="20"
+                    HeightRequest="45"
+                    Clicked="OnGuardarClicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

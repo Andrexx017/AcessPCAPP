@@ -12,6 +12,12 @@ public class Usuario
     public bool Activo { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    public string? Email { get; set; }
+
+    // Foto de perfil embebida como base64 (sin el prefijo "data:image/...;base64,"): evita depender
+    // de almacenamiento de archivos/CDN para algo tan pequeño como un avatar de personal interno.
+    public string? FotoBase64 { get; set; }
+
     public ICollection<Evaluacion> Evaluaciones { get; set; } = new List<Evaluacion>();
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }

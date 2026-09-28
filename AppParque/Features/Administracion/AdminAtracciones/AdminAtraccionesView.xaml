@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.AdminAtracciones.AdminAtraccionesView"
+             Title="Catálogo de atracciones"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid>
+        <Grid Padding="16" RowDefinitions="auto,auto,*" RowSpacing="10">
+
+            <shared:ThemeSwitchView Grid.Row="0" />
+
+            <Label Grid.Row="1"
+                   Text="Restricciones por grupo/condición y rango de estatura (RF-10)"
+                   FontSize="13"
+                   TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+
+            <CollectionView Grid.Row="2"
+                            x:Name="collectionAtracciones"
+                            ItemsSource="{Binding Atracciones}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnAtraccionSeleccionada">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="14" Padding="12" Margin="0,0,0,10" BorderColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="14.5" TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                <Label Text="{Binding Alturas}" FontSize="11.5" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" Margin="0,2,0,0"/>
+                                <Label Text="{Binding ResumenBloqueos}" FontSize="11" TextColor="#c62828" Margin="0,4,0,0"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Grid.Row="2"
+                    Text="+"
+                    FontSize="28"
+                    WidthRequest="56" HeightRequest="56" CornerRadius="28"
+                    BackgroundColor="#4CAF50" TextColor="White"
+                    HorizontalOptions="End" VerticalOptions="End"
+                    Margin="0,0,6,6"
+                    Clicked="OnNuevaAtraccionClicked"/>
+        </Grid>
+
+        <!-- Modal de alta/edición de atracción: overlay sobre la lista en vez de navegar a otra pantalla -->
+        <Grid x:Name="modalOverlay"
+              IsVisible="False"
+              BackgroundColor="#99000000">
+            <Frame Margin="20"
+                   Padding="0"
+                   MaximumWidthRequest="480"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   CornerRadius="16"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                <ScrollView MaximumHeightRequest="600">
+                    <VerticalStackLayout Padding="20" Spacing="15">
+
+                        <Grid ColumnDefinitions="*,auto">
+                            <Label x:Name="lblModalTitulo" Text="Nueva atracción" FontAttributes="Bold" FontSize="18" VerticalOptions="Center"/>
+                            <Button Grid.Column="1" Text="✕" FontSize="16" Padding="8"
+                                    BackgroundColor="Transparent"
+                                    TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"
+                                    Clicked="OnCerrarModalClicked"/>
+                        </Grid>
+
+                        <VerticalStackLayout>
+                            <Label Text="Nombre:" FontAttributes="Bold"/>
+                            <Entry x:Name="entryNombre" Placeholder="Montaña Rusa Cóndor"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout>
+                            <Label Text="Descripción:" FontAttributes="Bold"/>
+                            <Editor x:Name="editorDescripcion" AutoSize="TextChanges" Placeholder="Descripción opcional"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout>
+                            <Label Text="URL de imagen:" FontAttributes="Bold"/>
+                            <Entry x:Name="entryImagenUrl" Placeholder="https://..." Keyboard="Url"/>
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="Altura mínima (cm):" FontAttributes="Bold"/>
+                                <Entry x:Name="entryAlturaMinima" Keyboard="Numeric" Placeholder="120"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label Text="Altura máxima (cm):" FontAttributes="Bold"/>
+                                <Entry x:Name="entryAlturaMaxima" Keyboard="Numeric" Placeholder="200"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <HorizontalStackLayout Spacing="10">
+                            <Label Text="Activa:" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <Switch x:Name="switchActiva" IsToggled="True"/>
+                        </HorizontalStackLayout>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}" Margin="0,4"/>
+
+                        <Label Text="Permitido por grupo de discapacidad" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="Apaga el permiso de un grupo si esta atracción está bloqueada para él."
+                               FontSize="12" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                        <CollectionView x:Name="collectionGrupos" ItemsSource="{Binding Grupos}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,auto" Padding="0,6">
+                                        <Label Grid.Column="0" Text="{Binding Nombre}" FontSize="13.5" VerticalOptions="Center"/>
+                                        <Switch Grid.Column="1" IsToggled="{Binding Permitido}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Label Text="Permitido por condición médica" FontAttributes="Bold" FontSize="16" Margin="0,10,0,0"/>
+                        <CollectionView x:Name="collectionCondiciones" ItemsSource="{Binding Condiciones}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,auto" Padding="0,6">
+                                        <Label Grid.Column="0" Text="{Binding Nombre}" FontSize="13.5" VerticalOptions="Center"/>
+                                        <Switch Grid.Column="1" IsToggled="{Binding Permitido}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Button Text="Guardar"
+                                FontSize="18"
+                                Margin="0,10,0,0"
+                                BackgroundColor="#4CAF50"
+                                TextColor="White"
+                                CornerRadius="20"
+                                HeightRequest="45"
+                                Clicked="OnGuardarClicked"/>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Frame>
+        </Grid>
+    </Grid>
+</ContentPage>

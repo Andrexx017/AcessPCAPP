@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.AdminPreguntas.AdminPreguntasView"
+             Title="Catálogo de preguntas"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid Padding="16" RowDefinitions="auto,auto,*" RowSpacing="10">
+
+        <shared:ThemeSwitchView Grid.Row="0" />
+
+        <Label Grid.Row="1"
+               Text="Editar sin publicar nueva versión de la app (RF-09)"
+               FontSize="13"
+               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+
+        <CollectionView Grid.Row="2"
+                        x:Name="collectionPreguntas"
+                        ItemsSource="{Binding Preguntas}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnPreguntaSeleccionada">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame CornerRadius="14" Padding="12" Margin="0,0,0,10" BorderColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}">
+                        <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="{Binding Texto}" FontAttributes="Bold" FontSize="14" TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                <Label Text="{Binding TipoEtiqueta}" FontSize="11" TextColor="{AppThemeBinding Light=#3949ab, Dark={StaticResource SecondaryDarkText}}"/>
+                            </VerticalStackLayout>
+
+                            <Switch Grid.Column="1" IsToggled="{Binding Activa}" VerticalOptions="Center"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="2"
+                Text="+"
+                FontSize="28"
+                WidthRequest="56" HeightRequest="56" CornerRadius="28"
+                BackgroundColor="#4CAF50" TextColor="White"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="0,0,6,6"
+                Clicked="OnNuevaPreguntaClicked"/>
+    </Grid>
+</ContentPage>

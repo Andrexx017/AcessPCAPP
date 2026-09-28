@@ -13,9 +13,52 @@ public static class EvaluacionesEndpoints
     {
         var group = app.MapGroup("/api/evaluaciones").WithTags("Evaluaciones").RequireAuthorization();
 
+        group.MapGet("/", ListarHistorialAsync);
         group.MapPost("/", CrearAsync);
         group.MapGet("/{id:int}", ObtenerAsync);
         group.MapPut("/{id:int}/atracciones/{atraccionId:int}", AjustarAsync);
+    }
+
+    /// <summary>RF-08: Enfermero ve solo su propio historial, Admin ve todo. Filtra por nombre o
+    /// número de documento del visitante con `query`.</summary>
+    private static async Task<IResult> ListarHistorialAsync(AppDbContext db, ClaimsPrincipal user, string? query)
+    {
+        var usuarioIdTexto = user.FindFirstValue(ClaimTypes.NameIdentifier) ?? user.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (!int.TryParse(usuarioIdTexto, out var usuarioId))
+            return Results.Unauthorized();
+
+        var esAdmin = user.IsInRole("Admin");
+
+        var evaluaciones = db.Evaluaciones
+            .Include(e => e.Visitante)
+            .Include(e => e.Usuario)
+            .Include(e => e.Grupos).ThenInclude(g => g.Grupo)
+            .Include(e => e.Condiciones).ThenInclude(c => c.Condicion)
+            .AsQueryable();
+
+        if (!esAdmin)
+            evaluaciones = evaluaciones.Where(e => e.UsuarioId == usuarioId);
+
+        if (!string.IsNullOrWhiteSpace(query))
+            evaluaciones = evaluaciones.Where(e =>
+                e.Visitante.Nombre.Contains(query) || e.Visitante.NumeroDocumento.Contains(query));
+
+        var resultado = await evaluaciones
+            .OrderByDescending(e => e.Fecha)
+            .Select(e => new HistorialItemResponse(
+                e.Id,
+                e.VisitanteId,
+                e.Visitante.Nombre,
+                e.Visitante.NumeroDocumento,
+                e.UsuarioId,
+                e.Usuario.NombreCompleto,
+                e.Fecha,
+                e.Estatura,
+                e.Grupos.Select(g => new RestriccionDto(g.Grupo.Codigo, g.Grupo.Nombre)).ToList(),
+                e.Condiciones.Select(c => new RestriccionDto(c.Condicion.Codigo, c.Condicion.Nombre)).ToList()))
+            .ToListAsync();
+
+        return Results.Ok(resultado);
     }
 
     private static async Task<IResult> CrearAsync(CrearEvaluacionRequest request, AppDbContext db, ClaimsPrincipal user)
@@ -131,7 +174,16 @@ public static class EvaluacionesEndpoints
             evaluacion.Condiciones.Select(c => c.Condicion.Codigo).ToList(),
             evaluacion.AtraccionResultados
                 .OrderBy(r => r.Atraccion.Nombre)
-                .Select(r => new AtraccionResultadoResponse(r.AtraccionId, r.Atraccion.Nombre, r.PreseleccionadaAutomatica, r.ValidadaPersonal, r.Comentario))
+                .Select(r => new AtraccionResultadoResponse(
+                    r.AtraccionId,
+                    r.Atraccion.Nombre,
+                    r.Atraccion.Descripcion,
+                    r.Atraccion.ImagenUrl,
+                    r.Atraccion.AlturaMinima,
+                    r.Atraccion.AlturaMaxima,
+                    r.PreseleccionadaAutomatica,
+                    r.ValidadaPersonal,
+                    r.Comentario))
                 .ToList());
     }
 }

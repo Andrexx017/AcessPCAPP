@@ -17,7 +17,7 @@ namespace AppParque.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "9.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -365,6 +365,13 @@ namespace AppParque.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Email")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("FotoBase64")
+                        .HasColumnType("text");
+
                     b.Property<string>("NombreCompleto")
                         .IsRequired()
                         .HasColumnType("text");
@@ -398,7 +405,13 @@ namespace AppParque.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("ConsentimientoTratamientoDatos")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("FechaConsentimiento")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Nombre")

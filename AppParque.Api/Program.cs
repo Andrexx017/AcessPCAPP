@@ -75,6 +75,9 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
+        // Sin autenticación: lo usa el cliente MAUI al arrancar solo para confirmar que hay red hacia la API.
+        app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
         app.MapAuthEndpoints();
         app.MapPreguntasEndpoints();
         app.MapVisitantesEndpoints();
@@ -84,6 +87,7 @@ public class Program
         app.MapAtraccionesEndpoints();
         app.MapPreguntasAdminEndpoints();
         app.MapUsuariosAdminEndpoints();
+        app.MapPerfilEndpoints();
 
         await app.RunAsync();
     }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.AdminUsuarios.AdminUsuariosView"
+             Title="Usuarios internos"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid Padding="16" RowDefinitions="auto,auto,*" RowSpacing="10">
+
+        <shared:ThemeSwitchView Grid.Row="0" />
+
+        <Label Grid.Row="1"
+               Text="Crear, editar, desactivar y asignar rol (RF-12)"
+               FontSize="13"
+               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+
+        <CollectionView Grid.Row="2"
+                        x:Name="collectionUsuarios"
+                        ItemsSource="{Binding Usuarios}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnUsuarioSeleccionado">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame CornerRadius="14" Padding="12" Margin="0,0,0,10" BorderColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}">
+                        <Grid ColumnDefinitions="auto,*,auto" ColumnSpacing="12">
+                            <Frame Grid.Column="0" WidthRequest="40" HeightRequest="40" CornerRadius="20"
+                                   Padding="0" BackgroundColor="#3949ab" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="{Binding Iniciales}" TextColor="White" FontAttributes="Bold" FontSize="13"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label Text="{Binding NombreCompleto}" FontAttributes="Bold" FontSize="14.5" TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                <Label Text="{Binding Username}" FontSize="11.5" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                <Label Text="{Binding Rol}" FontSize="11" TextColor="{AppThemeBinding Light=#3949ab, Dark={StaticResource SecondaryDarkText}}"/>
+                            </VerticalStackLayout>
+
+                            <Switch Grid.Column="2" IsToggled="{Binding Activo}" VerticalOptions="Center"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="2"
+                Text="+"
+                FontSize="28"
+                WidthRequest="56" HeightRequest="56" CornerRadius="28"
+                BackgroundColor="#4CAF50" TextColor="White"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="0,0,6,6"
+                Clicked="OnNuevoUsuarioClicked"/>
+    </Grid>
+</ContentPage>

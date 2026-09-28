@@ -1,53 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
              x:Class="AppParque.Features.Historial.HistorialView"
              Title="Historial"
-             BackgroundColor="#f5f7fa">
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="12">
+    <Grid x:Name="rootGrid">
 
-        <Label Text="Historial de Tests"
-               FontSize="22"
-               FontAttributes="Bold"
-               TextColor="#222"
-               Margin="0,0,0,8"/>
+        <!-- Panel de filtros: barra lateral fija en pantallas anchas, panel colapsable en angostas -->
+        <Border x:Name="filterPanel"
+                StrokeShape="RoundRectangle 0"
+                Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <ScrollView>
+                <VerticalStackLayout Padding="22,24" Spacing="16">
 
-        <SearchBar Grid.Row="1"
-                   Placeholder="Buscar por nombre o ID"
-                   TextChanged="OnSearchTextChanged"
-                   Margin="0,0,0,8"
-                   BackgroundColor="White"
-                   TextColor="Black"/>
+                    <Label Text="Filtros" FontSize="16" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
 
-        <CollectionView Grid.Row="2"
-                        ItemsSource="{Binding Historial}">
-            <CollectionView.EmptyView>
-                <Label Text="Sin registros"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="#666"/>
-            </CollectionView.EmptyView>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="BUSCAR" FontSize="11" FontAttributes="Bold" CharacterSpacing="0.5"
+                               TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource Gray950}}"
+                                Padding="12,4">
+                            <Entry x:Name="entryBuscar" Placeholder="Nombre o documento" FontSize="13.5"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+                                   PlaceholderColor="{AppThemeBinding Light=#A39A8C, Dark={StaticResource Gray400}}"
+                                   BackgroundColor="Transparent"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Margin="0,6"
-                           Padding="12"
-                           CornerRadius="12"
-                           BorderColor="#ddd"
-                           BackgroundColor="White">
-                        <VerticalStackLayout Spacing="2">
-                            <Label Text="{Binding VisitorName}" FontAttributes="Bold" FontSize="16" />
-                            <Label Text="{Binding VisitorId}" FontSize="13" />
-                            <Label Text="{Binding NurseName, StringFormat='Atendido por: {0}'}" FontSize="13" />
-                            <Label Text="{Binding Date, StringFormat='Fecha: {0}'}" FontSize="13" />
-                            <Label Text="{Binding Stature, StringFormat='Estatura: {0} cm'}" FontSize="13" />
-                            <Label Text="{Binding Answers, StringFormat='Respuestas: {0}'}"
-                                   FontSize="12"
-                                   LineBreakMode="WordWrap"/>
+                    <VerticalStackLayout Spacing="8">
+                        <HorizontalStackLayout Spacing="8">
+                            <CheckBox x:Name="chkFiltrarFecha" Color="#4CAF50"/>
+                            <Label Text="Filtrar por rango de fechas" FontSize="12.5" VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        </HorizontalStackLayout>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8"
+                              IsEnabled="{Binding Source={x:Reference chkFiltrarFecha}, Path=IsChecked}">
+                            <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                <Label Text="Desde" FontSize="11" TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                <DatePicker x:Name="dateDesde" FontSize="12.5"
+                                            TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="3">
+                                <Label Text="Hasta" FontSize="11" TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                <DatePicker x:Name="dateHasta" FontSize="12.5"
+                                            TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout x:Name="panelEnfermero" Spacing="6" IsVisible="{Binding MostrarFiltroEnfermero}">
+                        <Label Text="ENFERMERO" FontSize="11" FontAttributes="Bold" CharacterSpacing="0.5"
+                               TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource Gray950}}"
+                                Padding="12,2">
+                            <Picker x:Name="pickerEnfermero" ItemsSource="{Binding Enfermeros}" SelectedIndex="0"
+                                    FontSize="13.5" TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="TIPO DE RESTRICCIÓN" FontSize="11" FontAttributes="Bold" CharacterSpacing="0.5"
+                               TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding RestriccionOpciones}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <HorizontalStackLayout Spacing="9" Padding="2,5">
+                                        <CheckBox IsChecked="{Binding Checked}" Color="#4CAF50"/>
+                                        <Label Text="{Binding Nombre}" FontSize="13" VerticalOptions="Center"
+                                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                    </HorizontalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
                         </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,1.4*" ColumnSpacing="8" Margin="0,6,0,0">
+                        <Button Text="Limpiar" FontSize="12.5" FontAttributes="Bold"
+                                BackgroundColor="Transparent"
+                                TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"
+                                BorderColor="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}" BorderWidth="1"
+                                CornerRadius="10"
+                                Clicked="OnLimpiarFiltrosClicked"/>
+                        <Button Grid.Column="1" Text="Aplicar filtros" FontSize="12.5" FontAttributes="Bold"
+                                BackgroundColor="#4CAF50" TextColor="White" CornerRadius="10"
+                                Clicked="OnAplicarFiltrosClicked"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+
+        <!-- Contenido principal -->
+        <Grid x:Name="mainPanel" Padding="24" RowDefinitions="auto,auto,*" RowSpacing="14">
+
+            <Grid Grid.Row="0" ColumnDefinitions="*,auto">
+                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                    <Label Text="Historial" FontSize="22" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                    <Label Text="Consulta y exporta las evaluaciones registradas" FontSize="13"
+                           TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray400}}"/>
+                </VerticalStackLayout>
+
+                <Button x:Name="btnToggleFiltros" Grid.Column="1"
+                        Text="Filtros" FontSize="13" FontAttributes="Bold"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+                        BorderColor="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}" BorderWidth="1"
+                        CornerRadius="10" Padding="16,0" HeightRequest="40"
+                        IsVisible="False"
+                        Clicked="OnToggleFiltrosClicked"/>
+            </Grid>
+
+            <!-- Nota: nunca anidar un FlexLayout dentro de otro FlexLayout aquí — provoca un crash
+                 nativo (0xc000027b) en Microsoft.UI.Xaml.dll en el backend Windows de MAUI. -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,auto">
+                <Label Grid.Column="0" Text="{Binding TotalTexto}" FontSize="12.5" VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+
+                <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                    <Button Text="Exportar CSV" FontSize="13" FontAttributes="Bold"
+                            BackgroundColor="Transparent" TextColor="#4CAF50"
+                            BorderColor="#4CAF50" BorderWidth="1" CornerRadius="10"
+                            Padding="14,0" HeightRequest="40"
+                            Clicked="OnExportarCsvClicked"/>
+                    <Button Text="Exportar Excel" FontSize="13" FontAttributes="Bold"
+                            BackgroundColor="Transparent" TextColor="#4CAF50"
+                            BorderColor="#4CAF50" BorderWidth="1" CornerRadius="10"
+                            Padding="14,0" HeightRequest="40"
+                            Clicked="OnExportarExcelClicked"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <!-- Ventana con scroll interno: el CollectionView virtualiza y scrollea dentro de este marco fijo -->
+            <Border Grid.Row="2" StrokeShape="RoundRectangle 20" Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.06"/>
+                </Border.Shadow>
+
+                <CollectionView ItemsSource="{Binding Historial}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="4" Padding="40">
+                            <Label Text="Sin registros para los filtros aplicados" HorizontalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="20,14,20,2" ColumnDefinitions="44,*" ColumnSpacing="16"
+                                  RowDefinitions="auto,auto,auto">
+                                <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                                        StrokeShape="RoundRectangle 22" Stroke="Transparent"
+                                        BackgroundColor="{AppThemeBinding Light=#EFE6DC, Dark={StaticResource Gray950}}"
+                                        WidthRequest="44" HeightRequest="44" Padding="0"
+                                        VerticalOptions="Start">
+                                    <Label Text="{Binding Iniciales}" FontSize="13.5" FontAttributes="Bold"
+                                           HorizontalOptions="Center" VerticalOptions="Center"
+                                           TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
+                                </Border>
+
+                                <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Spacing="8">
+                                    <Label Text="{Binding VisitorName}" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                    <Label Text="{Binding VisitorId}" FontSize="12" VerticalOptions="Center"
+                                           TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                </HorizontalStackLayout>
+
+                                <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="6" Margin="0,4,0,0">
+                                    <Label Text="{Binding MetaLinea}" FontSize="12.5"
+                                           TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray400}}"/>
+
+                                    <Label Text="{Binding Answers}" FontSize="11.5" FontAttributes="Bold"
+                                           LineBreakMode="WordWrap"
+                                           TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
+                                </VerticalStackLayout>
+
+                                <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="1" Margin="0,12,0,0"
+                                         Color="{AppThemeBinding Light=#F1ECE3, Dark={StaticResource Gray950}}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+        </Grid>
+
+        <shared:ThemeSwitchView HorizontalOptions="End" VerticalOptions="Start" Margin="0,14,20,0"/>
     </Grid>
 </ContentPage>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PdfSharpCore.Fonts;
-using AppParque.Services; // ✅ Agrega este using
-using Syncfusion.Licensing; // ✅ Agrega este using
+using AppParque.Services;
 
 namespace AppParque;
 
@@ -11,9 +10,6 @@ public static class MauiProgram
     {
         // Registrar el font resolver
         GlobalFontSettings.FontResolver = new CustomFontResolver();
-
-        // 🔑 Registra la licencia de Syncfusion
-        SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF5cXGRCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXZednZXRmhfWE10X0BWYEg=");
 
         var builder = MauiApp.CreateBuilder();
         builder

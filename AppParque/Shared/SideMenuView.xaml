@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Shared.SideMenuView"
+             InputTransparent="True"
+             HorizontalOptions="Fill" VerticalOptions="Fill">
+
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+
+        <!-- Fondo semitransparente: cierra el menú al tocarlo -->
+        <BoxView x:Name="backdrop"
+                 Color="Black" Opacity="0"
+                 InputTransparent="True"
+                 HorizontalOptions="Fill" VerticalOptions="Fill">
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnBackdropTapped"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+
+        <!-- Panel deslizante, anclado a la izquierda -->
+        <Border x:Name="panel"
+                StrokeShape="RoundRectangle 0,20,20,0"
+                Stroke="Transparent"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                HorizontalOptions="Start" VerticalOptions="Fill"
+                WidthRequest="260"
+                TranslationX="-260"
+                Padding="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="6,0" Radius="18" Opacity="0.15"/>
+            </Border.Shadow>
+
+            <VerticalStackLayout Padding="20,40,20,20" Spacing="6">
+                <Grid ColumnDefinitions="auto,*" ColumnSpacing="12" Margin="4,0,0,24">
+                    <Border Grid.Column="0"
+                            StrokeShape="RoundRectangle 26"
+                            Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                            BackgroundColor="{AppThemeBinding Light=#EFE6DC, Dark={StaticResource Gray950}}"
+                            WidthRequest="52" HeightRequest="52" Padding="0"
+                            VerticalOptions="Center">
+                        <Grid>
+                            <Image x:Name="imgAvatar" Aspect="AspectFill"
+                                   WidthRequest="52" HeightRequest="52" IsVisible="False"/>
+                            <Label x:Name="lblIniciales" Text="?"
+                                   FontSize="17" FontAttributes="Bold"
+                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                        </Grid>
+                    </Border>
+
+                    <Label Grid.Column="1" x:Name="lblHeader" Text="Hola"
+                           FontSize="16" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+                           VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+                </Grid>
+
+                <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPerfilTapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="12">
+                        <Image Grid.Column="0" Source="icon_usuarios.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="Perfil" FontSize="15" VerticalOptions="Center"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                    </Grid>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCerrarSesionTapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="12">
+                        <Image Grid.Column="0" Source="icon_chevron.png" WidthRequest="20" HeightRequest="20"
+                               VerticalOptions="Center" Rotation="180"/>
+                        <Label Grid.Column="1" Text="Cerrar sesión" FontSize="15" VerticalOptions="Center"
+                               TextColor="#C0392B"/>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentView>

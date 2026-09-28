@@ -1,5 +1,6 @@
-﻿using AppParque.Features.Auth;
+using AppParque.Features.Auth;
 using AppParque.Services;
+using AppParque.Shared;
 
 
 namespace AppParque
@@ -9,20 +10,22 @@ namespace AppParque
         public App()
         {
             InitializeComponent();
+            ThemeService.Initialize();
             MainPage = new NavigationPage(new LoginView());
 
-            // Ejecutar prueba de conexión
+            // Prueba de conexión contra AppParque.Api (antes verificaba Firebase)
             Task.Run(async () =>
             {
-                var firebaseService = new FireBaseService();
-                var isConnected = await firebaseService.TestConnectionAsync();
-                Console.WriteLine("Conexión con Firebase: " + (isConnected ? "Exitosa" : "Fallida"));
+                var resultado = await ApiClient.GetAsync<object>("/health");
 
-                if (!isConnected)
+                if (!resultado.Success)
                 {
                     await MainThread.InvokeOnMainThreadAsync(async () =>
                     {
-                        await MainPage.DisplayAlert("Error", "No se pudo conectar con Firebase", "OK");
+                        await MainPage.DisplayAlert(
+                            "Error",
+                            $"No se pudo conectar con el servidor ({ApiClient.BaseUrl}). Verifica tu conexión.",
+                            "OK");
                     });
                 }
             });

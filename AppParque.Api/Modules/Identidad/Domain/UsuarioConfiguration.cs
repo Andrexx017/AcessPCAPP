@@ -9,5 +9,6 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     {
         builder.HasIndex(u => u.Username).IsUnique();
         builder.Property(u => u.Rol).HasConversion<string>().HasMaxLength(20);
+        builder.Property(u => u.Email).HasMaxLength(255);
     }
 }

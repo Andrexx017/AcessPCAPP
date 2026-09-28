@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
              x:Class="AppParque.Features.ValidacionAtracciones.ValidacionAtraccionesView"
              Title="Validación de Atracciones">
     <ContentPage.Content>
-        <StackLayout Padding="16" Spacing="12">
+        <Grid>
+            <StackLayout Padding="16" Spacing="12">
 
-            <Label Text="Validación de atracciones preseleccionadas"
-             FontSize="18" FontAttributes="Bold" />
+                <shared:ThemeSwitchView />
 
-            <CollectionView ItemsSource="{Binding Atracciones}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame CornerRadius="8" Padding="8" Margin="6">
-                            <HorizontalStackLayout VerticalOptions="Center" Spacing="10">
-                                <CheckBox IsChecked="{Binding IsSelected}" />
-                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
-                            </HorizontalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                <Label Text="Validación de atracciones preseleccionadas"
+                 FontSize="18" FontAttributes="Bold" />
 
-            <Button Text="Generar PDF" Command="{Binding GenerarPDFCommand}" 
-              IsEnabled="{Binding Atracciones.Count, Converter={StaticResource GreaterThanZeroConverter}}"/>
-          
-        </StackLayout>
+                <CollectionView ItemsSource="{Binding Atracciones}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="8" Padding="8" Margin="6">
+                                <HorizontalStackLayout VerticalOptions="Center" Spacing="10">
+                                    <CheckBox IsChecked="{Binding IsSelected}" />
+                                    <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="Generar PDF" Command="{Binding GenerarPDFCommand}"
+                  IsEnabled="{Binding Atracciones.Count, Converter={StaticResource GreaterThanZeroConverter}}"/>
+
+            </StackLayout>
+
+            <!-- Overlay de progreso: evita que la espera de red al generar el PDF se vea como que la app se congeló -->
+            <Grid IsVisible="{Binding IsBusy}"
+                  BackgroundColor="{AppThemeBinding Light=#80000000, Dark=#80000000}">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" />
+                    <Label Text="Generando PDF..." TextColor="White" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

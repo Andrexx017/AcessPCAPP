@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.MenuAdmin"
+             Title="Menú Administrador"
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
+
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+    <ScrollView>
+        <Grid RowDefinitions="auto,auto,auto,auto" Padding="24" RowSpacing="6">
+
+            <!-- Encabezado: menú, logo y tema -->
+            <Grid Grid.Row="0" ColumnDefinitions="auto,*,auto" ColumnSpacing="12">
+                <Border Grid.Column="0"
+                        StrokeShape="RoundRectangle 21"
+                        Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        WidthRequest="42" HeightRequest="42" Padding="0"
+                        HorizontalOptions="Start" VerticalOptions="Center">
+                    <ImageButton Source="icon_menu.png" WidthRequest="20" HeightRequest="20"
+                                 Aspect="AspectFit"
+                                 HorizontalOptions="Center" VerticalOptions="Center"
+                                 BackgroundColor="Transparent" Clicked="OnMenuLateralClicked"/>
+                </Border>
+
+                <Image Grid.Column="1" Source="logo.png" WidthRequest="110" HeightRequest="52" Aspect="AspectFit"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <shared:ThemeSwitchView Grid.Column="2" VerticalOptions="Center"/>
+            </Grid>
+
+            <!-- Saludo -->
+            <VerticalStackLayout Grid.Row="1" Margin="0,24,0,0" Spacing="6">
+                <HorizontalStackLayout Spacing="12">
+                    <Label x:Name="lblSaludo" Text="Hola"
+                           FontSize="24" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+                           VerticalOptions="Center"/>
+                    <Border StrokeShape="RoundRectangle 999" Stroke="Transparent"
+                            BackgroundColor="{AppThemeBinding Light=#FBEAE6, Dark={StaticResource Gray900}}"
+                            Padding="12,6" VerticalOptions="Center">
+                        <Label Text="ADMINISTRADOR" FontSize="11" FontAttributes="Bold" CharacterSpacing="0.4"
+                               TextColor="{AppThemeBinding Light=#B23A2A, Dark={StaticResource SecondaryDarkText}}"/>
+                    </Border>
+                </HorizontalStackLayout>
+                <Label Text="¿Qué deseas hacer hoy?" FontSize="14.5"
+                       TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+            </VerticalStackLayout>
+
+            <!-- Módulos: se acomodan en columnas y se envuelven en pantallas angostas -->
+            <FlexLayout Grid.Row="2" Margin="0,22,0,0"
+                        Wrap="Wrap" JustifyContent="Center" AlignItems="Start" AlignContent="Start">
+
+                <Border StrokeShape="RoundRectangle 24" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="24" WidthRequest="260" Margin="10">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.08"/>
+                    </Border.Shadow>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRealizarTestClicked"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2">
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" BackgroundColor="#E9F5E1"
+                                WidthRequest="56" HeightRequest="56" Padding="0" HorizontalOptions="Start">
+                            <Image Source="icon_test.png" WidthRequest="27" HeightRequest="27"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="Realizar test" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="Evalúa la accesibilidad del visitante" FontSize="12.5"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 24" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="24" WidthRequest="260" Margin="10">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.08"/>
+                    </Border.Shadow>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnHistorialClicked"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2">
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" BackgroundColor="#FBEAE6"
+                                WidthRequest="56" HeightRequest="56" Padding="0" HorizontalOptions="Start">
+                            <Image Source="icon_historial.png" WidthRequest="27" HeightRequest="27"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="Historial (todos)" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="Consulta evaluaciones de todo el personal" FontSize="12.5"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 24" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="24" WidthRequest="260" Margin="10">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.08"/>
+                    </Border.Shadow>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCatalogosClicked"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2">
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" BackgroundColor="#FBF0DA"
+                                WidthRequest="56" HeightRequest="56" Padding="0" HorizontalOptions="Start">
+                            <Image Source="icon_catalogos.png" WidthRequest="27" HeightRequest="27"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="Catálogos" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="Preguntas y atracciones del parque" FontSize="12.5"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 24" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="24" WidthRequest="260" Margin="10">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.08"/>
+                    </Border.Shadow>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnUsuariosClicked"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2">
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" BackgroundColor="#EFE6DC"
+                                WidthRequest="56" HeightRequest="56" Padding="0" HorizontalOptions="Start">
+                            <Image Source="icon_usuarios.png" WidthRequest="27" HeightRequest="27"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="Usuarios" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="Personal interno y sus roles" FontSize="12.5"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+            </FlexLayout>
+
+            <Label Grid.Row="3"
+                   Text="Parque de Atracciones · Administración"
+                   FontSize="13"
+                   TextColor="{AppThemeBinding Light=#b3a891, Dark={StaticResource Gray400}}"
+                   HorizontalOptions="Center"
+                   Margin="0,28,0,4"/>
+        </Grid>
+    </ScrollView>
+
+    <shared:SideMenuView x:Name="sideMenu"
+                         PerfilTapped="OnPerfilTapped"
+                         CerrarSesionTapped="OnCerrarSesionTapped"/>
+    </Grid>
+</ContentPage>

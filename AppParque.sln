@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppParque", "AppParque\AppParque.csproj", "{55A12652-3973-47BF-98FC-2F77A352B70A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6607E78B-0863-40A5-B076-5BF5BC38CD4D} = {6607E78B-0863-40A5-B076-5BF5BC38CD4D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppParque.Api", "AppParque.Api\AppParque.Api.csproj", "{6607E78B-0863-40A5-B076-5BF5BC38CD4D}"
 EndProject
@@ -19,6 +22,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{55A12652-3973-47BF-98FC-2F77A352B70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{55A12652-3973-47BF-98FC-2F77A352B70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55A12652-3973-47BF-98FC-2F77A352B70A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{55A12652-3973-47BF-98FC-2F77A352B70A}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{55A12652-3973-47BF-98FC-2F77A352B70A}.Debug|x64.Build.0 = Debug|Any CPU
 		{55A12652-3973-47BF-98FC-2F77A352B70A}.Debug|x86.ActiveCfg = Debug|Any CPU

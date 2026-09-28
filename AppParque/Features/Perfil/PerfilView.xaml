@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Perfil.PerfilView"
+             Title="Mi Perfil"
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="22" MaximumWidthRequest="420" HorizontalOptions="Center">
+
+            <shared:ThemeSwitchView HorizontalOptions="End" Margin="0,8,0,0"/>
+
+            <!-- Avatar -->
+            <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Border StrokeShape="RoundRectangle 60" Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                        StrokeThickness="2"
+                        BackgroundColor="{AppThemeBinding Light=#EFE6DC, Dark={StaticResource Gray900}}"
+                        WidthRequest="120" HeightRequest="120" Padding="0"
+                        HorizontalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCambiarFotoTapped"/>
+                    </Border.GestureRecognizers>
+                    <Image x:Name="imgAvatar" Source="icon_usuarios.png" Aspect="AspectFill"
+                           WidthRequest="120" HeightRequest="120"/>
+                </Border>
+
+                <Button x:Name="btnCambiarFoto" Text="Cambiar foto"
+                        FontSize="13.5" FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        TextColor="#4CAF50"
+                        Clicked="OnCambiarFotoTapped"/>
+            </VerticalStackLayout>
+
+            <!-- Nombre completo -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="NOMBRE COMPLETO" FontSize="11.5" FontAttributes="Bold" CharacterSpacing="0.6"
+                       TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                <Border Stroke="Transparent" StrokeShape="RoundRectangle 12"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="16,14">
+                    <Entry x:Name="entryNombre"
+                           Placeholder="Nombre completo"
+                           FontSize="15"
+                           TextColor="{AppThemeBinding Light=#26221C, Dark=White}"
+                           PlaceholderColor="{AppThemeBinding Light=#A39A8C, Dark={StaticResource Gray400}}"
+                           BackgroundColor="Transparent"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Correo electrónico -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="CORREO ELECTRÓNICO" FontSize="11.5" FontAttributes="Bold" CharacterSpacing="0.6"
+                       TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                <Border Stroke="Transparent" StrokeShape="RoundRectangle 12"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="16,14">
+                    <Entry x:Name="entryEmail"
+                           Placeholder="correo@ejemplo.com"
+                           Keyboard="Email"
+                           FontSize="15"
+                           TextColor="{AppThemeBinding Light=#26221C, Dark=White}"
+                           PlaceholderColor="{AppThemeBinding Light=#A39A8C, Dark={StaticResource Gray400}}"
+                           BackgroundColor="Transparent"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Usuario (solo lectura) -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="USUARIO" FontSize="11.5" FontAttributes="Bold" CharacterSpacing="0.6"
+                       TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                <Border Stroke="Transparent" StrokeShape="RoundRectangle 12"
+                        BackgroundColor="{AppThemeBinding Light=#F1ECE3, Dark={StaticResource Gray950}}"
+                        Padding="16,14">
+                    <Grid ColumnDefinitions="*,auto">
+                        <Label x:Name="lblUsername" Text="—" FontSize="15"
+                               TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+                        <Border Grid.Column="1" StrokeShape="RoundRectangle 999" Stroke="Transparent"
+                                BackgroundColor="{AppThemeBinding Light=#FBEAE6, Dark={StaticResource Gray900}}"
+                                Padding="10,4">
+                            <Label x:Name="lblRol" Text="ROL" FontSize="10.5" FontAttributes="Bold" CharacterSpacing="0.4"
+                                   TextColor="{AppThemeBinding Light=#B23A2A, Dark={StaticResource SecondaryDarkText}}"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
+            <Button x:Name="btnGuardar" Text="Guardar cambios"
+                    HeightRequest="50"
+                    CornerRadius="12"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    HorizontalOptions="Fill"
+                    Margin="0,6,0,0"
+                    Clicked="OnGuardarClicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

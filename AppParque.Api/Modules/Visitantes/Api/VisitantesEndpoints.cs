@@ -32,11 +32,16 @@ public static class VisitantesEndpoints
         if (yaExiste)
             return Results.Conflict("Ya existe un visitante con ese tipo y número de documento.");
 
+        if (!request.ConsentimientoTratamientoDatos)
+            return Results.BadRequest("Se requiere la autorización de tratamiento de datos de salud del visitante (Ley 1581 de 2012).");
+
         var visitante = new Visitante
         {
             TipoDocumento = request.TipoDocumento,
             NumeroDocumento = request.NumeroDocumento,
             Nombre = request.Nombre,
+            ConsentimientoTratamientoDatos = true,
+            FechaConsentimiento = DateTime.UtcNow,
         };
 
         db.Visitantes.Add(visitante);
