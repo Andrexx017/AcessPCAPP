@@ -74,7 +74,7 @@ namespace AppParque.Features.MenuPrincipal
         private async void OnIniciarTestClicked(object sender, EventArgs e)
         {
             // Redirigir a la pantalla del Test
-            await Navigation.PushAsync(new RegisterDataView());
+            await Navigation.PushAsync(new Paso0DocumentoView());
         }
 
         private async void OnHistorialClicked(object sender, EventArgs e)

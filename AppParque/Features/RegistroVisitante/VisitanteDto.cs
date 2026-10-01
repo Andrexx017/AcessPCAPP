@@ -7,4 +7,12 @@ public record VisitanteDto(
     string Nombre,
     DateTime CreatedAt,
     bool ConsentimientoTratamientoDatos,
-    DateTime? FechaConsentimiento);
+    DateTime? FechaConsentimiento,
+    string? NombreAcompanante = null,
+    string? ParentescoAcompanante = null,
+    string? TelefonoAcompanante = null,
+    string? TipoSangre = null,
+    string? Eps = null,
+    string? Alergias = null,
+    bool AceptaPoliticasParque = false,
+    DateTime? FechaAceptacionPoliticas = null);

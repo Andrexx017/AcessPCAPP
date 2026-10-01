@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.RegistroVisitante.ConfirmacionEvaluacionView"
+             Title="Bienvenido de nuevo"
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
+
+    <Grid RowDefinitions="*,auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24" Spacing="16">
+
+                <shared:ThemeSwitchView HorizontalOptions="End" />
+
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="¡Bienvenido de nuevo!" FontSize="20" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                    <Label Text="Encontramos tu ficha en el sistema" FontSize="13"
+                           TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                </VerticalStackLayout>
+
+                <!-- Visitante encontrado -->
+                <Border StrokeShape="RoundRectangle 18" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="14">
+                    <Grid ColumnDefinitions="*,auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="1">
+                            <Label x:Name="lblNombre" Text="—" FontSize="15" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                            <Label x:Name="lblDocumento" Text="—" FontSize="12"
+                                   TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                        </VerticalStackLayout>
+                        <Label Grid.Column="1" Text="Registrado" FontSize="10.5" FontAttributes="Bold"
+                               TextColor="#3f8c4a" BackgroundColor="#E9F5E1" Padding="10,5" VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Cargando -->
+                <ActivityIndicator x:Name="loading" IsRunning="True" Color="#4CAF50"/>
+
+                <!-- Última evaluación -->
+                <VerticalStackLayout x:Name="panelEvaluacion" IsVisible="False" Spacing="12">
+
+                    <Label Text="TU ÚLTIMA EVALUACIÓN" FontSize="11" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}"/>
+
+                    <Border StrokeShape="RoundRectangle 18" Stroke="Transparent"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16">
+                        <VerticalStackLayout Spacing="10">
+                            <Label x:Name="lblFecha" Text="—" FontSize="14" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+
+                            <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light=#f2ede2, Dark={StaticResource Gray600}}"/>
+
+                            <Label Text="CONDICIONES DETECTADAS" FontSize="9.5" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <FlexLayout x:Name="flexCondiciones" Wrap="Wrap" JustifyContent="Start" AlignItems="Start"/>
+
+                            <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light=#f2ede2, Dark={StaticResource Gray600}}"/>
+
+                            <Label x:Name="lblResultado" Text="—" FontSize="13.5" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Aviso de vigencia -->
+                    <Border x:Name="bannerVigencia" IsVisible="False" StrokeShape="RoundRectangle 14" Stroke="Transparent"
+                            BackgroundColor="#FBF0DA" Padding="13">
+                        <Label x:Name="lblVigencia" Text="—" FontSize="12.5" LineBreakMode="WordWrap" TextColor="#8a6d1f"/>
+                    </Border>
+
+                    <Label Text="¿Tus condiciones de salud siguen siendo las mismas desde esa visita?"
+                           FontSize="17" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
+                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}" Margin="0,6,0,0"/>
+                    <Label Text="Si algo cambió — una cirugía, un embarazo, una nueva condición — dínoslo por tu seguridad."
+                           FontSize="12.5" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
+                           TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                </VerticalStackLayout>
+
+                <Label x:Name="lblSinEvaluaciones" Text="Este visitante todavía no tiene evaluaciones anteriores."
+                       IsVisible="False" FontSize="13" HorizontalTextAlignment="Center"
+                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Row="1" x:Name="panelBotones" IsVisible="False" Padding="24,10,24,22" Spacing="10">
+            <Button x:Name="btnSiguenIgual" Text="Sí, siguen igual" FontSize="15" FontAttributes="Bold"
+                    HeightRequest="52" CornerRadius="20" BackgroundColor="#4CAF50" TextColor="White"
+                    Clicked="OnSiguenIgualClicked"/>
+            <Button x:Name="btnAlgoCambio" Text="No, algo cambió" FontSize="15" FontAttributes="Bold"
+                    HeightRequest="52" CornerRadius="20"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+                    BorderColor="#e9e1d3" BorderWidth="1.5"
+                    Clicked="OnAlgoCambioClicked"/>
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

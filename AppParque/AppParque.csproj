@@ -93,9 +93,6 @@
 		<MauiXaml Update="Features\Reportes\PdfView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Features\RegistroVisitante\RegisterDataView.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Features\EvaluacionAccesibilidad\TestView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

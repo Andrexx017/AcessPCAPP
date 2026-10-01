@@ -70,7 +70,7 @@ public partial class MenuAdmin : ContentPage
 
     private async void OnRealizarTestClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new RegisterDataView());
+        await Navigation.PushAsync(new Paso0DocumentoView());
     }
 
     private async void OnHistorialClicked(object sender, EventArgs e)

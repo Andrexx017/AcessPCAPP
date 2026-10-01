@@ -4,6 +4,10 @@ public record CrearEvaluacionRequest(int VisitanteId, int? Edad, int? Estatura, 
 
 public record AjustarPreseleccionRequest(bool ValidadaPersonal, string? Comentario);
 
+/// <summary>RF-14: Edad/Estatura son opcionales — si no se envían, se reutilizan los de la evaluación
+/// origen (por si cambiaron, ej. un niño que creció, se pueden actualizar sin repetir el test).</summary>
+public record ReutilizarEvaluacionRequest(int? Edad, int? Estatura);
+
 public record AtraccionResultadoResponse(
     int AtraccionId,
     string AtraccionNombre,

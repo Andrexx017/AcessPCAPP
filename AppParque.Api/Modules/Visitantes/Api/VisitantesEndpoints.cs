@@ -42,6 +42,14 @@ public static class VisitantesEndpoints
             Nombre = request.Nombre,
             ConsentimientoTratamientoDatos = true,
             FechaConsentimiento = DateTime.UtcNow,
+            NombreAcompanante = request.NombreAcompanante,
+            ParentescoAcompanante = request.ParentescoAcompanante,
+            TelefonoAcompanante = request.TelefonoAcompanante,
+            TipoSangre = request.TipoSangre,
+            Eps = request.Eps,
+            Alergias = request.Alergias,
+            AceptaPoliticasParque = request.AceptaPoliticasParque,
+            FechaAceptacionPoliticas = request.AceptaPoliticasParque ? DateTime.UtcNow : null,
         };
 
         db.Visitantes.Add(visitante);

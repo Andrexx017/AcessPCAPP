@@ -17,6 +17,7 @@ public static class EvaluacionesEndpoints
         group.MapPost("/", CrearAsync);
         group.MapGet("/{id:int}", ObtenerAsync);
         group.MapPut("/{id:int}/atracciones/{atraccionId:int}", AjustarAsync);
+        group.MapPost("/{id:int}/reutilizar", ReutilizarAsync);
     }
 
     /// <summary>RF-08: Enfermero ve solo su propio historial, Admin ve todo. Filtra por nombre o
@@ -115,6 +116,66 @@ public static class EvaluacionesEndpoints
         foreach (var atraccion in atracciones)
         {
             var esSegura = PreseleccionService.EsSeguraPara(atraccion, gruposActivados, condicionesActivadas, request.Estatura);
+            evaluacion.AtraccionResultados.Add(new EvaluacionAtraccionResultado
+            {
+                AtraccionId = atraccion.Id,
+                PreseleccionadaAutomatica = esSegura,
+            });
+        }
+
+        db.Evaluaciones.Add(evaluacion);
+        await db.SaveChangesAsync();
+
+        var response = await BuildResponseAsync(db, evaluacion.Id);
+        return Results.Created($"/api/evaluaciones/{evaluacion.Id}", response);
+    }
+
+    /// <summary>RF-14: cuando el visitante confirma que sus condiciones siguen igual que en una
+    /// evaluación anterior, no se repite el test — se copian los grupos/condiciones ya activados y
+    /// se recalcula la preselección contra el catálogo ACTUAL de atracciones (que pudo cambiar desde
+    /// la evaluación original, aunque el visitante no haya cambiado).</summary>
+    private static async Task<IResult> ReutilizarAsync(int id, ReutilizarEvaluacionRequest request, AppDbContext db, ClaimsPrincipal user)
+    {
+        var origen = await db.Evaluaciones
+            .Include(e => e.Grupos).ThenInclude(g => g.Grupo)
+            .Include(e => e.Condiciones).ThenInclude(c => c.Condicion)
+            .SingleOrDefaultAsync(e => e.Id == id);
+
+        if (origen is null)
+            return Results.NotFound($"No existe la evaluación {id}.");
+
+        var usuarioIdTexto = user.FindFirstValue(ClaimTypes.NameIdentifier) ?? user.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (!int.TryParse(usuarioIdTexto, out var usuarioId))
+            return Results.Unauthorized();
+
+        var gruposActivados = origen.Grupos.Select(g => g.Grupo.Codigo).ToHashSet();
+        var condicionesActivadas = origen.Condiciones.Select(c => c.Condicion.Codigo).ToHashSet();
+        var estatura = request.Estatura ?? origen.Estatura;
+
+        var atracciones = await db.Atracciones
+            .Where(a => a.Activa)
+            .Include(a => a.RestriccionesGrupo).ThenInclude(r => r.Grupo)
+            .Include(a => a.RestriccionesCondicion).ThenInclude(r => r.Condicion)
+            .ToListAsync();
+
+        var evaluacion = new Evaluacion
+        {
+            VisitanteId = origen.VisitanteId,
+            UsuarioId = usuarioId,
+            Fecha = DateTime.UtcNow,
+            Edad = request.Edad ?? origen.Edad,
+            Estatura = estatura,
+        };
+
+        foreach (var grupo in origen.Grupos)
+            evaluacion.Grupos.Add(new EvaluacionGrupo { GrupoId = grupo.GrupoId });
+
+        foreach (var condicion in origen.Condiciones)
+            evaluacion.Condiciones.Add(new EvaluacionCondicion { CondicionId = condicion.CondicionId });
+
+        foreach (var atraccion in atracciones)
+        {
+            var esSegura = PreseleccionService.EsSeguraPara(atraccion, gruposActivados, condicionesActivadas, estatura);
             evaluacion.AtraccionResultados.Add(new EvaluacionAtraccionResultado
             {
                 AtraccionId = atraccion.Id,

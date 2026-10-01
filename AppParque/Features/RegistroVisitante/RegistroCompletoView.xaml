@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.RegistroVisitante.RegistroCompletoView"
+             Title="Registro de visitante"
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
+
+    <Grid>
+        <!-- Ancho (escritorio/tablet): formulario + panel de resumen lado a lado.
+             Angosto (celular): el panel de resumen se oculta, solo queda el formulario.
+             Mismo mecanismo que Features/Auth/LoginView.xaml.cs y Features/Historial/HistorialView.xaml.cs. -->
+        <Grid x:Name="rootGrid">
+
+            <ScrollView x:Name="mainPanel">
+                <VerticalStackLayout Padding="24" Spacing="18" MaximumWidthRequest="640" HorizontalOptions="Center">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Antes de comenzar" FontSize="22" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="Necesitamos estos datos para la evaluación y para tu seguridad dentro del parque"
+                               FontSize="13" LineBreakMode="WordWrap"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+
+                    <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" BackgroundColor="#FBF0DA" Padding="12,10">
+                        <Label Text="Todos los campos son obligatorios por tu seguridad" FontSize="12" FontAttributes="Bold" TextColor="#8a6d1f"/>
+                    </Border>
+
+                    <!-- Documento: editable, por si se llega aquí sin pasar por la búsqueda previa -->
+                    <Label Text="DOCUMENTO" FontSize="11" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}"/>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Tipo de documento *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Picker x:Name="pickerTipoId" Title="Selecciona">
+                                    <Picker.Items>
+                                        <x:String>Cédula de Ciudadanía</x:String>
+                                        <x:String>Cédula de Extranjería</x:String>
+                                        <x:String>Pasaporte</x:String>
+                                        <x:String>Tarjeta de Identidad</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Número de documento *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Entry x:Name="entryNumeroId" Placeholder="1 037 654 321" Keyboard="Numeric"/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Datos personales -->
+                    <Label Text="DATOS PERSONALES" FontSize="11" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}"/>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nombre completo *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                            <Entry x:Name="entryNombre" Placeholder="Nombre del visitante"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Edad *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Entry x:Name="entryEdad" Placeholder="Años" Keyboard="Numeric"/>
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Estatura (cm) *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Entry x:Name="entryEstatura" Placeholder="Cm" Keyboard="Numeric"/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Acompañante -->
+                    <Label Text="ACOMPAÑANTE Y CONTACTO DE EMERGENCIA" FontSize="11" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}" Margin="0,10,0,0"/>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nombre del acompañante *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                            <Entry x:Name="entryAcompananteNombre" Placeholder="Nombre completo"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Parentesco *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Picker x:Name="pickerParentesco" Title="Selecciona">
+                                    <Picker.Items>
+                                        <x:String>Padre / Madre</x:String>
+                                        <x:String>Cónyuge / Pareja</x:String>
+                                        <x:String>Hijo / Hija</x:String>
+                                        <x:String>Hermano / Hermana</x:String>
+                                        <x:String>Otro familiar</x:String>
+                                        <x:String>Amigo / Cuidador</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Teléfono *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Entry x:Name="entryAcompananteTelefono" Placeholder="300 000 0000" Keyboard="Telephone"/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Emergencia -->
+                    <Label Text="EN CASO DE EMERGENCIA" FontSize="11" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}" Margin="0,10,0,0"/>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Tipo de sangre *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Picker x:Name="pickerTipoSangre" Title="Selecciona">
+                                    <Picker.Items>
+                                        <x:String>O+</x:String><x:String>O-</x:String>
+                                        <x:String>A+</x:String><x:String>A-</x:String>
+                                        <x:String>B+</x:String><x:String>B-</x:String>
+                                        <x:String>AB+</x:String><x:String>AB-</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="EPS *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                                <Entry x:Name="entryEps" Placeholder="Nueva EPS, Sura..."/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Alergias conocidas *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,8">
+                            <Editor x:Name="editorAlergias" Placeholder="Ej. penicilina, maní... o 'Ninguna conocida'" AutoSize="TextChanges" HeightRequest="60"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Consentimiento 1: tratamiento de datos -->
+                    <Border StrokeShape="RoundRectangle 20" Stroke="#e3b9a8" StrokeThickness="1.5"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="18" Margin="0,10,0,0">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Tu privacidad importa" FontSize="15.5" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}" HorizontalOptions="Center"/>
+                            <Label Text="Tus datos personales, de contacto y de salud solo se usan para tu evaluación de accesibilidad, según la Ley 1581 de 2012."
+                                   FontSize="12" LineBreakMode="WordWrap" HorizontalTextAlignment="Center"
+                                   TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,4,0,0">
+                                <CheckBox x:Name="checkboxConsentimientoDatos" VerticalOptions="Center"/>
+                                <Label Text="Autorizo el tratamiento de mis datos" FontSize="13" FontAttributes="Bold"
+                                       TextColor="#8a3a2a" VerticalOptions="Center" LineBreakMode="WordWrap"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Consentimiento 2: políticas del parque -->
+                    <Border StrokeShape="RoundRectangle 20" Stroke="#a9c6e0" StrokeThickness="1.5"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="18">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Compromiso con las normas del parque" FontSize="15.5" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <Label Text="Al recibir tu guía y acceso prioritario (VIP), aceptas seguir las políticas de seguridad y las indicaciones del personal mientras estés en las instalaciones."
+                                   FontSize="12" LineBreakMode="WordWrap" HorizontalTextAlignment="Center"
+                                   TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,4,0,0">
+                                <CheckBox x:Name="checkboxAceptaPoliticas" VerticalOptions="Center"/>
+                                <Label Text="Acepto las políticas del parque" FontSize="13" FontAttributes="Bold"
+                                       TextColor="#2a4d6e" VerticalOptions="Center" LineBreakMode="WordWrap"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Button Text="Comenzar evaluación" FontSize="16" FontAttributes="Bold"
+                            HeightRequest="52" CornerRadius="26"
+                            BackgroundColor="#2E2013" TextColor="White"
+                            Clicked="OnComenzarClicked" Margin="0,4,0,10"/>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- Panel de resumen: solo en pantallas anchas (escritorio/tablet) -->
+            <Border x:Name="asidePanel" IsVisible="False"
+                    StrokeShape="Rectangle" Stroke="Transparent"
+                    BackgroundColor="{AppThemeBinding Light=#F1EFE9, Dark={StaticResource Gray900}}">
+                <ScrollView>
+                    <VerticalStackLayout Padding="32,40" Spacing="22">
+
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="RESUMEN" FontSize="11" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                            <Label Text="Tu registro" FontSize="20" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="14">
+                            <HorizontalStackLayout Spacing="12">
+                                <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="#2E2013" VerticalOptions="Center"/>
+                                <Label Text="Documento" FontSize="13" TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="#2E2013" VerticalOptions="Center"/>
+                                <Label Text="Datos personales" FontSize="13" TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="#2E2013" VerticalOptions="Center"/>
+                                <Label Text="Acompañante y emergencia" FontSize="13" TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="#2E2013" VerticalOptions="Center"/>
+                                <Label Text="Privacidad" FontSize="13" TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray950}}" Padding="16">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="¿Por qué pedimos esto?" FontSize="13" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                <Label Text="Tus datos de salud y contacto solo se usan para tu evaluación de accesibilidad dentro del parque, según la Ley 1581 de 2012."
+                                       FontSize="12" LineBreakMode="WordWrap"
+                                       TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+
+        </Grid>
+
+        <shared:ThemeSwitchView HorizontalOptions="End" VerticalOptions="Start" Margin="16"/>
+    </Grid>
+</ContentPage>

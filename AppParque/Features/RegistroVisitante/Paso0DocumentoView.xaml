@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.RegistroVisitante.Paso0DocumentoView"
+             Title="Identificación"
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
+
+    <ScrollView>
+        <Grid Padding="24" RowDefinitions="auto,auto,auto,auto,auto,auto" RowSpacing="16">
+
+            <shared:ThemeSwitchView Grid.Row="0" HorizontalOptions="End" />
+
+            <VerticalStackLayout Grid.Row="1" Spacing="6" Margin="0,8,0,0">
+                <Label Text="¿Cuál es el documento del visitante?"
+                       FontSize="22" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                <Label Text="Así revisamos si ya tiene una ficha con nosotros, para no volver a pedirle todo."
+                       FontSize="13" TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="2" Spacing="6">
+                <Label Text="Tipo de documento" FontSize="11" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}"/>
+                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                    <Picker x:Name="pickerTipoId" Title="Seleccione...">
+                        <Picker.Items>
+                            <x:String>Cédula de Ciudadanía</x:String>
+                            <x:String>Cédula de Extranjería</x:String>
+                            <x:String>Pasaporte</x:String>
+                            <x:String>Tarjeta de Identidad</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="3" Spacing="6">
+                <Label Text="Número de documento" FontSize="11" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}"/>
+                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
+                    <Entry x:Name="entryNumeroId" Placeholder="1 037 654 321" Keyboard="Numeric"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="4" Spacing="12">
+                <Button x:Name="btnBuscar" Text="Buscar" FontSize="16" FontAttributes="Bold"
+                        HeightRequest="52" CornerRadius="26"
+                        BackgroundColor="#2E2013" TextColor="White"
+                        Clicked="OnBuscarClicked"/>
+
+                <Button Text="Es mi primera vez, omitir búsqueda" FontSize="13.5"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"
+                        Clicked="OnOmitirClicked"/>
+            </VerticalStackLayout>
+
+            <Border Grid.Row="5" StrokeShape="RoundRectangle 14" Stroke="Transparent"
+                    BackgroundColor="{AppThemeBinding Light=#F1EFE9, Dark={StaticResource Gray900}}"
+                    Padding="14">
+                <Label Text="Si ya visitó antes, encontramos su ficha y su última evaluación — no repite el formulario ni el test desde cero."
+                       FontSize="11.5" LineBreakMode="WordWrap"
+                       TextColor="{AppThemeBinding Light=#8a7b62, Dark={StaticResource Gray400}}"/>
+            </Border>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>
