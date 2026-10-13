@@ -2,6 +2,7 @@ namespace AppParque.Features.Administracion.AdminAtracciones;
 
 public record RestriccionAdminDto(int Id, string Codigo, string Nombre, bool Permitido);
 
+/// <param name="Intensidad">baja | media | alta | extrema | cultural.</param>
 public record AtraccionAdminDto(
     int Id,
     string Nombre,
@@ -10,6 +11,7 @@ public record AtraccionAdminDto(
     int? AlturaMinima,
     int? AlturaMaxima,
     bool Activa,
+    string Intensidad,
     List<RestriccionAdminDto> RestriccionesGrupo,
     List<RestriccionAdminDto> RestriccionesCondicion);
 

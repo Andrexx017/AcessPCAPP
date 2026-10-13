@@ -22,6 +22,23 @@ public static class AuthEndpoints
             Username = user.FindFirstValue(ClaimTypes.Name),
             Rol = user.FindFirstValue(ClaimTypes.Role),
         })).RequireAuthorization();
+
+        // Re-autenticación para confirmar acciones destructivas (p.ej. eliminar un usuario interno):
+        // valida la contraseña contra el propio usuario autenticado, nunca contra el de un tercero.
+        group.MapPost("/verificar-password", VerificarPasswordAsync).RequireAuthorization();
+    }
+
+    private static async Task<IResult> VerificarPasswordAsync(VerificarPasswordRequest request, ClaimsPrincipal caller, AppDbContext db)
+    {
+        var callerIdTexto = caller.FindFirstValue(ClaimTypes.NameIdentifier) ?? caller.FindFirstValue("sub");
+        if (!int.TryParse(callerIdTexto, out var callerId))
+            return Results.Unauthorized();
+
+        var usuario = await db.Usuarios.FindAsync(callerId);
+        if (usuario is null || !BCrypt.Net.BCrypt.Verify(request.Password, usuario.PasswordHash))
+            return Results.Unauthorized();
+
+        return Results.NoContent();
     }
 
     private static async Task<IResult> LoginAsync(LoginRequest request, AppDbContext db, ITokenService tokens)

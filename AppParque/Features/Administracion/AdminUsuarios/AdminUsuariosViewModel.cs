@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.Net;
+using System.Windows.Input;
 using AppParque.Services;
 using AppParque.Shared;
 
@@ -23,7 +25,7 @@ public class AdminUsuariosViewModel : BaseViewModel
         if (resultado.Success)
         {
             foreach (var u in resultado.Data)
-                Usuarios.Add(new UsuarioRow(u, OnToggledAsync));
+                Usuarios.Add(new UsuarioRow(u, OnToggledAsync, OnCambiarPasswordAsync, OnEliminarAsync));
         }
         else
         {
@@ -45,6 +47,59 @@ public class AdminUsuariosViewModel : BaseViewModel
             row.RevertActivoSinDisparar(!row.Activo);
             await Application.Current.MainPage.DisplayAlert("Aviso", resultado.ErrorMessage ?? "No se pudo actualizar el usuario.", "OK");
         }
+    }
+
+    private async Task OnCambiarPasswordAsync(UsuarioRow row)
+    {
+        var mainPage = Application.Current.MainPage;
+
+        var nuevaPassword = await mainPage.DisplayPromptAsync("Cambiar contraseña", $"Nueva contraseña para {row.Username}:");
+        if (string.IsNullOrWhiteSpace(nuevaPassword))
+            return;
+
+        var resultado = await ApiClient.PutAsync<object?>($"/api/admin/usuarios/{row.Model.Id}/password", new { nuevoPassword = nuevaPassword });
+
+        await mainPage.DisplayAlert(
+            resultado.Success ? "Listo" : "Error",
+            resultado.Success ? "Contraseña actualizada." : resultado.ErrorMessage ?? "No se pudo cambiar la contraseña.",
+            "OK");
+    }
+
+    private async Task OnEliminarAsync(UsuarioRow row)
+    {
+        var mainPage = Application.Current.MainPage;
+
+        var confirmar = await mainPage.DisplayAlert("Eliminar usuario", $"¿Eliminar a \"{row.NombreCompleto}\"? Esta acción no se puede deshacer.", "Sí", "No");
+        if (!confirmar)
+            return;
+
+        // Paso de verificación: se pide la contraseña del admin que está logueado (no la del
+        // usuario a eliminar) antes de ejecutar el borrado.
+        var password = await mainPage.DisplayPromptAsync("Confirmar eliminación", "Ingresa tu contraseña para continuar:", accept: "Eliminar", cancel: "Cancelar");
+        if (string.IsNullOrWhiteSpace(password))
+            return;
+
+        var verificacion = await ApiClient.PostAsync("/api/auth/verificar-password", new { password });
+        if (!verificacion.Success)
+        {
+            // "Contraseña incorrecta" solo cuando el servidor de verdad rechazó la contraseña (401);
+            // cualquier otro fallo (sin red, 404 por servidor desactualizado, 500, etc.) muestra su
+            // propio mensaje para no confundir un problema de conexión con una contraseña mala.
+            var mensaje = verificacion.StatusCode == HttpStatusCode.Unauthorized
+                ? "Contraseña incorrecta."
+                : verificacion.ErrorMessage ?? "No se pudo verificar la contraseña.";
+            await mainPage.DisplayAlert("Error", mensaje, "OK");
+            return;
+        }
+
+        var resultado = await ApiClient.DeleteAsync($"/api/admin/usuarios/{row.Model.Id}");
+        if (!resultado.Success)
+        {
+            await mainPage.DisplayAlert("Error", resultado.ErrorMessage ?? "No se pudo eliminar el usuario.", "OK");
+            return;
+        }
+
+        Usuarios.Remove(row);
     }
 }
 
@@ -73,11 +128,16 @@ public class UsuarioRow : BaseViewModel
         }
     }
 
-    public UsuarioRow(UsuarioAdminDto model, Func<UsuarioRow, Task> onToggled)
+    public ICommand CambiarPasswordCommand { get; }
+    public ICommand EliminarCommand { get; }
+
+    public UsuarioRow(UsuarioAdminDto model, Func<UsuarioRow, Task> onToggled, Func<UsuarioRow, Task> onCambiarPassword, Func<UsuarioRow, Task> onEliminar)
     {
         Model = model;
         _activo = model.Activo;
         _onToggled = onToggled;
+        CambiarPasswordCommand = new Command(() => _ = onCambiarPassword(this));
+        EliminarCommand = new Command(() => _ = onEliminar(this));
     }
 
     public void RevertActivoSinDisparar(bool valor)

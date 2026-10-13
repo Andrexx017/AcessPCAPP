@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Features.EvaluacionAccesibilidad.ZonaPuertaView"
+             Title="{Binding Nombre}"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <Border Grid.Row="0"
+                Padding="16,12"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="2">
+                <Label Text="{Binding Nombre}"
+                       FontAttributes="Bold" FontSize="16"
+                       TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                <Label Text="{Binding Cuantas}"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+            </VerticalStackLayout>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,22,16,16" Spacing="16" VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="¿Hay algo que revisar aquí?"
+                           FontAttributes="Bold" FontSize="25"
+                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                    <Label Text="{Binding Nota}"
+                           FontSize="13.5"
+                           TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                </VerticalStackLayout>
+
+                <Border IsVisible="{Binding PermiteSinNovedad}"
+                        BackgroundColor="#E7F1EF"
+                        Stroke="#0F6B5C"
+                        StrokeThickness="2"
+                        Padding="15"
+                        MinimumHeightRequest="84"
+                        SemanticProperties.Description="Marcar la zona sin novedad y volver al mapa">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSinNovedadTapped" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                        <Label Text="Sin novedad" FontAttributes="Bold" FontSize="17" TextColor="#0A4D42" />
+                        <Label Text="{Binding ResumenSinNovedad}" FontSize="12" TextColor="#2F5F56" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Stroke="{AppThemeBinding Light=#d5dce4, Dark={StaticResource Gray600}}"
+                        StrokeThickness="1"
+                        Padding="15"
+                        MinimumHeightRequest="84"
+                        SemanticProperties.Description="Evaluar la zona respondiendo sus preguntas">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnEvaluarTapped" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                            <Label Text="Evaluar" FontAttributes="Bold" FontSize="17"
+                                   TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                            <Label Text="{Binding ResumenEvaluar}" FontSize="12"
+                                   TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="1" Text="›" FontSize="26" VerticalOptions="Center"
+                               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+                    </Grid>
+                </Border>
+
+                <Label FontSize="12"
+                       TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Sin novedad" FontAttributes="Bold" />
+                            <Span Text=" no deja los datos en blanco: los marca como normales. Un dato en blanco deja la atracción «por verificar»." />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label Text="Esta zona son datos del visitante, no condiciones: hay que llenarla."
+                       IsVisible="{Binding ExigeLlenado}"
+                       FontSize="12"
+                       TextColor="#8A5A00" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

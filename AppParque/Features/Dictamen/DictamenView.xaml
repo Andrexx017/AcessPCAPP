@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Dictamen.DictamenView"
+             Title="Dictamen"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- cabecera -->
+        <Border Grid.Row="0"
+                Padding="16,12"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                    <Label Text="{Binding NombreVisitante}"
+                           FontAttributes="Bold" FontSize="16"
+                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                    <Label Text="{Binding Resumen}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+                </VerticalStackLayout>
+                <shared:ThemeSwitchView Grid.Column="1" VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,14,16,16" Spacing="14">
+
+                <!-- diagnóstico: el mismo resumen de respuestas que se vio antes de pedir el dictamen -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}" StrokeThickness="1"
+                        Padding="14,13">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="9">
+                        <Label Text="DIAGNÓSTICO" FontSize="11" FontAttributes="Bold" CharacterSpacing="0.3"
+                               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding DiagnosticoSecciones}" Spacing="7">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout Spacing="3">
+                                        <Label Text="{Binding Nombre}" FontSize="12" FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                                        <Label Text="{Binding ResumenTexto}" FontSize="11.5" LineBreakMode="WordWrap"
+                                               TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <BoxView HeightRequest="1" IsVisible="{Binding TieneCondicionAdicional}"
+                                 Color="{AppThemeBinding Light=#f0f2f5, Dark={StaticResource Gray950}}" />
+                        <VerticalStackLayout IsVisible="{Binding TieneCondicionAdicional}" Spacing="3">
+                            <Label Text="CONDICIÓN ADICIONAL REPORTADA" FontSize="9.5" FontAttributes="Bold" TextColor="#0A4D42" />
+                            <Label Text="{Binding CondicionAdicional}" FontSize="12" FontAttributes="Italic"
+                                   LineBreakMode="WordWrap"
+                                   TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- respuesta de la IA, si se preguntó -->
+                <Border IsVisible="{Binding TieneRespuestaIA}"
+                        BackgroundColor="#E7F1EF" StrokeThickness="0" Padding="13">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <HorizontalStackLayout Spacing="9">
+                        <Border WidthRequest="28" HeightRequest="28" StrokeThickness="0" BackgroundColor="#0F6B5C">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="14" /></Border.StrokeShape>
+                            <Label Text="🩺" FontSize="13" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Spacing="2" HorizontalOptions="FillAndExpand">
+                            <Label Text="RESPUESTA DE LA IA" FontSize="9.5" FontAttributes="Bold" TextColor="#0A4D42" />
+                            <Label Text="{Binding RespuestaIA}" FontSize="12.5" TextColor="#0A4D42" LineHeight="1.4" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- preselección: los cuatro veredictos -->
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                    <Border Grid.Column="0" BackgroundColor="#E7F1EF" Stroke="#BBD3CD" StrokeThickness="1" Padding="10,9">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                        <VerticalStackLayout Spacing="1">
+                            <Label Text="{Binding Permitidas}" FontAttributes="Bold" FontSize="20" TextColor="#0A4D42" />
+                            <Label Text="permitidas" FontSize="10" TextColor="#2F5F56" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" BackgroundColor="#E3EBF5" Stroke="#C7D5E8" StrokeThickness="1" Padding="10,9">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                        <VerticalStackLayout Spacing="1">
+                            <Label Text="{Binding ConMitigacion}" FontAttributes="Bold" FontSize="20" TextColor="#163E6E" />
+                            <Label Text="con condición" FontSize="10" TextColor="#30507C" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="2" BackgroundColor="#FDF8EC" Stroke="#E8D9B0" StrokeThickness="1" Padding="10,9">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                        <VerticalStackLayout Spacing="1">
+                            <Label Text="{Binding PorVerificar}" FontAttributes="Bold" FontSize="20" TextColor="#6B4600" />
+                            <Label Text="verificar" FontSize="10" TextColor="#6B5B38" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="3" BackgroundColor="#FBEDEB" Stroke="#EBC5BF" StrokeThickness="1" Padding="10,9">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                        <VerticalStackLayout Spacing="1">
+                            <Label Text="{Binding Restringidas}" FontAttributes="Bold" FontSize="20" TextColor="#8A2317" />
+                            <Label Text="no" FontSize="10" TextColor="#7A3A33" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!-- datos que faltan: la razón de cada "por verificar" -->
+                <Border IsVisible="{Binding FaltanDatos}"
+                        BackgroundColor="#FDF8EC"
+                        Stroke="#E8D9B0"
+                        StrokeThickness="1"
+                        Padding="13">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="{Binding TituloFaltantes}" FontAttributes="Bold" FontSize="14" TextColor="#6B4600" />
+                        <Label Text="Sin estos datos el motor no puede permitir ni descartar."
+                               FontSize="11.5" TextColor="#6B5B38" />
+                        <Label Text="{Binding DetalleFaltantes}" FontSize="11.5" TextColor="#6B5B38" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- filtro -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout Spacing="7" BindableLayout.ItemsSource="{Binding Chips}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Border BackgroundColor="{Binding Fondo}"
+                                        Stroke="{Binding Trazo}"
+                                        StrokeThickness="1"
+                                        Padding="13,0"
+                                        MinimumHeightRequest="44"
+                                        SemanticProperties.Description="{Binding Texto}">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="22" /></Border.StrokeShape>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnFiltroTapped" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="{Binding Texto}"
+                                           TextColor="{Binding ColorTexto}"
+                                           FontSize="13"
+                                           VerticalOptions="Center" />
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- las atracciones -->
+                <VerticalStackLayout Spacing="9" BindableLayout.ItemsSource="{Binding Atracciones}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}"
+                                    StrokeThickness="1"
+                                    Padding="14,13">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                                <VerticalStackLayout Spacing="9">
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                            <Label Text="{Binding Nombre}"
+                                                   FontAttributes="Bold" FontSize="15.5"
+                                                   TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                                            <Label Text="{Binding Subtitulo}"
+                                                   FontSize="11.5"
+                                                   TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+                                        </VerticalStackLayout>
+
+                                        <Border Grid.Column="1"
+                                                BackgroundColor="{Binding VeredictoFondo}"
+                                                StrokeThickness="0"
+                                                Padding="9,5"
+                                                VerticalOptions="Start">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="7" /></Border.StrokeShape>
+                                            <Label Text="{Binding VeredictoTexto}"
+                                                   TextColor="{Binding VeredictoTexto2}"
+                                                   FontSize="11" FontAttributes="Bold" />
+                                        </Border>
+                                    </Grid>
+
+                                    <Label Text="{Binding Motivos}"
+                                           IsVisible="{Binding TieneMotivos}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#4b5563, Dark={StaticResource Gray300}}" />
+
+                                    <VerticalStackLayout IsVisible="{Binding TieneMitigaciones}" Spacing="3">
+                                        <Label Text="PARA PODER ENTRAR" FontSize="9.5" FontAttributes="Bold" TextColor="#163E6E" />
+                                        <Label Text="{Binding Mitigaciones}" FontSize="12" TextColor="#30507C" />
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout IsVisible="{Binding TieneAdvertencias}" Spacing="3">
+                                        <Label Text="ADVERTENCIAS OPERATIVAS" FontSize="9.5" FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+                                        <Label Text="{Binding Advertencias}" FontSize="12"
+                                               TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                                    </VerticalStackLayout>
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator Grid.Row="1"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="#0F6B5C"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+        <Border Grid.Row="2"
+                Padding="16,10,16,14"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="9">
+                <Button Text="Confirmar y guardar en historial"
+                        Clicked="OnConfirmarClicked"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                        BackgroundColor="#0F6B5C"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="15"
+                        CornerRadius="12"
+                        MinimumHeightRequest="52" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0"
+                            Text="Editar respuestas"
+                            Clicked="OnEditarClicked"
+                            BackgroundColor="Transparent"
+                            BorderColor="#0F6B5C"
+                            BorderWidth="1.5"
+                            TextColor="#0F6B5C"
+                            FontAttributes="Bold"
+                            FontSize="13.5"
+                            CornerRadius="11"
+                            MinimumHeightRequest="46" />
+                    <Button Grid.Column="1"
+                            Text="Revisar y generar PDF"
+                            Clicked="OnGenerarGuiaClicked"
+                            BackgroundColor="Transparent"
+                            BorderColor="{AppThemeBinding Light=#d5dce4, Dark={StaticResource Gray600}}"
+                            BorderWidth="1.5"
+                            TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"
+                            FontAttributes="Bold"
+                            FontSize="13.5"
+                            CornerRadius="11"
+                            MinimumHeightRequest="46" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <shared:AsistenteFlotanteView Grid.Row="1"/>
+    </Grid>
+</ContentPage>

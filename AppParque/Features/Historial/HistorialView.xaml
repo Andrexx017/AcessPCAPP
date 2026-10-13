@@ -56,11 +56,12 @@
                     <VerticalStackLayout x:Name="panelEnfermero" Spacing="6" IsVisible="{Binding MostrarFiltroEnfermero}">
                         <Label Text="ENFERMERO" FontSize="11" FontAttributes="Bold" CharacterSpacing="0.5"
                                TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
-                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 10"
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 10" HeightRequest="40"
                                 BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource Gray950}}"
-                                Padding="12,2">
+                                Padding="12,0">
                             <Picker x:Name="pickerEnfermero" ItemsSource="{Binding Enfermeros}" SelectedIndex="0"
-                                    FontSize="13.5" TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                    FontSize="13.5" TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+                                    VerticalOptions="Center" HeightRequest="34"/>
                         </Border>
                     </VerticalStackLayout>
 
@@ -154,7 +155,7 @@
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Padding="20,14,20,2" ColumnDefinitions="44,*" ColumnSpacing="16"
+                            <Grid Padding="20,14,20,2" ColumnDefinitions="44,*,auto" ColumnSpacing="16"
                                   RowDefinitions="auto,auto,auto">
                                 <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
                                         StrokeShape="RoundRectangle 22" Stroke="Transparent"
@@ -182,7 +183,29 @@
                                            TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
                                 </VerticalStackLayout>
 
-                                <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="1" Margin="0,12,0,0"
+                                <!-- Acciones a la derecha de cada registro -->
+                                <VerticalStackLayout Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+                                                     Spacing="6" VerticalOptions="Start">
+                                    <Button Text="Ver detalles" FontSize="11" FontAttributes="Bold"
+                                            BackgroundColor="Transparent" TextColor="#4CAF50"
+                                            BorderColor="#4CAF50" BorderWidth="1" CornerRadius="8"
+                                            Padding="10,0" HeightRequest="30" WidthRequest="120"
+                                            Clicked="OnVerDetallesClicked"/>
+                                    <Button Text="Generar PDF" FontSize="11" FontAttributes="Bold"
+                                            BackgroundColor="Transparent"
+                                            TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"
+                                            BorderColor="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}" BorderWidth="1"
+                                            CornerRadius="8" Padding="10,0" HeightRequest="30" WidthRequest="120"
+                                            Clicked="OnGenerarPdfHistorialClicked"/>
+                                    <Button Text="MANILLA" FontSize="11" FontAttributes="Bold"
+                                            BackgroundColor="Transparent"
+                                            TextColor="{AppThemeBinding Light=#B8A98C, Dark={StaticResource Gray500}}"
+                                            BorderColor="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}" BorderWidth="1"
+                                            CornerRadius="8" Padding="10,0" HeightRequest="30" WidthRequest="120"
+                                            Clicked="OnManillaClicked"/>
+                                </VerticalStackLayout>
+
+                                <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="1" Margin="0,12,0,0"
                                          Color="{AppThemeBinding Light=#F1ECE3, Dark={StaticResource Gray950}}"/>
                             </Grid>
                         </DataTemplate>
@@ -192,5 +215,7 @@
         </Grid>
 
         <shared:ThemeSwitchView HorizontalOptions="End" VerticalOptions="Start" Margin="0,14,20,0"/>
+
+        <shared:AsistenteFlotanteView/>
     </Grid>
 </ContentPage>

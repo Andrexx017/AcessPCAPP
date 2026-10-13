@@ -1,6 +1,7 @@
+using AppParque.Features.Administracion.AdminAsistente;
 using AppParque.Features.Administracion.AdminAtracciones;
-using AppParque.Features.Administracion.AdminPreguntas;
 using AppParque.Features.Administracion.AdminUsuarios;
+using AppParque.Features.Administracion.AdminZonas;
 using AppParque.Features.Historial;
 using AppParque.Features.Perfil;
 using AppParque.Features.RegistroVisitante;
@@ -78,23 +79,23 @@ public partial class MenuAdmin : ContentPage
         await Navigation.PushAsync(new HistorialView());
     }
 
-    private async void OnCatalogosClicked(object sender, EventArgs e)
+    private async void OnCatalogoZonasClicked(object sender, EventArgs e)
     {
-        string action = await DisplayActionSheet(
-            "Catálogos",
-            "Cancelar",
-            null,
-            "Preguntas (RF-09)",
-            "Atracciones (RF-10)");
+        await Navigation.PushAsync(new AdminZonasView());
+    }
 
-        if (action == "Preguntas (RF-09)")
-            await Navigation.PushAsync(new AdminPreguntasView());
-        else if (action == "Atracciones (RF-10)")
-            await Navigation.PushAsync(new AdminAtraccionesView());
+    private async void OnCatalogoAtraccionesClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AdminAtraccionesView());
     }
 
     private async void OnUsuariosClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new AdminUsuariosView());
+    }
+
+    private async void OnAsistenteIAClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AdminAsistenteView());
     }
 }

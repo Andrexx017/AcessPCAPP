@@ -28,7 +28,7 @@
 
             <VerticalStackLayout>
                 <Label Text="Rol:" FontAttributes="Bold"/>
-                <Picker x:Name="pickerRol" Title="Seleccione...">
+                <Picker x:Name="pickerRol" Title="Seleccione..." HeightRequest="44" VerticalOptions="Center">
                     <Picker.Items>
                         <x:String>Admin</x:String>
                         <x:String>Enfermero</x:String>

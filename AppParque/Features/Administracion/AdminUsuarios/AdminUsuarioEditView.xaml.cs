@@ -25,10 +25,10 @@ public partial class AdminUsuarioEditView : ContentPage
             pickerRol.SelectedItem = _usuarioExistente.Rol;
             switchActivo.IsToggled = _usuarioExistente.Activo;
 
-            // El username no se puede cambiar (es la clave de login); la contraseña se cambia aparte.
+            // El username no se puede cambiar (es la clave de login); la contraseña se cambia aparte
+            // (botón 🔑 junto al switch de activo, en la lista de usuarios), igual que eliminar (🗑).
             stackPassword.IsVisible = false;
             labelPassword.Text = "";
-            ToolbarItems.Add(new ToolbarItem("Cambiar contraseña", null, () => _ = CambiarPasswordAsync()));
         }
     }
 
@@ -85,22 +85,5 @@ public partial class AdminUsuarioEditView : ContentPage
         }
 
         await Navigation.PopAsync();
-    }
-
-    private async Task CambiarPasswordAsync()
-    {
-        if (_usuarioExistente is null)
-            return;
-
-        var nuevaPassword = await DisplayPromptAsync("Cambiar contraseña", $"Nueva contraseña para {_usuarioExistente.Username}:");
-        if (string.IsNullOrWhiteSpace(nuevaPassword))
-            return;
-
-        var resultado = await ApiClient.PutAsync<object?>($"/api/admin/usuarios/{_usuarioExistente.Id}/password", new { nuevoPassword = nuevaPassword });
-
-        await DisplayAlert(
-            resultado.Success ? "Listo" : "Error",
-            resultado.Success ? "Contraseña actualizada." : resultado.ErrorMessage ?? "No se pudo cambiar la contraseña.",
-            "OK");
     }
 }

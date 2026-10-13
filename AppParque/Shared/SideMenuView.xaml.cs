@@ -11,6 +11,17 @@ namespace AppParque.Shared
         public SideMenuView()
         {
             InitializeComponent();
+
+            // En Android esta vista, aun "invisible" (Opacity 0 + fuera de pantalla), estaba
+            // tapando todo lo de abajo en negro — fijar esas propiedades por código tampoco lo
+            // arregló. En vez de seguir dependiendo de que el backdrop/panel se vean bien estando
+            // técnicamente presentes, ahora se oculta del todo (IsVisible=false) mientras el menú
+            // está cerrado: así no participa para nada del dibujo ni puede tapar la pantalla.
+            backdrop.Opacity = 0;
+            backdrop.InputTransparent = true;
+            panel.TranslationX = -DrawerWidth;
+            InputTransparent = true;
+            IsVisible = false;
         }
 
         public string HeaderText
@@ -61,6 +72,7 @@ namespace AppParque.Shared
         {
             if (_isOpen) return;
             _isOpen = true;
+            IsVisible = true;
             InputTransparent = false;
             backdrop.InputTransparent = false;
             await Task.WhenAll(
@@ -77,6 +89,7 @@ namespace AppParque.Shared
                 panel.TranslateTo(-DrawerWidth, 0, 250, Easing.CubicIn));
             backdrop.InputTransparent = true;
             InputTransparent = true;
+            IsVisible = false;
         }
 
         private async void OnBackdropTapped(object? sender, TappedEventArgs e) => await CloseAsync();

@@ -2,13 +2,15 @@ using AppParque.Api.Modules.CatalogoAtracciones.Domain;
 
 namespace AppParque.Api.Modules.CatalogoAtracciones.Api;
 
+/// <param name="Intensidad">baja | media | alta | extrema | cultural.</param>
 public record AtraccionRequest(
     string Nombre,
     string? Descripcion,
     string? ImagenUrl,
     int? AlturaMinima,
     int? AlturaMaxima,
-    bool Activa);
+    bool Activa,
+    string Intensidad);
 
 public record RestriccionResponse(int Id, string Codigo, string Nombre, bool Permitido);
 
@@ -20,6 +22,7 @@ public record AtraccionResponse(
     int? AlturaMinima,
     int? AlturaMaxima,
     bool Activa,
+    string Intensidad,
     List<RestriccionResponse> RestriccionesGrupo,
     List<RestriccionResponse> RestriccionesCondicion)
 {
@@ -31,6 +34,7 @@ public record AtraccionResponse(
         a.AlturaMinima,
         a.AlturaMaxima,
         a.Activa,
+        a.Intensidad,
         a.RestriccionesGrupo.Select(r => new RestriccionResponse(r.Grupo.Id, r.Grupo.Codigo, r.Grupo.Nombre, r.Permitido)).OrderBy(r => r.Codigo).ToList(),
         a.RestriccionesCondicion.Select(r => new RestriccionResponse(r.Condicion.Id, r.Condicion.Codigo, r.Condicion.Nombre, r.Permitido)).OrderBy(r => r.Codigo).ToList());
 }

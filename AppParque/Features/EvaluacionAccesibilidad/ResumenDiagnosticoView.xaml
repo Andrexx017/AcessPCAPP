@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Features.EvaluacionAccesibilidad.ResumenDiagnosticoView"
+             Title="Resumen"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- cabecera -->
+        <Border Grid.Row="0" Padding="16,12" StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Resumen antes del dictamen" FontAttributes="Bold" FontSize="16"
+                       TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                <Border BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource Gray950}}"
+                        Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}" StrokeThickness="1"
+                        Padding="10,7">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="1">
+                        <Label Text="{Binding NombreVisitante}" FontSize="12.5" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                        <Label Text="{Binding DatosVisitante}" FontSize="10.5"
+                               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- lista -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="14,14,14,10" Spacing="11">
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Secciones}" Spacing="11">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}" StrokeThickness="1"
+                                    Padding="13">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                                <VerticalStackLayout Spacing="8">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="{Binding Nombre}" FontSize="12.5" FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                                        <Label Grid.Column="1" Text="{Binding Respondidas}" FontSize="10"
+                                               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+                                    </Grid>
+
+                                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Preguntas}" Spacing="5">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                    <Label Grid.Column="0" Text="{Binding Titulo}" FontSize="11.5"
+                                                           TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                                                    <Label Grid.Column="1" Text="{Binding RespuestaTexto}" FontSize="11.5" FontAttributes="Bold"
+                                                           HorizontalTextAlignment="End"
+                                                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- condición adicional -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Stroke="#0F6B5C" StrokeThickness="1.5" Padding="13">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="¿Algo más que no te preguntamos?" FontSize="12.5" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#0A4D42, Dark=White}" />
+                        <Label Text="Descríbelo para que el personal y la IA lo tengan en cuenta. No reemplaza las preguntas anteriores."
+                               FontSize="11" TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                        <Editor Text="{Binding CondicionAdicional}" AutoSize="TextChanges" MinimumHeightRequest="70"
+                                Placeholder="Ej: tiene una condición médica no listada arriba..."
+                                BackgroundColor="{AppThemeBinding Light=#fbfcfd, Dark={StaticResource Gray950}}"
+                                TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- respuesta de la IA -->
+                <Border BackgroundColor="#E7F1EF" StrokeThickness="0" Padding="12">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <HorizontalStackLayout Spacing="9">
+                        <Border WidthRequest="26" HeightRequest="26" StrokeThickness="0" BackgroundColor="#0F6B5C">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                            <Label Text="🩺" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <Label Text="{Binding RespuestaIATexto}" FontSize="12" TextColor="#0A4D42" LineHeight="1.4"
+                               HorizontalOptions="FillAndExpand" />
+                    </HorizontalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                           Color="#0F6B5C" HorizontalOptions="Center" VerticalOptions="Center" />
+
+        <!-- pie fijo -->
+        <Border Grid.Row="2" Padding="14,10,14,14" StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="8">
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0" Text="Editar" Clicked="OnEditarClicked"
+                            BackgroundColor="Transparent"
+                            BorderColor="{AppThemeBinding Light=#d5dce4, Dark={StaticResource Gray600}}" BorderWidth="1.5"
+                            TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"
+                            FontAttributes="Bold" FontSize="13" CornerRadius="11" MinimumHeightRequest="44" />
+                    <Button Grid.Column="1" Text="🩺 Preguntar IA" Clicked="OnPreguntarIaClicked"
+                            BackgroundColor="#E7F1EF" TextColor="#0A4D42"
+                            FontAttributes="Bold" FontSize="13" CornerRadius="11" MinimumHeightRequest="44" />
+                </Grid>
+                <Button Text="OK · Continuar al dictamen" Clicked="OnOkClicked"
+                        BackgroundColor="#0F6B5C" TextColor="White"
+                        FontAttributes="Bold" FontSize="14.5" CornerRadius="12" MinimumHeightRequest="50" />
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>

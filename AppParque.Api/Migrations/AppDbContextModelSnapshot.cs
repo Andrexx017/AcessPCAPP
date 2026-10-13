@@ -22,6 +22,152 @@ namespace AppParque.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("AppParque.Api.Modules.Asistente.Domain.DocumentoContexto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CargadoEn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentosContexto");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.Asistente.Domain.MensajeSesion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreadoEn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid>("SesionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SesionId", "CreadoEn");
+
+                    b.ToTable("MensajesSesion");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.Asistente.Domain.PromptIA", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ActualizadoEn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Clave")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Clave")
+                        .IsUnique();
+
+                    b.ToTable("PromptsIA");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.Asistente.Domain.ProveedorIA", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ApiKeyCifrada")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("BaseUrl")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<int>("Prioridad")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("SoportaToolCalling")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("SoportaVision")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UltimoEstado")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UltimoUsoEn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Prioridad");
+
+                    b.ToTable("ProveedoresIA");
+                });
+
             modelBuilder.Entity("AppParque.Api.Modules.CatalogoAtracciones.Domain.Atraccion", b =>
                 {
                     b.Property<int>("Id")
@@ -43,6 +189,10 @@ namespace AppParque.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ImagenUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Intensidad")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Nombre")
@@ -202,6 +352,202 @@ namespace AppParque.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Preguntas");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.CatalogoZonas.Domain.OpcionCapacidad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PreguntaId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Valor")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PreguntaId", "Valor")
+                        .IsUnique();
+
+                    b.ToTable("OpcionesCapacidad");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.CatalogoZonas.Domain.PreguntaCapacidad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activa")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ActivaCuandoCsv")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Ayuda")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Clave")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("DependeDeClave")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Eje")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Unidad")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ValorSinNovedad")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ZonaId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ZonaId", "Clave")
+                        .IsUnique();
+
+                    b.ToTable("PreguntasCapacidad");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.CatalogoZonas.Domain.ZonaCorporal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activa")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("Corto")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("EnCuerpo")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nota")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("PermiteSinNovedad")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ResumenSinNovedad")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
+                    b.ToTable("ZonasCorporales");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.Evaluaciones.Domain.DiagnosticoGuardado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConMitigacion")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CondicionAdicional")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PerfilJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Permitidas")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PorVerificar")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RespuestaIAModelo")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("RespuestaIASesionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RespuestaIATexto")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Restringidas")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ResultadosJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VisitanteId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fecha");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.HasIndex("VisitanteId");
+
+                    b.ToTable("DiagnosticosGuardados");
                 });
 
             modelBuilder.Entity("AppParque.Api.Modules.Evaluaciones.Domain.Evaluacion", b =>
@@ -458,6 +804,25 @@ namespace AppParque.Api.Migrations
                     b.ToTable("Visitantes");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FriendlyName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Xml")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DataProtectionKeys");
+                });
+
             modelBuilder.Entity("AppParque.Api.Modules.CatalogoAtracciones.Domain.AtraccionCondicionRestriccion", b =>
                 {
                     b.HasOne("AppParque.Api.Modules.CatalogoAtracciones.Domain.Atraccion", "Atraccion")
@@ -505,6 +870,47 @@ namespace AppParque.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Pregunta");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.CatalogoZonas.Domain.OpcionCapacidad", b =>
+                {
+                    b.HasOne("AppParque.Api.Modules.CatalogoZonas.Domain.PreguntaCapacidad", "Pregunta")
+                        .WithMany("Opciones")
+                        .HasForeignKey("PreguntaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pregunta");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.CatalogoZonas.Domain.PreguntaCapacidad", b =>
+                {
+                    b.HasOne("AppParque.Api.Modules.CatalogoZonas.Domain.ZonaCorporal", "Zona")
+                        .WithMany("Preguntas")
+                        .HasForeignKey("ZonaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Zona");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.Evaluaciones.Domain.DiagnosticoGuardado", b =>
+                {
+                    b.HasOne("AppParque.Api.Modules.Identidad.Domain.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AppParque.Api.Modules.Visitantes.Domain.Visitante", "Visitante")
+                        .WithMany()
+                        .HasForeignKey("VisitanteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+
+                    b.Navigation("Visitante");
                 });
 
             modelBuilder.Entity("AppParque.Api.Modules.Evaluaciones.Domain.Evaluacion", b =>
@@ -644,6 +1050,16 @@ namespace AppParque.Api.Migrations
             modelBuilder.Entity("AppParque.Api.Modules.CatalogoPreguntas.Domain.Pregunta", b =>
                 {
                     b.Navigation("Opciones");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.CatalogoZonas.Domain.PreguntaCapacidad", b =>
+                {
+                    b.Navigation("Opciones");
+                });
+
+            modelBuilder.Entity("AppParque.Api.Modules.CatalogoZonas.Domain.ZonaCorporal", b =>
+                {
+                    b.Navigation("Preguntas");
                 });
 
             modelBuilder.Entity("AppParque.Api.Modules.Evaluaciones.Domain.Evaluacion", b =>

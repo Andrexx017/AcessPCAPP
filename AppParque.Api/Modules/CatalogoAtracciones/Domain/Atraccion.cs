@@ -12,6 +12,11 @@ public class Atraccion
     public int? AlturaMaxima { get; set; }
     public bool Activa { get; set; } = true;
 
+    /// <summary>baja | media | alta | extrema | cultural. Mismo vocabulario que
+    /// RequisitosAtraccion.Intensidad del catálogo de fichas nuevo, aunque esta tabla es la del
+    /// motor de grupos y vive aparte.</summary>
+    public string Intensidad { get; set; } = "media";
+
     public ICollection<AtraccionGrupoRestriccion> RestriccionesGrupo { get; set; } = new List<AtraccionGrupoRestriccion>();
     public ICollection<AtraccionCondicionRestriccion> RestriccionesCondicion { get; set; } = new List<AtraccionCondicionRestriccion>();
     public ICollection<EvaluacionAtraccionResultado> EvaluacionResultados { get; set; } = new List<EvaluacionAtraccionResultado>();

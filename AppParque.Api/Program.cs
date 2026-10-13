@@ -1,14 +1,23 @@
-
+﻿
 using System.Text;
+using System.Text.Json.Serialization;
 using AppParque.Api.Data;
+using AppParque.Api.Modules.Asistente.Api;
+using AppParque.Api.Modules.Asistente.Application;
 using AppParque.Api.Modules.CatalogoAtracciones.Api;
+using AppParque.Api.Modules.CatalogoAtracciones.Domain.Requisitos;
 using AppParque.Api.Modules.CatalogoGruposCondiciones.Api;
 using AppParque.Api.Modules.CatalogoPreguntas.Api;
+using AppParque.Api.Modules.CatalogoZonas.Api;
 using AppParque.Api.Modules.Evaluaciones.Api;
 using AppParque.Api.Modules.Identidad.Api;
 using AppParque.Api.Modules.Identidad.Application;
+using AppParque.Api.Modules.InformacionParque.Api;
+using AppParque.Api.Modules.InformacionParque.Application;
 using AppParque.Api.Modules.Visitantes.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -48,8 +57,32 @@ public class Program
 
         builder.Services.AddScoped<ITokenService, TokenService>();
 
+        // Las fichas de requisitos no cambian en caliente, así que se leen una vez al arrancar.
+        builder.Services.AddSingleton(_ => CatalogoRequisitos.Cargar(builder.Environment.ContentRootPath));
+
+        // Los enums del vocabulario de capacidades viajan como texto ("SinApoyo", "AmputacionSobreRodilla"):
+        // el payload del diagnóstico es legible en los logs y un valor nuevo no corre los números de los demás.
+        builder.Services.ConfigureHttpJsonOptions(options =>
+            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+        // Las claves de Data Protection (cifran las API keys de ProveedorIA) viven en Postgres, no
+        // en el filesystem del contenedor: el contenedor es efímero (se reconstruye seguido) y el
+        // filesystem default no sobrevive eso. AppDbContext implementa IDataProtectionKeyContext.
+        builder.Services.AddDataProtection()
+            .PersistKeysToDbContext<AppDbContext>();
+
+        // Cliente HTTP para hablar con los proveedores de IA (Groq, Gemini, OpenAI...) — todos
+        // compatibles con el formato de chat completions de OpenAI. Ver AsistenteOrquestador.
+        builder.Services.AddHttpClient();
+        builder.Services.AddScoped<AsistenteOrquestador>();
+
+        // Cachea el horario del parque (consultado en informacion.parquedelcafe.co) para no pegarle
+        // al sitio externo en cada pantalla/usuario — ver HorarioParqueService.
+        builder.Services.AddMemoryCache();
+        builder.Services.AddScoped<HorarioParqueService>();
 
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
@@ -63,6 +96,7 @@ public class Program
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             await db.Database.MigrateAsync();
             await DbSeeder.SeedAsync(db, app.Environment.ContentRootPath);
+            await DbSeeder.SeedZonasCapacidadesAsync(db);
         }
 
         // Configure the HTTP request pipeline.
@@ -82,12 +116,19 @@ public class Program
         app.MapPreguntasEndpoints();
         app.MapVisitantesEndpoints();
         app.MapEvaluacionesEndpoints();
+        app.MapDiagnosticoEndpoints();
+        app.MapHistorialEndpoints();
         app.MapGruposEndpoints();
         app.MapCondicionesEndpoints();
         app.MapAtraccionesEndpoints();
         app.MapPreguntasAdminEndpoints();
+        app.MapZonasCapacidadesEndpoints();
+        app.MapZonasCapacidadesAdminEndpoints();
         app.MapUsuariosAdminEndpoints();
         app.MapPerfilEndpoints();
+        app.MapAsistenteEndpoints();
+        app.MapAsistenteAdminEndpoints();
+        app.MapInformacionParqueEndpoints();
 
         await app.RunAsync();
     }

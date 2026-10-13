@@ -34,9 +34,11 @@
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Grid.Column="0" Spacing="6">
                             <Label Text="Tipo de documento *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Picker x:Name="pickerTipoId" Title="Selecciona">
+                            <Grid HeightRequest="52">
+                                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"/>
+                                <Picker x:Name="pickerTipoId" Title="Selecciona" Margin="16,0"
+                                        VerticalOptions="Fill" HorizontalOptions="Fill">
                                     <Picker.Items>
                                         <x:String>Cédula de Ciudadanía</x:String>
                                         <x:String>Cédula de Extranjería</x:String>
@@ -44,13 +46,13 @@
                                         <x:String>Tarjeta de Identidad</x:String>
                                     </Picker.Items>
                                 </Picker>
-                            </Border>
+                            </Grid>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="6">
                             <Label Text="Número de documento *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Entry x:Name="entryNumeroId" Placeholder="1 037 654 321" Keyboard="Numeric"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                                <Entry x:Name="entryNumeroId" Placeholder="1 037 654 321" Keyboard="Numeric" VerticalOptions="Center"/>
                             </Border>
                         </VerticalStackLayout>
                     </Grid>
@@ -61,25 +63,25 @@
 
                     <VerticalStackLayout Spacing="6">
                         <Label Text="Nombre completo *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                            <Entry x:Name="entryNombre" Placeholder="Nombre del visitante"/>
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                            <Entry x:Name="entryNombre" Placeholder="Nombre del visitante" VerticalOptions="Center"/>
                         </Border>
                     </VerticalStackLayout>
 
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Grid.Column="0" Spacing="6">
                             <Label Text="Edad *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Entry x:Name="entryEdad" Placeholder="Años" Keyboard="Numeric"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                                <Entry x:Name="entryEdad" Placeholder="Años" Keyboard="Numeric" VerticalOptions="Center"/>
                             </Border>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="6">
                             <Label Text="Estatura (cm) *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Entry x:Name="entryEstatura" Placeholder="Cm" Keyboard="Numeric"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                                <Entry x:Name="entryEstatura" Placeholder="Cm" Keyboard="Numeric" VerticalOptions="Center"/>
                             </Border>
                         </VerticalStackLayout>
                     </Grid>
@@ -90,18 +92,20 @@
 
                     <VerticalStackLayout Spacing="6">
                         <Label Text="Nombre del acompañante *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                            <Entry x:Name="entryAcompananteNombre" Placeholder="Nombre completo"/>
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                            <Entry x:Name="entryAcompananteNombre" Placeholder="Nombre completo" VerticalOptions="Center"/>
                         </Border>
                     </VerticalStackLayout>
 
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Grid.Column="0" Spacing="6">
                             <Label Text="Parentesco *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Picker x:Name="pickerParentesco" Title="Selecciona">
+                            <Grid HeightRequest="52">
+                                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"/>
+                                <Picker x:Name="pickerParentesco" Title="Selecciona" Margin="16,0"
+                                        VerticalOptions="Fill" HorizontalOptions="Fill">
                                     <Picker.Items>
                                         <x:String>Padre / Madre</x:String>
                                         <x:String>Cónyuge / Pareja</x:String>
@@ -111,13 +115,13 @@
                                         <x:String>Amigo / Cuidador</x:String>
                                     </Picker.Items>
                                 </Picker>
-                            </Border>
+                            </Grid>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="6">
                             <Label Text="Teléfono *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Entry x:Name="entryAcompananteTelefono" Placeholder="300 000 0000" Keyboard="Telephone"/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                                <Entry x:Name="entryAcompananteTelefono" Placeholder="300 000 0000" Keyboard="Telephone" VerticalOptions="Center"/>
                             </Border>
                         </VerticalStackLayout>
                     </Grid>
@@ -129,9 +133,11 @@
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Grid.Column="0" Spacing="6">
                             <Label Text="Tipo de sangre *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Picker x:Name="pickerTipoSangre" Title="Selecciona">
+                            <Grid HeightRequest="52">
+                                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"/>
+                                <Picker x:Name="pickerTipoSangre" Title="Selecciona" Margin="16,0"
+                                        VerticalOptions="Fill" HorizontalOptions="Fill">
                                     <Picker.Items>
                                         <x:String>O+</x:String><x:String>O-</x:String>
                                         <x:String>A+</x:String><x:String>A-</x:String>
@@ -139,13 +145,13 @@
                                         <x:String>AB+</x:String><x:String>AB-</x:String>
                                     </Picker.Items>
                                 </Picker>
-                            </Border>
+                            </Grid>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="6">
                             <Label Text="EPS *" FontSize="11" FontAttributes="Bold" TextColor="#b3a488"/>
-                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                                <Entry x:Name="entryEps" Placeholder="Nueva EPS, Sura..."/>
+                            <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                                <Entry x:Name="entryEps" Placeholder="Nueva EPS, Sura..." VerticalOptions="Center"/>
                             </Border>
                         </VerticalStackLayout>
                     </Grid>

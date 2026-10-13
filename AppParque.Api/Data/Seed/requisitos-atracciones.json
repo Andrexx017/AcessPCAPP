@@ -1,0 +1,702 @@
+{
+  "_fuente": "Fichas de seguridad por atracción del Parque del Café (chunks_parque_cafe, 25 fichas) + los 4 eventos culturales confirmados sin requisitos físicos (H-02). Cada entrada es la transcripción de una ficha: si un campo no aparece en la ficha, no aparece aquí y vale el valor por defecto del modelo.",
+  "_modelo": "AppParque.Api/Modules/CatalogoAtracciones/Domain/Requisitos/RequisitosAtraccion.cs",
+  "_estrategia": "AppParque/Requierements/Estrategia-Capacidades-Atomicas.md",
+  "atracciones": [
+    {
+      "codigo": "teleferico_bambusario",
+      "nombre": "Teleférico Bambusario",
+      "intensidad": "baja",
+      "descripcion": "Exposición a gran altura, espacios cerrados, paradas durante el recorrido y cambios de elevación y velocidad. El visitante debe transferirse de silla de ruedas a la cabina y sentarse erguido de forma autónoma.",
+      "restriccionesMedicas": ["claustrofobia", "mareo_vertigo", "miedo_alturas"],
+      "general": {
+        "marcha": "no_requiere",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "agarre": "ninguno",
+        "requiereEmbarqueAutonomo": true
+      },
+      "sillaRuedas": { "admitida": true, "admiteTransferencia": true, "admitePermanencia": false },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": { "umbralEstaturaCm": 150, "requeridoPorCognitiva": true }
+    },
+    {
+      "codigo": "teleferico_plaza",
+      "nombre": "Teleférico Plaza",
+      "intensidad": "baja",
+      "descripcion": "Exposición a gran altura, espacios cerrados, paradas durante el recorrido y cambios de elevación y velocidad. Dispone de cabina accesible que permite permanecer en silla de ruedas.",
+      "restriccionesMedicas": ["claustrofobia", "mareo_vertigo", "miedo_alturas"],
+      "general": {
+        "marcha": "no_requiere",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "agarre": "ninguno"
+      },
+      "sillaRuedas": { "admitida": true, "admiteTransferencia": true, "admitePermanencia": true },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": { "umbralEstaturaCm": 150, "requeridoPorCognitiva": true }
+    },
+    {
+      "codigo": "telesillas",
+      "nombre": "Telesillas",
+      "intensidad": "baja",
+      "descripcion": "Exposición a gran altura y cambios de elevación y velocidad. Requiere caminar, embarcar y desembarcar de forma autónoma, sentarse erguido y doblar las piernas.",
+      "restriccionesMedicas": [
+        "embarazo", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 90,
+        "marcha": "sin_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano",
+        "requiereEmbarqueAutonomo": true,
+        "requiereComprensionInstrucciones": true
+      },
+      "dispositivos": { "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": {
+        "permiteVisualTotal": false,
+        "permiteCognitivaLeve": false,
+        "permiteCognitivaSeveraCertificada": false
+      },
+      "acompanante": { "umbralEstaturaCm": 150 }
+    },
+    {
+      "codigo": "tren_cafe",
+      "nombre": "Tren del Café",
+      "intensidad": "baja",
+      "descripcion": "Exposición a alturas y cambios de velocidad. Sin restricciones de salud. Accesible para silla de ruedas con espacio adecuado a bordo.",
+      "restriccionesMedicas": [],
+      "general": {
+        "marcha": "no_requiere",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "agarre": "ninguno"
+      },
+      "sillaRuedas": { "admitida": true, "admiteTransferencia": true, "admitePermanencia": true },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": true },
+      "acompanante": { "umbralEstaturaCm": 150, "requeridoPorCognitiva": true }
+    },
+    {
+      "codigo": "krater",
+      "nombre": "Krater",
+      "intensidad": "extrema",
+      "descripcion": "Montaña rusa extrema: grandes velocidades y alturas, fuertes descensos, giros invertidos y fuerzas multidireccionales bruscas. Requiere caminar y embarcar de forma totalmente autónoma. No permite ningún tipo de prótesis.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 130,
+        "marcha": "sin_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "ambas_manos",
+        "requiereEmbarqueAutonomo": true,
+        "requiereComprensionInstrucciones": true
+      },
+      "dispositivos": {
+        "permiteCualquierProtesis": false,
+        "permiteProtesisMano": false,
+        "permiteProtesisPiernaBajoRodilla": false,
+        "permiteProtesisPiernaSobreRodilla": false
+      },
+      "sensoriales": {
+        "permiteVisualTotal": false,
+        "permiteCognitivaLeve": false,
+        "permiteCognitivaSeveraCertificada": false
+      },
+      "acompanante": { "umbralEstaturaCm": 150, "estaturaMinimaAcompananteCm": 150 }
+    },
+    {
+      "codigo": "yippe",
+      "nombre": "Yippe",
+      "intensidad": "alta",
+      "descripcion": "Montaña rusa de alta intensidad: grandes velocidades y alturas, fuertes descensos y fuertes cambios de dirección, elevación y aceleración. Requiere embarcar y desembarcar de forma autónoma. No permite prótesis de mano ni de pierna por encima de rodilla.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 100,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano",
+        "requiereEmbarqueAutonomo": true
+      },
+      "dispositivos": { "permiteProtesisMano": false, "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 140,
+        "requeridoPorCognitiva": true,
+        "mitigaciones": ["misma_fila"]
+      }
+    },
+    {
+      "codigo": "rapidos",
+      "nombre": "Rápidos",
+      "intensidad": "alta",
+      "descripcion": "Exposición a mojarse, grandes velocidades, fuertes descensos y choques fortuitos desde cualquier dirección. Requiere embarcar autónomamente y sentarse en posición segura. No permite prótesis de mano ni de pierna por encima de rodilla.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo"
+      ],
+      "general": {
+        "alturaMinimaCm": 107,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano",
+        "requiereEmbarqueAutonomo": true
+      },
+      "dispositivos": { "permiteProtesisMano": false, "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": { "permiteVisualTotal": false, "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 140,
+        "requeridoPorCognitiva": true,
+        "requeridoPorMovilidadReducida": true,
+        "mitigaciones": ["silla_del_centro"]
+      }
+    },
+    {
+      "codigo": "montana_acuatica",
+      "nombre": "Montaña Acuática",
+      "intensidad": "alta",
+      "descripcion": "Exposición a mojarse, grandes velocidades y alturas, fuertes descensos y fuertes cambios de dirección, elevación y aceleración. Requiere caminar y embarcar de forma autónoma. No permite prótesis de mano ni de pierna por encima de rodilla.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 90,
+        "marcha": "sin_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano",
+        "requiereEmbarqueAutonomo": true
+      },
+      "dispositivos": { "permiteProtesisMano": false, "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 140,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true
+      }
+    },
+    {
+      "codigo": "avix",
+      "nombre": "Avix",
+      "intensidad": "alta",
+      "descripcion": "Montaña rusa de alta intensidad: grandes velocidades y alturas, fuertes descensos y fuertes cambios de dirección, elevación y aceleración. No permite ningún tipo de prótesis. Se restringe el acceso a personas que por su tamaño físico no puedan ser acomodadas de forma segura o si la barra de seguridad no cierra correctamente.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo", "miedo_alturas"
+      ],
+      "exigeAcomodacionSeguraVerificada": true,
+      "general": {
+        "alturaMinimaCm": 120,
+        "marcha": "sin_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "dispositivos": {
+        "permiteCualquierProtesis": false,
+        "permiteProtesisMano": false,
+        "permiteProtesisPiernaBajoRodilla": false,
+        "permiteProtesisPiernaSobreRodilla": false
+      },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 140,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true
+      }
+    },
+    {
+      "codigo": "paseo_caballo",
+      "nombre": "Paseo a Caballo",
+      "intensidad": "extrema",
+      "descripcion": "Exposición a comportamientos impredecibles del caballo y fuerzas multidireccionales bruscas. Requiere plena autonomía motriz, manejo de riendas con ambas manos y equilibrio activo. Peso máximo 100 kg. No permite prótesis de extremidades.",
+      "restriccionesMedicas": [
+        "embarazo", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo"
+      ],
+      "general": {
+        "alturaMinimaCm": 150,
+        "pesoMaximoKg": 100,
+        "marcha": "sin_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereErguidoTodoElRecorrido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "ambas_manos",
+        "requiereManiobrarDosManos": true,
+        "requiereEmbarqueAutonomo": true,
+        "requiereComprensionInstrucciones": true
+      },
+      "dispositivos": {
+        "permiteCualquierProtesis": false,
+        "permiteProtesisMano": false,
+        "permiteProtesisPiernaBajoRodilla": false,
+        "permiteProtesisPiernaSobreRodilla": false
+      },
+      "sensoriales": {
+        "permiteAuditiva": false,
+        "permiteVisualTotal": false,
+        "permiteCognitivaLeve": false,
+        "permiteCognitivaSeveraCertificada": false
+      }
+    },
+    {
+      "codigo": "cumbre",
+      "nombre": "Cumbre",
+      "intensidad": "alta",
+      "descripcion": "Exposición a grandes alturas y velocidades verticales, caídas al vacío y fuertes cambios de elevación y aceleración. Requiere embarcar y desembarcar de forma autónoma o con asistencia de acompañante. No permite prótesis de extremidades.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "trastorno_mental", "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 125,
+        "alturaMaximaCm": 190,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "agarre": "una_mano",
+        "requiereEmbarqueAutonomo": true
+      },
+      "dispositivos": {
+        "permiteCualquierProtesis": false,
+        "permiteProtesisMano": false,
+        "permiteProtesisPiernaBajoRodilla": false,
+        "permiteProtesisPiernaSobreRodilla": false
+      },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 140,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true,
+        "mitigaciones": ["asistencia_embarque_acompanante"]
+      }
+    },
+    {
+      "codigo": "ciclon",
+      "nombre": "Ciclón",
+      "intensidad": "alta",
+      "descripcion": "Exposición a giros de alta velocidad, grandes alturas y fuertes cambios de aceleración. Permite caminar con bastón o muletas. No permite prótesis de mano.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental", "mareo_vertigo", "miedo_alturas", "claustrofobia"
+      ],
+      "general": {
+        "alturaMinimaCm": 125,
+        "alturaMaximaCm": 200,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "dispositivos": { "permiteProtesisMano": false },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 150,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true,
+        "mitigaciones": ["asistencia_embarque_acompanante"]
+      }
+    },
+    {
+      "codigo": "karts_sencillos",
+      "nombre": "Karts Sencillos",
+      "intensidad": "alta",
+      "descripcion": "Exposición a choques fortuitos desde cualquier dirección y fuertes cambios de dirección y velocidad. Requiere plena autonomía motriz y manejo con ambas manos. No permite prótesis de ninguna extremidad.",
+      "restriccionesMedicas": [
+        "embarazo", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental"
+      ],
+      "general": {
+        "alturaMinimaCm": 150,
+        "marcha": "sin_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "ambas_manos",
+        "requiereManiobrarDosManos": true,
+        "requiereEmbarqueAutonomo": true,
+        "requiereComprensionInstrucciones": true
+      },
+      "dispositivos": {
+        "permiteCualquierProtesis": false,
+        "permiteProtesisMano": false,
+        "permiteProtesisPiernaBajoRodilla": false,
+        "permiteProtesisPiernaSobreRodilla": false
+      },
+      "sensoriales": {
+        "permiteVisualTotal": false,
+        "permiteCognitivaLeve": false,
+        "permiteCognitivaSeveraCertificada": false
+      }
+    },
+    {
+      "codigo": "karts_dobles",
+      "nombre": "Karts Dobles",
+      "intensidad": "alta",
+      "descripcion": "Exposición a choques fortuitos desde cualquier dirección y fuertes cambios de dirección y velocidad. Dos roles diferenciados con requisitos distintos: el conductor requiere plena autonomía y ambas manos; el pasajero puede ir con bastón o muletas.",
+      "restriccionesMedicas": [
+        "embarazo", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental"
+      ],
+      "general": {
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "porRol": {
+        "conductor": {
+          "alturaMinimaCm": 150,
+          "marcha": "sin_apoyo",
+          "agarre": "ambas_manos",
+          "requiereManiobrarDosManos": true,
+          "requiereEmbarqueAutonomo": true,
+          "requiereComprensionInstrucciones": true
+        },
+        "pasajero": {
+          "alturaMinimaCm": 100,
+          "marcha": "con_apoyo",
+          "agarre": "una_mano"
+        }
+      },
+      "dispositivos": { "permiteProtesisMano": false, "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": {
+        "permiteVisualTotal": false,
+        "permiteCognitivaSeveraCertificada": false,
+        "cognitivaLeveRequiereAcompanante": true
+      },
+      "acompanante": {
+        "umbralEstaturaCm": 150,
+        "requeridoPorCognitiva": true,
+        "mitigaciones": ["conductor_acompanante"]
+      }
+    },
+    {
+      "codigo": "botes_chocones",
+      "nombre": "Botes Chocones",
+      "intensidad": "media",
+      "descripcion": "Exposición a mojarse, giros continuos, choques fortuitos desde cualquier dirección y fuertes cambios de dirección y velocidad. No permite prótesis de pierna por encima de la rodilla.",
+      "restriccionesMedicas": [
+        "embarazo", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "convulsiones", "trastorno_mental"
+      ],
+      "general": {
+        "alturaMinimaCm": 90,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "dispositivos": { "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": { "permiteVisualTotal": false, "permiteCognitivaSeveraCertificada": false },
+      "acompanante": { "umbralEstaturaCm": 150, "requeridoPorCognitiva": true }
+    },
+    {
+      "codigo": "carros_chocones",
+      "nombre": "Carros Chocones",
+      "intensidad": "media",
+      "descripcion": "Exposición a choques fortuitos desde cualquier dirección y fuertes cambios de dirección y velocidad. Dos roles con estaturas distintas: conductor (150-190 cm) y pasajero (125-190 cm). No permite prótesis de pierna por encima de la rodilla.",
+      "restriccionesMedicas": ["embarazo", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico"],
+      "general": {
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "porRol": {
+        "conductor": { "alturaMinimaCm": 150, "alturaMaximaCm": 190 },
+        "pasajero": { "alturaMinimaCm": 125, "alturaMaximaCm": 190 }
+      },
+      "dispositivos": { "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": { "permiteVisualTotal": false, "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 150,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true
+      }
+    },
+    {
+      "codigo": "rin_rin",
+      "nombre": "Rin-Rin",
+      "intensidad": "media",
+      "descripcion": "Exposición a gran altura y velocidades verticales, caídas al vacío y fuertes cambios de elevación y aceleración. No permite prótesis de pierna por encima de la rodilla. Las prótesis y órtesis deben asegurarse correctamente.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "trastorno_mental", "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 90,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "agarre": "una_mano",
+        "requiereComprensionInstrucciones": true
+      },
+      "dispositivos": {
+        "permiteProtesisPiernaSobreRodilla": false,
+        "exigeAsegurarProtesis": true
+      },
+      "sensoriales": {
+        "permiteCognitivaLeve": false,
+        "permiteCognitivaSeveraCertificada": false
+      },
+      "acompanante": {
+        "umbralEstaturaCm": 120,
+        "estaturaMinimaAcompananteCm": 150,
+        "mitigaciones": ["asistencia_embarque_acompanante"]
+      }
+    },
+    {
+      "codigo": "rueda_panoramica",
+      "nombre": "Rueda Panorámica",
+      "intensidad": "media",
+      "descripcion": "Exposición a gran altura, giros continuos y fuertes cambios de elevación. Cuenta con cabina accesible: el visitante puede transferirse de silla de ruedas o sentarse erguido de forma autónoma.",
+      "restriccionesMedicas": ["mareo_vertigo", "miedo_alturas", "claustrofobia"],
+      "general": {
+        "marcha": "no_requiere",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "sillaRuedas": { "admitida": true, "admiteTransferencia": true, "admitePermanencia": true },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 120,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true,
+        "mitigaciones": ["asistencia_embarque_acompanante"]
+      }
+    },
+    {
+      "codigo": "pulpo",
+      "nombre": "Pulpo",
+      "intensidad": "media",
+      "descripcion": "Exposición a giros de alta velocidad, gran altura y fuertes cambios de dirección y aceleración. No permite prótesis de mano ni de pierna por encima de la rodilla. Dispone de silla interna para visitantes que requieran posición especial.",
+      "restriccionesMedicas": [
+        "embarazo", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 90,
+        "alturaMaximaCm": 180,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "dispositivos": { "permiteProtesisMano": false, "permiteProtesisPiernaSobreRodilla": false },
+      "sensoriales": { "permiteVisualTotal": false, "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 120,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true,
+        "mitigaciones": ["silla_interna", "asistencia_embarque_acompanante"]
+      }
+    },
+    {
+      "codigo": "carrusel_mundo_ninos",
+      "nombre": "Carrusel Mundo de los Niños",
+      "intensidad": "baja",
+      "descripcion": "Atracción para niños con giros continuos y cambios de elevación y velocidad. Estatura máxima 140 cm. El acompañante adulto no debe estar embarazado.",
+      "restriccionesMedicas": ["mareo_vertigo"],
+      "restriccionesMedicasAcompanante": ["embarazo"],
+      "general": {
+        "alturaMaximaCm": 140,
+        "marcha": "no_requiere",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereErguidoTodoElRecorrido": true,
+        "agarre": "ninguno"
+      },
+      "sensoriales": {
+        "permiteCognitivaSeveraCertificada": false,
+        "cognitivaLeveRequiereAcompanante": true,
+        "visualTotalRequiereAcompanante": true
+      },
+      "acompanante": {
+        "umbralEstaturaCm": 110,
+        "requeridoPorCognitiva": true,
+        "requeridoPorVisual": true,
+        "requeridoPorMovilidadReducida": true
+      }
+    },
+    {
+      "codigo": "barco_cafe",
+      "nombre": "Barco del Café",
+      "intensidad": "media",
+      "descripcion": "Exposición a alturas y fuertes cambios de elevación y aceleración. Requiere embarcar y desembarcar de forma autónoma. No permite prótesis de pierna por encima de la rodilla. Las prótesis y órtesis deben asegurarse correctamente.",
+      "restriccionesMedicas": [
+        "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
+        "trastorno_mental", "mareo_vertigo"
+      ],
+      "general": {
+        "alturaMinimaCm": 110,
+        "alturaMaximaCm": 190,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano",
+        "requiereEmbarqueAutonomo": true
+      },
+      "dispositivos": {
+        "permiteProtesisPiernaSobreRodilla": false,
+        "exigeAsegurarProtesis": true
+      },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": false },
+      "acompanante": {
+        "umbralEstaturaCm": 130,
+        "estaturaMinimaAcompananteCm": 150,
+        "requeridoPorCognitiva": true
+      }
+    },
+    {
+      "codigo": "baron_rojo",
+      "nombre": "Barón Rojo",
+      "intensidad": "baja",
+      "descripcion": "Exposición a alturas, giros continuos y cambios de elevación y velocidad. No permite prótesis de pierna por encima de la rodilla. Las prótesis y órtesis deben asegurarse correctamente.",
+      "restriccionesMedicas": [
+        "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico", "mareo_vertigo", "miedo_alturas"
+      ],
+      "general": {
+        "alturaMinimaCm": 90,
+        "alturaMaximaCm": 130,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "dispositivos": {
+        "permiteProtesisPiernaSobreRodilla": false,
+        "exigeAsegurarProtesis": true
+      },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": true },
+      "acompanante": { "mitigaciones": ["asistencia_embarque_acompanante"] }
+    },
+    {
+      "codigo": "minichocones",
+      "nombre": "Minichocones",
+      "intensidad": "baja",
+      "descripcion": "Atracción de baja intensidad para niños entre 90 y 135 cm.",
+      "restriccionesMedicas": ["osteomuscular", "cirugia_reciente", "bajo_cuidado_medico"],
+      "general": {
+        "alturaMinimaCm": 90,
+        "alturaMaximaCm": 135,
+        "marcha": "con_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano"
+      },
+      "sensoriales": { "permiteCognitivaSeveraCertificada": true },
+      "acompanante": { "mitigaciones": ["asistencia_embarque_acompanante"] }
+    },
+    {
+      "codigo": "rio_lento",
+      "nombre": "Río Lento",
+      "intensidad": "media",
+      "descripcion": "Exposición a mojarse, alturas, fuertes descensos y fuertes cambios de elevación y aceleración. No permite prótesis de pierna por encima de la rodilla. Las prótesis y órtesis deben asegurarse correctamente.",
+      "restriccionesMedicas": [
+        "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico", "mareo_vertigo", "trastorno_mental"
+      ],
+      "general": {
+        "alturaMinimaCm": 90,
+        "alturaMaximaCm": 130,
+        "marcha": "sin_apoyo",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereDoblarPiernas": true,
+        "agarre": "una_mano",
+        "requiereComprensionInstrucciones": true
+      },
+      "dispositivos": {
+        "permiteProtesisPiernaSobreRodilla": false,
+        "exigeAsegurarProtesis": true
+      },
+      "sensoriales": {
+        "permiteVisualTotal": false,
+        "permiteCognitivaLeve": false,
+        "permiteCognitivaSeveraCertificada": false
+      }
+    },
+    {
+      "codigo": "carrusel_cafeteritos",
+      "nombre": "Carrusel Cafeteritos",
+      "intensidad": "baja",
+      "descripcion": "Atracción para niños con giros continuos y cambios de elevación y velocidad. Estatura máxima 140 cm. El acompañante adulto no debe estar embarazado.",
+      "restriccionesMedicas": ["mareo_vertigo"],
+      "restriccionesMedicasAcompanante": ["embarazo"],
+      "general": {
+        "alturaMaximaCm": 140,
+        "marcha": "no_requiere",
+        "requiereSentarse": true,
+        "requiereSentarseErguido": true,
+        "requiereErguidoTodoElRecorrido": true,
+        "agarre": "ninguno"
+      },
+      "sensoriales": {
+        "permiteCognitivaSeveraCertificada": false,
+        "cognitivaLeveRequiereAcompanante": true,
+        "visualTotalRequiereAcompanante": true
+      },
+      "acompanante": {
+        "umbralEstaturaCm": 110,
+        "requeridoPorCognitiva": true,
+        "requeridoPorVisual": true,
+        "requeridoPorMovilidadReducida": true
+      }
+    },
+    {
+      "codigo": "museo_cafe",
+      "nombre": "Museo del Café",
+      "intensidad": "cultural",
+      "descripcion": "Recinto cultural de recorrido libre. H-02: sin exigencia física por su uso.",
+      "sinRequisitosFisicos": true
+    },
+    {
+      "codigo": "sendero_cafe",
+      "nombre": "Sendero del Café",
+      "intensidad": "cultural",
+      "descripcion": "Recorrido cultural a pie. H-02: sin exigencia física por su uso.",
+      "sinRequisitosFisicos": true
+    },
+    {
+      "codigo": "show_cafe",
+      "nombre": "Show del Café",
+      "intensidad": "cultural",
+      "descripcion": "Espectáculo en recinto cerrado, público sentado. H-02: sin exigencia física por su uso.",
+      "sinRequisitosFisicos": true
+    },
+    {
+      "codigo": "arte_cafe",
+      "nombre": "Arte del Café",
+      "intensidad": "cultural",
+      "descripcion": "Exhibición cultural de recorrido libre. H-02: sin exigencia física por su uso.",
+      "sinRequisitosFisicos": true
+    }
+  ]
+}

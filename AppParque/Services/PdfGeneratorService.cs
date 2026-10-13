@@ -27,11 +27,11 @@ namespace AppParque.Services
                 _http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; PdfGenerator/1.0)");
         }
 
-        public async Task GenerateAttractionsPdfFromListAsync(string path, IEnumerable<AtraccionPdfInfo> atraccionesSeleccionadas)
+        public async Task GenerateAttractionsPdfFromListAsync(string path, IEnumerable<AtraccionPdfInfo> atraccionesSeleccionadas, string? nombreVisitante = null)
         {
             try
             {
-                await GeneratePdfInternal(path, atraccionesSeleccionadas.ToList());
+                await GeneratePdfInternal(path, atraccionesSeleccionadas.ToList(), nombreVisitante);
             }
             catch (Exception ex)
             {
@@ -39,7 +39,12 @@ namespace AppParque.Services
             }
         }
 
-        private async Task GeneratePdfInternal(string path, List<AtraccionPdfInfo> atracciones)
+        // nombreVisitante es opcional porque el flujo en vivo (VistaPreviaPdfViewModel) genera el
+        // PDF para el visitante que está siendo evaluado en este momento, que es justo lo que trae
+        // UsuarioGlobal.Name. El historial en cambio reabre un diagnóstico de cualquier fecha, de un
+        // visitante que casi nunca es el que está cargado ahora en UsuarioGlobal — por eso pasa el
+        // nombre explícito (ver HistorialViewModel.GenerarPdfAsync).
+        private async Task GeneratePdfInternal(string path, List<AtraccionPdfInfo> atracciones, string? nombreVisitante = null)
         {
             using var document = new PdfDocument();
 
@@ -108,7 +113,7 @@ namespace AppParque.Services
             y += 40;
 
             // Introducción con negritas en nombre y fecha
-            string nombreVisitante = UsuarioGlobal.Name;
+            nombreVisitante ??= UsuarioGlobal.Name;
             string fechaActual = DateTime.Now.ToString("dd/MM/yyyy");
             graphics.DrawString("¡Hola ◆  ", fontBody, XBrushes.Black, leftMargin, y);
             double widthHola = graphics.MeasureString("¡Hola ◆  ", fontBody).Width;
@@ -188,8 +193,13 @@ namespace AppParque.Services
                 double descripcionHeight = formatter.GetLayout(atr.Descripcion ?? "Sin descripción", fontBody, XBrushes.Black,
                     new XRect(0, 0, textWidth, 10_000), null).Height;
 
+                bool tieneNota = !string.IsNullOrWhiteSpace(atr.Nota);
+                double notaHeight = tieneNota
+                    ? formatter.GetLayout(atr.Nota!, fontBold, XBrushes.Black, new XRect(0, 0, textWidth, 10_000), null).Height
+                    : 0;
+
                 // Altura total de la tarjeta
-                double tarjetaHeight = Math.Max(imageHeight, descripcionHeight + 35 + 20);
+                double tarjetaHeight = Math.Max(imageHeight, descripcionHeight + 35 + 20 + (tieneNota ? notaHeight + 15 : 0));
 
                 graphics.DrawRoundedRectangle(
                     new XPen(XBrushes.Gray, 1),
@@ -232,6 +242,13 @@ namespace AppParque.Services
                 string alturas = $"Altura mínima: {atr.AlturaMinima?.ToString() ?? "N/A"} cm | Altura máxima: {atr.AlturaMaxima?.ToString() ?? "N/A"} cm";
                 graphics.DrawString(alturas, fontGray, XBrushes.Gray,
                     new XRect(textLeft, ty, textWidth, 20), XStringFormats.TopLeft);
+
+                if (tieneNota)
+                {
+                    ty += 18;
+                    formatter.DrawString(atr.Nota!, fontBold, new XSolidBrush(colorVerde),
+                        new XRect(textLeft, ty, textWidth, notaHeight + 5), null);
+                }
 
                 y += tarjetaHeight + 10;
 

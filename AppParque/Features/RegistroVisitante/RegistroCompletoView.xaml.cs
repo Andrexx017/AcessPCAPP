@@ -120,6 +120,8 @@ public partial class RegistroCompletoView : ContentPage
         UsuarioGlobal.Age = edad;
         UsuarioGlobal.Stature = estatura;
 
-        await Navigation.PushAsync(new TestView());
+        // Flujo por capacidades atómicas (mapa del cuerpo). EvaluacionFlujo elige la pantalla
+        // de teléfono o la de escritorio: ver Requierements/Estrategia-Capacidades-Atomicas.md.
+        await Navigation.PushAsync(EvaluacionFlujo.CrearPagina());
     }
 }

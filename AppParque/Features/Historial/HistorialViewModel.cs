@@ -2,14 +2,21 @@ using System.Collections.ObjectModel;
 using System.Text;
 using AppParque.Services;
 using AppParque.Shared;
+using AppParque.Shared.Models;
 
 namespace AppParque.Features.Historial
 {
     public class HistorialViewModel : BaseViewModel
     {
-        // Sentinel para la casilla "Sin restricciones": no corresponde a ningún código real del
-        // catálogo de grupos/condiciones, así que no puede chocar con uno.
-        private const string SinRestriccionesCodigo = "__SIN_RESTRICCIONES__";
+        // Claves fijas del filtro simplificado: el motor nuevo no tiene catálogo de
+        // Grupos/Condiciones, así que en vez de casillas dinámicas por código se filtra por
+        // veredicto y por si tuvo nota del personal o respuesta de la IA.
+        private const string ConMitigacionCodigo = "con_mitigacion";
+        private const string PorVerificarCodigo = "por_verificar";
+        private const string RestringidaCodigo = "restringida";
+        private const string ConNotaCodigo = "con_nota";
+
+        private readonly PdfGeneratorService _pdfService = new();
 
         private List<TestRecord> _todos = new();
         private List<string> _enfermeros = new() { "Todos" };
@@ -43,7 +50,9 @@ namespace AppParque.Features.Historial
             IsBusy = true;
 
             // El backend ya filtra por rol: Enfermero ve solo lo suyo, Admin ve todo (RF-08).
-            var resultado = await ApiClient.GetAsync<List<HistorialItemDto>>("/api/evaluaciones");
+            // Este es el historial del motor nuevo (ver HistorialEndpoints en la API) — el
+            // /api/evaluaciones viejo sigue existiendo solo para "visitante recurrente, reutilizar".
+            var resultado = await ApiClient.GetAsync<List<HistorialDiagnosticoItemDto>>("/api/historial");
 
             // El continuation de un await de red puede reanudar en un hilo de threadpool en vez del
             // hilo de UI en Windows/WinUI; mutar ObservableCollection fuera del hilo de UI hace
@@ -53,37 +62,36 @@ namespace AppParque.Features.Historial
             {
                 _todos.Clear();
                 RestriccionOpciones.Clear();
-                RestriccionOpciones.Add(new RestriccionFiltroItem(SinRestriccionesCodigo, "Sin restricciones", true, AplicarFiltros));
+                RestriccionOpciones.Add(new RestriccionFiltroItem(ConMitigacionCodigo, "Con condición", true, AplicarFiltros));
+                RestriccionOpciones.Add(new RestriccionFiltroItem(PorVerificarCodigo, "Por verificar", true, AplicarFiltros));
+                RestriccionOpciones.Add(new RestriccionFiltroItem(RestringidaCodigo, "Restringida", true, AplicarFiltros));
+                RestriccionOpciones.Add(new RestriccionFiltroItem(ConNotaCodigo, "Con nota del personal o de la IA", true, AplicarFiltros));
 
                 if (resultado.Success)
                 {
-                    var catalogo = new Dictionary<string, string>();
-
                     foreach (var item in resultado.Data)
                     {
-                        var restricciones = item.GruposActivados.Concat(item.CondicionesActivadas).ToList();
-                        foreach (var r in restricciones)
-                            catalogo[r.Codigo] = r.Nombre;
-
                         _todos.Add(new TestRecord
                         {
+                            Id = item.Id,
                             VisitorName = item.VisitanteNombre,
                             VisitorId = item.VisitanteNumeroDocumento,
                             NurseId = item.EnfermeroId,
                             NurseName = item.Enfermero,
                             FechaValue = item.Fecha.ToLocalTime(),
                             Date = item.Fecha.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
-                            Stature = item.Estatura?.ToString() ?? "N/A",
-                            Restricciones = restricciones,
+                            Permitidas = item.Permitidas,
+                            ConMitigacion = item.ConMitigacion,
+                            PorVerificar = item.PorVerificar,
+                            Restringidas = item.Restringidas,
+                            TuvoCondicionAdicional = item.TuvoCondicionAdicional,
+                            TuvoRespuestaIA = item.TuvoRespuestaIA,
                         });
                     }
 
                     Enfermeros = new List<string> { "Todos" }
                         .Concat(_todos.Select(t => t.NurseName).Distinct().OrderBy(n => n))
                         .ToList();
-
-                    foreach (var (codigo, nombre) in catalogo.OrderBy(kv => kv.Value))
-                        RestriccionOpciones.Add(new RestriccionFiltroItem(codigo, nombre, true, AplicarFiltros));
                 }
                 else
                 {
@@ -120,16 +128,21 @@ namespace AppParque.Features.Historial
             if (MostrarFiltroEnfermero && EnfermeroSeleccionado != "Todos")
                 query = query.Where(r => r.NurseName == EnfermeroSeleccionado);
 
-            bool incluirSinRestricciones = RestriccionOpciones.FirstOrDefault(o => o.Codigo == SinRestriccionesCodigo)?.Checked ?? true;
-            var codigosDesmarcados = RestriccionOpciones
-                .Where(o => o.Codigo != SinRestriccionesCodigo && !o.Checked)
-                .Select(o => o.Codigo)
-                .ToHashSet();
+            // Cada casilla desmarcada esconde los registros que caen en esa categoría — un registro
+            // sin ninguna de las cuatro (todo permitido, sin nota) nunca se esconde, porque no hay
+            // casilla "sin restricciones" en este filtro simplificado.
+            bool Marcada(string codigo) => RestriccionOpciones.FirstOrDefault(o => o.Codigo == codigo)?.Checked ?? true;
+
+            var mostrarConMitigacion = Marcada(ConMitigacionCodigo);
+            var mostrarPorVerificar = Marcada(PorVerificarCodigo);
+            var mostrarRestringida = Marcada(RestringidaCodigo);
+            var mostrarConNota = Marcada(ConNotaCodigo);
 
             query = query.Where(r =>
-                r.Restricciones.Count == 0
-                    ? incluirSinRestricciones
-                    : !r.Restricciones.Any(x => codigosDesmarcados.Contains(x.Codigo)));
+                (mostrarConMitigacion || r.ConMitigacion == 0) &&
+                (mostrarPorVerificar || r.PorVerificar == 0) &&
+                (mostrarRestringida || r.Restringidas == 0) &&
+                (mostrarConNota || (!r.TuvoCondicionAdicional && !r.TuvoRespuestaIA)));
 
             Historial.Clear();
             foreach (var item in query.OrderByDescending(r => r.FechaValue))
@@ -166,9 +179,9 @@ namespace AppParque.Features.Historial
                 var path = Path.Combine(FileSystem.AppDataDirectory, $"Historial_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
                 var sb = new StringBuilder();
-                sb.AppendLine(FilaCsv("Nombre", "Documento", "Enfermero", "Fecha", "Estatura (cm)", "Restricciones"));
+                sb.AppendLine(FilaCsv("Nombre", "Documento", "Enfermero", "Fecha", "Veredicto"));
                 foreach (var r in Historial)
-                    sb.AppendLine(FilaCsv(r.VisitorName, r.VisitorId, r.NurseName, r.Date, r.Stature, r.Answers));
+                    sb.AppendLine(FilaCsv(r.VisitorName, r.VisitorId, r.NurseName, r.Date, r.Answers));
 
                 await File.WriteAllTextAsync(path, sb.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
 
@@ -207,8 +220,7 @@ namespace AppParque.Features.Historial
                     Documento = r.VisitorId,
                     Enfermero = r.NurseName,
                     Fecha = r.Date,
-                    Estatura = r.Stature,
-                    Restricciones = r.Answers,
+                    Veredicto = r.Answers,
                 }).ToList();
 
                 await MiniExcelLibs.MiniExcel.SaveAsAsync(path, filas);
@@ -222,6 +234,63 @@ namespace AppParque.Features.Historial
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo exportar el Excel: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        /// <summary>Regenera la guía en PDF de un registro puntual del historial, sin pasar por la
+        /// pantalla de preselección: incluye las atracciones que quedaron Permitida o Con condición
+        /// en ese diagnóstico (mismo criterio por defecto que PreseleccionPdfViewModel). No hay
+        /// descripción ni alturas porque ResultadosJson no las guarda — solo el veredicto final; el
+        /// PDF las muestra como "Sin descripción"/"N/A", que PdfGeneratorService ya tolera.</summary>
+        public async Task GenerarPdfAsync(TestRecord record)
+        {
+            if (IsBusy) return;
+
+            try
+            {
+                IsBusy = true;
+
+                var detalle = await ApiClient.GetAsync<HistorialDetalleDto>($"/api/historial/{record.Id}");
+                if (!detalle.Success)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", detalle.ErrorMessage ?? "No se pudo cargar el diagnóstico.", "OK");
+                    return;
+                }
+
+                var incluidas = detalle.Data.Resultados
+                    .Where(r => r.Veredicto is Veredictos.Permitida or Veredictos.ConMitigacion)
+                    .Select(r => new AtraccionPdfInfo
+                    {
+                        Nombre = r.NombreAtraccion,
+                        Nota = r.Veredicto == Veredictos.ConMitigacion
+                            ? (string.IsNullOrWhiteSpace(r.Comentario) ? "Permitida con condición: verificar con el personal" : r.Comentario)
+                            : null,
+                    })
+                    .ToList();
+
+                if (incluidas.Count == 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Aviso", "Este diagnóstico no tiene atracciones permitidas para incluir en el PDF.", "OK");
+                    return;
+                }
+
+                var nombreArchivo = record.VisitorName.Replace(' ', '_');
+                var path = Path.Combine(FileSystem.AppDataDirectory, $"Guia_{nombreArchivo}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+                await _pdfService.GenerateAttractionsPdfFromListAsync(path, incluidas, record.VisitorName);
+
+                bool abrir = await Application.Current.MainPage.DisplayAlert(
+                    "PDF generado", $"Se generó la guía con {incluidas.Count} atracciones.", "Abrir", "OK");
+
+                if (abrir)
+                    await Launcher.OpenAsync(new OpenFileRequest { File = new ReadOnlyFile(path) });
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo generar el PDF: {ex.Message}", "OK");
             }
             finally
             {

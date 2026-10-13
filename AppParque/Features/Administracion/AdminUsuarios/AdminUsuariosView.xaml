@@ -36,7 +36,29 @@
                                 <Label Text="{Binding Rol}" FontSize="11" TextColor="{AppThemeBinding Light=#3949ab, Dark={StaticResource SecondaryDarkText}}"/>
                             </VerticalStackLayout>
 
-                            <Switch Grid.Column="2" IsToggled="{Binding Activo}" VerticalOptions="Center"/>
+                            <HorizontalStackLayout Grid.Column="2" Spacing="6" VerticalOptions="Center">
+                                <Switch IsToggled="{Binding Activo}" VerticalOptions="Center"/>
+
+                                <Button Text="🔑"
+                                        FontSize="14"
+                                        WidthRequest="34" HeightRequest="34"
+                                        Padding="0"
+                                        CornerRadius="17"
+                                        BackgroundColor="{AppThemeBinding Light=#FBF0DA, Dark={StaticResource Gray900}}"
+                                        TextColor="{AppThemeBinding Light=#8a6d1d, Dark={StaticResource SecondaryDarkText}}"
+                                        Command="{Binding CambiarPasswordCommand}"
+                                        SemanticProperties.Hint="Cambiar contraseña"/>
+
+                                <Button Text="🗑"
+                                        FontSize="14"
+                                        WidthRequest="34" HeightRequest="34"
+                                        Padding="0"
+                                        CornerRadius="17"
+                                        BackgroundColor="{AppThemeBinding Light=#FBEAE6, Dark={StaticResource Gray900}}"
+                                        TextColor="{AppThemeBinding Light=#B23A2A, Dark={StaticResource SecondaryDarkText}}"
+                                        Command="{Binding EliminarCommand}"
+                                        SemanticProperties.Hint="Eliminar usuario"/>
+                            </HorizontalStackLayout>
                         </Grid>
                     </Frame>
                 </DataTemplate>

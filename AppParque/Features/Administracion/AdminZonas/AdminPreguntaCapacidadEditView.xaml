@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.AdminZonas.AdminPreguntaCapacidadEditView"
+             Title="Pregunta"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <shared:ThemeSwitchView />
+
+            <Frame x:Name="frameEstado" CornerRadius="10" Padding="10" BorderColor="Transparent">
+                <Label x:Name="lblEstado" FontSize="12.5"/>
+            </Frame>
+
+            <VerticalStackLayout>
+                <Label Text="Clave (única en la zona):" FontAttributes="Bold"/>
+                <Entry x:Name="entryClave" Placeholder="ej. alergiaLatex"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Título de la pregunta:" FontAttributes="Bold"/>
+                <Editor x:Name="editorTitulo" AutoSize="TextChanges" Placeholder="¿...?"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Ayuda (opcional):" FontAttributes="Bold"/>
+                <Editor x:Name="editorAyuda" AutoSize="TextChanges" Placeholder="Texto de apoyo bajo la pregunta."/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Eje:" FontAttributes="Bold"/>
+                <Picker x:Name="pickerEje" Title="Seleccione..." HeightRequest="44">
+                    <Picker.Items>
+                        <x:String>0 - Ninguno</x:String>
+                        <x:String>1 - Estado del cuerpo</x:String>
+                        <x:String>2 - Dispositivo</x:String>
+                        <x:String>3 - Capacidad exigida</x:String>
+                    </Picker.Items>
+                </Picker>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Tipo de respuesta:" FontAttributes="Bold"/>
+                <Picker x:Name="pickerTipo" Title="Seleccione..." HeightRequest="44" SelectedIndexChanged="OnTipoCambiado">
+                    <Picker.Items>
+                        <x:String>Opciones</x:String>
+                        <x:String>Número</x:String>
+                    </Picker.Items>
+                </Picker>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="panelUnidad">
+                <Label Text="Unidad (solo si es Número, ej. cm/kg/años):" FontAttributes="Bold"/>
+                <Entry x:Name="entryUnidad" Placeholder="cm"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Orden:" FontAttributes="Bold"/>
+                <Entry x:Name="entryOrden" Keyboard="Numeric" Placeholder="0"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Depende de (clave de otra pregunta de esta zona, opcional):" FontAttributes="Bold"/>
+                <Entry x:Name="entryDependeDe" Placeholder="ej. protesis"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Se activa cuando (valores separados por coma, opcional):" FontAttributes="Bold"/>
+                <Entry x:Name="entryActivaCuando" Placeholder="ej. Si o BajoRodilla,SobreRodilla"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Valor &quot;sin novedad&quot; (opcional):" FontAttributes="Bold"/>
+                <Entry x:Name="entryValorSinNovedad" Placeholder="ej. No"/>
+            </VerticalStackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Activa:" FontAttributes="Bold" VerticalOptions="Center"/>
+                <Switch x:Name="switchActiva" IsToggled="True"/>
+            </HorizontalStackLayout>
+
+            <Button Text="Guardar"
+                    FontSize="18"
+                    Margin="0,10,0,0"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    CornerRadius="20"
+                    HeightRequest="45"
+                    Clicked="OnGuardarClicked"/>
+
+            <Button x:Name="btnEliminarPregunta" Text="Eliminar pregunta"
+                    FontSize="14"
+                    BackgroundColor="Transparent"
+                    TextColor="#C0392B"
+                    IsVisible="False"
+                    Clicked="OnEliminarPreguntaClicked"/>
+
+            <BoxView x:Name="separadorOpciones" HeightRequest="1" BackgroundColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}" Margin="0,10"/>
+
+            <Grid x:Name="panelOpciones" ColumnDefinitions="*,auto">
+                <Label Grid.Column="0" Text="Opciones de respuesta" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                <Button x:Name="btnAgregarOpcion" Grid.Column="1" Text="+ Opción" FontSize="13"
+                        BackgroundColor="{AppThemeBinding Light=#eef1fb, Dark={StaticResource Gray900}}"
+                        TextColor="{AppThemeBinding Light=#3949ab, Dark={StaticResource SecondaryDarkText}}"
+                        Clicked="OnAgregarOpcionClicked"/>
+            </Grid>
+
+            <CollectionView x:Name="collectionOpciones" ItemsSource="{Binding Opciones}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="10" Padding="10" Margin="0,0,0,8" BorderColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}">
+                            <Grid ColumnDefinitions="*,auto,auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding Texto}" FontAttributes="Bold" FontSize="13.5"/>
+                                    <Label Text="{Binding Valor}" FontSize="11" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                </VerticalStackLayout>
+                                <Button Grid.Column="1" Text="✏️" FontSize="14" Padding="6" BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource Gray900}}"
+                                        Clicked="OnEditarOpcionClicked" CommandParameter="{Binding .}"/>
+                                <Button x:Name="btnEliminarOpcion" Grid.Column="2" Text="🗑️" FontSize="14" Padding="6" BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource Gray900}}"
+                                        Clicked="OnEliminarOpcionClicked" CommandParameter="{Binding .}"
+                                        IsVisible="{Binding PuedeEliminar}"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

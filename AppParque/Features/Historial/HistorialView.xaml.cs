@@ -105,5 +105,24 @@ namespace AppParque.Features.Historial
         {
             await _viewModel.ExportarExcelAsync();
         }
+
+        private async void OnVerDetallesClicked(object sender, EventArgs e)
+        {
+            if ((sender as Button)?.BindingContext is not TestRecord record) return;
+            await Navigation.PushAsync(new HistorialDetalleView(record.Id, record.VisitorName, record.VisitorId));
+        }
+
+        private async void OnGenerarPdfHistorialClicked(object sender, EventArgs e)
+        {
+            if ((sender as Button)?.BindingContext is not TestRecord record) return;
+            await _viewModel.GenerarPdfAsync(record);
+        }
+
+        // RF futuro (manilla física/digital del visitante): el botón ya queda visible desde ahora
+        // para que el flujo de historial no tenga que rediseñarse cuando se implemente.
+        private async void OnManillaClicked(object sender, EventArgs e)
+        {
+            await DisplayAlert("Manilla", "Esta función estará disponible próximamente.", "OK");
+        }
     }
 }

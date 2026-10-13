@@ -39,7 +39,7 @@ Digitalizar el proceso mediante el cual el personal de primeros auxilios del Par
 | RF-09 | Administrar el catálogo de preguntas y opciones del test (crear, editar, activar/desactivar, reordenar) sin publicar una nueva versión de la app. | Admin |
 | RF-10 | Administrar el catálogo de atracciones y sus restricciones por grupo/condición y rango de estatura. | Admin |
 | RF-11 | Administrar el catálogo de grupos y condiciones (los "códigos" que usa el motor de reglas). | Admin |
-| RF-12 | Administrar usuarios internos: crear, editar, desactivar, asignar rol. | Admin |
+| RF-12 | Administrar usuarios internos: crear, editar, desactivar, eliminar (con verificación de contraseña), asignar rol. | Admin |
 
 ---
 
@@ -56,6 +56,13 @@ Digitalizar el proceso mediante el cual el personal de primeros auxilios del Par
 ---
 
 ## 5. Reglas de negocio (motor de reglas)
+
+> **⚠️ Esta sección quedó superada.** El modelo de 13 grupos fue reemplazado por el de capacidades
+> atómicas — ver [Estrategia-Capacidades-Atomicas.md](./Estrategia-Capacidades-Atomicas.md), que
+> documenta el vocabulario, las fichas declarativas por atracción, el motor nuevo y la resolución de
+> los once huecos (H-01 a H-11). Lo que sigue se conserva porque **el motor de grupos todavía
+> corre**: sostiene `/api/evaluaciones`, el historial y el PDF hasta que se completen las fases 2 y 3
+> de la hoja de ruta de ese documento. El motor nuevo cuelga de `/api/diagnostico`.
 
 El motor de reglas traduce las respuestas del test en **grupos** (limitación de movilidad) y **condiciones** (médicas/sensoriales), y luego cruza esos códigos contra las restricciones de cada atracción para decidir la preselección. Estas son las reglas heredadas del prototipo (`TestViewModel.MapAnswersToRestrictions`), documentadas aquí para su validación y posterior carga como datos semilla — **quedan pendientes de confirmar con el conocimiento del negocio** antes de darlas por definitivas:
 
@@ -111,7 +118,12 @@ Entidades principales: `Usuario`, `Visitante`, `Pregunta`/`OpcionRespuesta`, `Gr
 
 ## 9. Pendientes / próximos pasos
 
-- Validar con el conocimiento del negocio (Andres) las reglas documentadas en la sección 5 antes de cargarlas como datos semilla definitivos.
+> La hoja de ruta vigente está en
+> [Estrategia-Capacidades-Atomicas.md § 10](./Estrategia-Capacidades-Atomicas.md#10-hoja-de-ruta).
+> El único hueco de negocio que sigue abierto es **H-03** (uso de atracciones sin la prótesis
+> removible), pendiente de reunión con las partes interesadas.
+
+- ~~Validar con el conocimiento del negocio (Andres) las reglas documentadas en la sección 5~~ — resuelto: las reglas por grupos se reemplazaron por las 25 fichas de seguridad reales del parque.
 - Cargar datos semilla: preguntas actuales, catálogo de grupos/condiciones, atracciones reales del parque y sus restricciones.
 - Diseñar y construir los endpoints REST de `AppParque.Api` (auth, visitantes, evaluaciones, catálogos).
 - Reescribir el motor de reglas del lado del backend (hoy vive en el ViewModel de la app).

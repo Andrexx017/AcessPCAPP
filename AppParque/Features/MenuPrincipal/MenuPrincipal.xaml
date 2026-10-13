@@ -111,5 +111,7 @@
     <shared:SideMenuView x:Name="sideMenu"
                          PerfilTapped="OnPerfilTapped"
                          CerrarSesionTapped="OnCerrarSesionTapped"/>
+
+    <shared:AsistenteFlotanteView/>
     </Grid>
 </ContentPage>

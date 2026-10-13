@@ -205,7 +205,10 @@
 
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
-        <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
+        <!-- TitleColor es el placeholder (p.ej. "Selecciona...") mientras no hay nada elegido: debe
+             verse gris y discreto, igual que el placeholder de un Entry, no con el mismo peso que un
+             valor ya seleccionado. -->
+        <Setter Property="TitleColor" Value="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />

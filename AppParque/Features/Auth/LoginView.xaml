@@ -106,6 +106,20 @@
                         </Border>
                     </VerticalStackLayout>
 
+                    <HorizontalStackLayout Spacing="8" Margin="0,2,0,0">
+                        <CheckBox x:Name="chkRecordar"
+                                  Color="#4CAF50"
+                                  VerticalOptions="Center"/>
+                        <Label Text="Recordar contraseña"
+                               FontSize="13.5"
+                               VerticalOptions="Center"
+                               TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRecordarLabelTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+
                     <Button Text="Iniciar sesión"
                             HeightRequest="50"
                             CornerRadius="12"

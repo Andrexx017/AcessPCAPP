@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             xmlns:historial="clr-namespace:AppParque.Features.Historial"
+             x:Class="AppParque.Features.Historial.HistorialDetalleView"
+             Title="Detalle del diagnóstico"
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="16">
+
+                <!-- Encabezado -->
+                <Border StrokeShape="RoundRectangle 16"
+                        Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="18">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding VisitorName}" FontSize="19" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="{Binding VisitorId}" FontSize="13"
+                               TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray400}}"/>
+                        <Label FontSize="12.5" Margin="0,4,0,0"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Atendido por "/>
+                                    <Span Text="{Binding Enfermero}" FontAttributes="Bold"/>
+                                    <Span Text=" · "/>
+                                    <Span Text="{Binding Fecha}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="{Binding ErrorCarga}" IsVisible="{Binding TieneError}"
+                       FontSize="13" TextColor="#C62828"/>
+
+                <!-- Condición adicional registrada por el personal -->
+                <Border IsVisible="{Binding TieneCondicionAdicional}"
+                        StrokeShape="RoundRectangle 16" Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="18">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CONDICIÓN ADICIONAL" FontSize="11" FontAttributes="Bold" CharacterSpacing="0.5"
+                               TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray300}}"/>
+                        <Label Text="{Binding CondicionAdicional}" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Respuestas del visitante -->
+                <Border IsVisible="{Binding TienePerfil}"
+                        StrokeShape="RoundRectangle 16" Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="18">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Respuestas del visitante" FontSize="16" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding PerfilSecciones}" Spacing="10">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout Spacing="3">
+                                        <Label Text="{Binding Titulo}" FontSize="12.5" FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light=#4CAF50, Dark=#81C784}"/>
+                                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Lineas}">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Label Text="{Binding .}" FontSize="13"
+                                                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Diagnóstico por atracción -->
+                <Border StrokeShape="RoundRectangle 16" Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="18">
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="Diagnóstico por atracción" FontSize="16" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+
+                        <VerticalStackLayout IsVisible="{Binding TieneRestringidas}" Spacing="6">
+                            <Label Text="No permitidas" FontSize="12.5" FontAttributes="Bold" TextColor="#8A2317"/>
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Restringidas}" Spacing="4">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <VerticalStackLayout x:DataType="historial:AtraccionDetalleItem" Spacing="1">
+                                            <Label Text="{Binding Nombre, StringFormat='•  {0}'}" FontAttributes="Bold" FontSize="13"
+                                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                            <Label Text="{Binding Comentario}" IsVisible="{Binding TieneComentario}"
+                                                   FontSize="12" FontAttributes="Italic" Margin="14,0,0,0"
+                                                   TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray400}}"/>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding TienePorVerificar}" Spacing="6">
+                            <Label Text="Por verificar en sitio" FontSize="12.5" FontAttributes="Bold" TextColor="#6B4600"/>
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding PorVerificar}" Spacing="4">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <VerticalStackLayout x:DataType="historial:AtraccionDetalleItem" Spacing="1">
+                                            <Label Text="{Binding Nombre, StringFormat='•  {0}'}" FontAttributes="Bold" FontSize="13"
+                                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                            <Label Text="{Binding Comentario}" IsVisible="{Binding TieneComentario}"
+                                                   FontSize="12" FontAttributes="Italic" Margin="14,0,0,0"
+                                                   TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray400}}"/>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding TieneConMitigacion}" Spacing="6">
+                            <Label Text="Permitidas con condición" FontSize="12.5" FontAttributes="Bold" TextColor="#163E6E"/>
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding ConMitigacion}" Spacing="4">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <VerticalStackLayout x:DataType="historial:AtraccionDetalleItem" Spacing="1">
+                                            <Label Text="{Binding Nombre, StringFormat='•  {0}'}" FontAttributes="Bold" FontSize="13"
+                                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                            <Label Text="{Binding Comentario}" IsVisible="{Binding TieneComentario}"
+                                                   FontSize="12" FontAttributes="Italic" Margin="14,0,0,0"
+                                                   TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray400}}"/>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding TienePermitidas}" Spacing="6">
+                            <Label Text="Permitidas" FontSize="12.5" FontAttributes="Bold" TextColor="#0A4D42"/>
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Permitidas}" Spacing="4">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <VerticalStackLayout x:DataType="historial:AtraccionDetalleItem" Spacing="1">
+                                            <Label Text="{Binding Nombre, StringFormat='•  {0}'}" FontAttributes="Bold" FontSize="13"
+                                                   TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                            <Label Text="{Binding Comentario}" IsVisible="{Binding TieneComentario}"
+                                                   FontSize="12" FontAttributes="Italic" Margin="14,0,0,0"
+                                                   TextColor="{AppThemeBinding Light=#8A7B62, Dark={StaticResource Gray400}}"/>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Consultas de IA de este caso -->
+                <Border IsVisible="{Binding TieneConsultasIA}"
+                        StrokeShape="RoundRectangle 16" Stroke="{AppThemeBinding Light=#e9e1d3, Dark={StaticResource Gray600}}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="18">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Consultas de IA de este caso" FontSize="16" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding ConsultasIA}" Spacing="8">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Border StrokeShape="RoundRectangle 10" Padding="10,8"
+                                            Stroke="Transparent">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding EsAsistente}" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#E7F1EF"/>
+                                                        <Setter Property="HorizontalOptions" Value="Start"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding EsAsistente}" Value="False">
+                                                        <Setter Property="BackgroundColor" Value="#EFE6DC"/>
+                                                        <Setter Property="HorizontalOptions" Value="End"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <VerticalStackLayout Spacing="3">
+                                            <HorizontalStackLayout Spacing="8">
+                                                <Label Text="{Binding Autor}" FontSize="11" FontAttributes="Bold" TextColor="#2E2013"/>
+                                                <Label Text="{Binding Hora}" FontSize="10.5" TextColor="#8A7B62"/>
+                                            </HorizontalStackLayout>
+                                            <Label Text="{Binding Contenido}" FontSize="13" TextColor="#2E2013"/>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                            Color="#4CAF50" HorizontalOptions="Center" VerticalOptions="Center"/>
+    </Grid>
+</ContentPage>

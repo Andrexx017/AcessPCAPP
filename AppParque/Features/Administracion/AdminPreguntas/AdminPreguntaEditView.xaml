@@ -18,7 +18,7 @@
 
             <VerticalStackLayout>
                 <Label Text="Tipo:" FontAttributes="Bold"/>
-                <Picker x:Name="pickerTipo" Title="Seleccione...">
+                <Picker x:Name="pickerTipo" Title="Seleccione..." HeightRequest="44" VerticalOptions="Center">
                     <Picker.Items>
                         <x:String>Única selección</x:String>
                         <x:String>Selección múltiple</x:String>

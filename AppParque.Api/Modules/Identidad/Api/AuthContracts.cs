@@ -6,6 +6,8 @@ public record LoginRequest(string Username, string Password);
 
 public record RefreshRequest(string RefreshToken);
 
+public record VerificarPasswordRequest(string Password);
+
 public record AuthResponse(string AccessToken, string RefreshToken, DateTime RefreshTokenExpiraEn, string NombreCompleto, string Rol)
 {
     public static AuthResponse From(string accessToken, string rawRefreshToken, RefreshToken refreshTokenEntity, Usuario usuario) =>

@@ -22,9 +22,16 @@
             <VerticalStackLayout Grid.Row="2" Spacing="6">
                 <Label Text="Tipo de documento" FontSize="11" FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}"/>
-                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                    <Picker x:Name="pickerTipoId" Title="Seleccione...">
+                <!-- El Border es solo la capa de fondo/tarjeta, con alto fijo. El Picker va superpuesto
+                     llenándolo (no como hijo del Border): en Windows, un Picker como hijo directo de un
+                     Border mide su tamaño nativo (ComboBox) y el Border termina recortado a ese tamaño
+                     pequeño, perdiendo el fondo de tarjeta. Ver AppParque/MauiProgram.cs para el resto
+                     del arreglo (el cromado nativo del ComboBox en reposo). -->
+                <Grid HeightRequest="52">
+                    <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"/>
+                    <Picker x:Name="pickerTipoId" Title="Seleccione..." Margin="16,0"
+                            VerticalOptions="Fill" HorizontalOptions="Fill">
                         <Picker.Items>
                             <x:String>Cédula de Ciudadanía</x:String>
                             <x:String>Cédula de Extranjería</x:String>
@@ -32,15 +39,15 @@
                             <x:String>Tarjeta de Identidad</x:String>
                         </Picker.Items>
                     </Picker>
-                </Border>
+                </Grid>
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Row="3" Spacing="6">
                 <Label Text="Número de documento" FontSize="11" FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light=#b3a488, Dark={StaticResource Gray400}}"/>
-                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,4">
-                    <Entry x:Name="entryNumeroId" Placeholder="1 037 654 321" Keyboard="Numeric"/>
+                <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" HeightRequest="52"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}" Padding="16,0">
+                    <Entry x:Name="entryNumeroId" Placeholder="1 037 654 321" Keyboard="Numeric" VerticalOptions="Center"/>
                 </Border>
             </VerticalStackLayout>
 

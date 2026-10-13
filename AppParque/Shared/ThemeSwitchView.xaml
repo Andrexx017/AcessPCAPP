@@ -3,16 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppParque.Shared.ThemeSwitchView"
              HorizontalOptions="End"
-             VerticalOptions="Start">
-    <HorizontalStackLayout Spacing="6" HorizontalOptions="End" VerticalOptions="Center">
+             VerticalOptions="Center">
+
+    <Border StrokeShape="RoundRectangle 12"
+            Stroke="{AppThemeBinding Light=#EFE6DC, Dark={StaticResource Gray600}}"
+            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+            WidthRequest="40" HeightRequest="40" Padding="0">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnTapped"/>
+        </Border.GestureRecognizers>
         <Label x:Name="IconLabel"
-               Text="&#9728;"
-               FontSize="16"
-               VerticalOptions="Center"
-               VerticalTextAlignment="Center" />
-        <Switch x:Name="ThemeSwitch"
-                Toggled="OnThemeToggled"
-                Scale="0.85"
-                VerticalOptions="Center" />
-    </HorizontalStackLayout>
+               FontFamily="FreeSolid" FontSize="16"
+               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+               HorizontalOptions="Center" VerticalOptions="Center"/>
+    </Border>
 </ContentView>

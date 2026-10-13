@@ -307,6 +307,534 @@
           "miedo_espacios_cerrados": true
         }
       }
+    },
+    "Teleférico_Plaza": {
+      "nombre": "Teleférico Plaza",
+      "descripcion": "Exposición a gran altura, espacios cerrados, paradas durante el recorrido y cambios de elevación y velocidad. Dispone de cabina accesible que permite permanecer en silla de ruedas.",
+      "altura_minima": null,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "baja",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": true,
+          "grupo_1_1": true,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": true
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": true,
+          "problemas_cardiacos": true,
+          "problemas_columna": true,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": false
+        }
+      }
+    },
+    "Teleférico_Bambusario": {
+      "nombre": "Teleférico Bambusario",
+      "descripcion": "Exposición a gran altura, espacios cerrados, paradas durante el recorrido y cambios de elevación y velocidad. El visitante debe transferirse de silla de ruedas a la cabina y sentarse erguido de forma autónoma.",
+      "altura_minima": null,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "baja",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": true,
+          "grupo_1_1": true,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": true
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": true,
+          "problemas_cardiacos": true,
+          "problemas_columna": true,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": false
+        }
+      }
+    },
+    "Telesillas": {
+      "nombre": "Telesillas",
+      "descripcion": "Exposición a gran altura y cambios de elevación y velocidad. Requiere caminar, embarcar y desembarcar de forma autónoma, sentarse erguido y doblar las piernas.",
+      "altura_minima": 90,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "baja",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": false,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Paseo_a_Caballo": {
+      "nombre": "Paseo a Caballo",
+      "descripcion": "Exposición a comportamientos impredecibles del caballo y fuerzas multidireccionales bruscas. Requiere plena autonomía motriz, manejo de riendas con ambas manos y equilibrio activo. Peso máximo 100 kg. No permite prótesis de extremidades.",
+      "altura_minima": 150,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "extrema",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": false,
+          "grupo_5_1": false,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": false,
+          "discapacidad_cognitiva": false,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Montaña_Acuática": {
+      "nombre": "Montaña Acuática",
+      "descripcion": "Exposición a mojarse, grandes velocidades y alturas, fuertes descensos y fuertes cambios de dirección, elevación y aceleración. Requiere caminar y embarcar de forma autónoma. No permite prótesis de mano ni de pierna por encima de rodilla.",
+      "altura_minima": 90,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "alta",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Krater": {
+      "nombre": "Krater",
+      "descripcion": "Montaña rusa extrema: grandes velocidades y alturas, fuertes descensos, giros invertidos y fuerzas multidireccionales bruscas. Requiere caminar y embarcar de forma totalmente autónoma. No permite ningún tipo de prótesis.",
+      "altura_minima": 130,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "extrema",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": false,
+          "grupo_5_1": false,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": false,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Yippe": {
+      "nombre": "Yippe",
+      "descripcion": "Montaña rusa de alta intensidad: grandes velocidades y alturas, fuertes descensos y fuertes cambios de dirección, elevación y aceleración. Requiere embarcar y desembarcar de forma autónoma. No permite prótesis de mano ni de pierna por encima de rodilla.",
+      "altura_minima": 100,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "alta",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Cumbre": {
+      "nombre": "Cumbre",
+      "descripcion": "Exposición a grandes alturas y velocidades verticales, caídas al vacío y fuertes cambios de elevación y aceleración. Requiere embarcar y desembarcar de forma autónoma o con asistencia de acompañante. No permite prótesis de extremidades.",
+      "altura_minima": 125,
+      "altura_maxima": 190,
+      "imagenURL": null,
+      "intensidad": "alta",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Ciclón": {
+      "nombre": "Ciclón",
+      "descripcion": "Exposición a giros de alta velocidad, grandes alturas y fuertes cambios de aceleración. Permite caminar con bastón o muletas. No permite prótesis de mano.",
+      "altura_minima": 125,
+      "altura_maxima": 200,
+      "imagenURL": null,
+      "intensidad": "alta",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": false
+        }
+      }
+    },
+    "Karts_Dobles": {
+      "nombre": "Karts Dobles",
+      "descripcion": "Exposición a choques fortuitos desde cualquier dirección y fuertes cambios de dirección y velocidad. Dos roles diferenciados con requisitos distintos: el conductor requiere plena autonomía y ambas manos; el pasajero puede ir con bastón o muletas.",
+      "altura_minima": null,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "alta",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": false,
+          "grupo_5_1": false,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": false,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": true,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Rin-Rin": {
+      "nombre": "Rin-Rin",
+      "descripcion": "Exposición a gran altura y velocidades verticales, caídas al vacío y fuertes cambios de elevación y aceleración. No permite prótesis de pierna por encima de la rodilla. Las prótesis y órtesis deben asegurarse correctamente.",
+      "altura_minima": 90,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "media",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": false,
+          "embarazo": false,
+          "problemas_cardiacos": false,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Pulpo": {
+      "nombre": "Pulpo",
+      "descripcion": "Exposición a giros de alta velocidad, gran altura y fuertes cambios de dirección y aceleración. No permite prótesis de mano ni de pierna por encima de la rodilla. Dispone de silla interna para visitantes que requieran posición especial.",
+      "altura_minima": 90,
+      "altura_maxima": 180,
+      "imagenURL": null,
+      "intensidad": "media",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": false,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Rueda_Panorámica": {
+      "nombre": "Rueda Panorámica",
+      "descripcion": "Exposición a gran altura, giros continuos y fuertes cambios de elevación. Cuenta con cabina accesible: el visitante puede transferirse de silla de ruedas o sentarse erguido de forma autónoma.",
+      "altura_minima": null,
+      "altura_maxima": null,
+      "imagenURL": null,
+      "intensidad": "media",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": true,
+          "problemas_cardiacos": true,
+          "problemas_columna": true,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": false
+        }
+      }
+    },
+    "Río_Lento": {
+      "nombre": "Río Lento",
+      "descripcion": "Exposición a mojarse, alturas, fuertes descensos y fuertes cambios de elevación y aceleración. No permite prótesis de pierna por encima de la rodilla. Las prótesis y órtesis deben asegurarse correctamente.",
+      "altura_minima": 90,
+      "altura_maxima": 130,
+      "imagenURL": null,
+      "intensidad": "media",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": false,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": false,
+          "grupo_3": false,
+          "grupo_4": false,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": false,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": false,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": false,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Carrusel_Mundo_de_los_Niños": {
+      "nombre": "Carrusel Mundo de los Niños",
+      "descripcion": "Atracción para niños con giros continuos y cambios de elevación y velocidad. Estatura máxima 140 cm. El acompañante adulto no debe estar embarazado.",
+      "altura_minima": null,
+      "altura_maxima": 140,
+      "imagenURL": null,
+      "intensidad": "baja",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": true,
+          "grupo_1_1": true,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": true
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": true,
+          "mareo_vertigo": false,
+          "miedo_espacios_cerrados": true
+        }
+      }
+    },
+    "Minichocones": {
+      "nombre": "Minichocones",
+      "descripcion": "Atracción de baja intensidad para niños entre 90 y 135 cm.",
+      "altura_minima": 90,
+      "altura_maxima": 135,
+      "imagenURL": null,
+      "intensidad": "baja",
+      "restricciones": {
+        "grupos": {
+          "protesis_mano": true,
+          "protesis_pierna_arriba_rodilla": true,
+          "grupo_1": false,
+          "grupo_1_1": false,
+          "grupo_2": true,
+          "grupo_3": true,
+          "grupo_4": true,
+          "grupo_5": true,
+          "grupo_5_1": true,
+          "grupo_5_2": true,
+          "grupo_10": false
+        },
+        "condiciones": {
+          "discapacidad_visual": true,
+          "discapacidad_auditiva": true,
+          "discapacidad_cognitiva": true,
+          "embarazo": false,
+          "problemas_cardiacos": true,
+          "problemas_columna": false,
+          "mareo_vertigo": true,
+          "miedo_espacios_cerrados": true
+        }
+      }
     }
   }
 }

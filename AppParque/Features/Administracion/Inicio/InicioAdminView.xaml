@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.Inicio.InicioAdminView"
+             Title="Inicio"
+             BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource OffBlack}}">
+
+    <Grid>
+        <Grid ColumnDefinitions="Auto,*">
+
+            <!-- SIDEBAR: se abre/oculta con el botón de hamburguesa del topbar -->
+            <Border x:Name="sidebar" Grid.Column="0"
+                    StrokeThickness="0" StrokeShape="Rectangle"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    Padding="18,22" WidthRequest="252">
+                <Grid RowDefinitions="Auto,*,Auto" RowSpacing="22">
+
+                    <VerticalStackLayout Grid.Row="0" Spacing="4">
+                        <Image Source="logo.png" HeightRequest="38" Aspect="AspectFit" HorizontalOptions="Start"/>
+                        <Label Text="PANEL ADMINISTRADOR" FontSize="10" FontAttributes="Bold" CharacterSpacing="0.3"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Row="1" Spacing="3">
+
+                        <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10" BackgroundColor="#FBEAE6">
+                            <HorizontalStackLayout Spacing="12">
+                                <Image Source="icon_menu.png" WidthRequest="18" HeightRequest="18"/>
+                                <Label Text="Inicio" FontSize="14" FontAttributes="Bold" VerticalOptions="Center" TextColor="#B23A2A"/>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10" BackgroundColor="Transparent">
+                            <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnRealizarTestTapped"/></Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="12">
+                                <Image Source="icon_test.png" WidthRequest="18" HeightRequest="18"/>
+                                <Label Text="Realizar test" FontSize="14" FontAttributes="Bold" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#6b5d47, Dark={StaticResource Gray200}}"/>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10" BackgroundColor="Transparent">
+                            <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnHistorialTapped"/></Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="12">
+                                <Image Source="icon_historial.png" WidthRequest="18" HeightRequest="18"/>
+                                <Label Text="Historial" FontSize="14" FontAttributes="Bold" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#6b5d47, Dark={StaticResource Gray200}}"/>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10" BackgroundColor="Transparent">
+                            <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnCatalogoPreguntasTapped"/></Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="12">
+                                <Image Source="icon_catalogos.png" WidthRequest="18" HeightRequest="18"/>
+                                <Label Text="Catálogo del test" FontSize="14" FontAttributes="Bold" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#6b5d47, Dark={StaticResource Gray200}}"/>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10" BackgroundColor="Transparent">
+                            <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnCatalogoAtraccionesTapped"/></Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="12">
+                                <Image Source="icon_catalogos.png" WidthRequest="18" HeightRequest="18"/>
+                                <Label Text="Catálogo de atracciones" FontSize="14" FontAttributes="Bold" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#6b5d47, Dark={StaticResource Gray200}}"/>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10" BackgroundColor="Transparent">
+                            <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnUsuariosTapped"/></Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="12">
+                                <Image Source="icon_usuarios.png" WidthRequest="18" HeightRequest="18"/>
+                                <Label Text="Usuarios" FontSize="14" FontAttributes="Bold" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#6b5d47, Dark={StaticResource Gray200}}"/>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 12" Stroke="Transparent" Padding="12,10" BackgroundColor="Transparent">
+                            <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnAsistenteIATapped"/></Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="12">
+                                <Label Text="&#xf013;" FontFamily="FreeSolid" FontSize="16" WidthRequest="18"
+                                       HorizontalTextAlignment="Center" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#6b5d47, Dark={StaticResource Gray200}}"/>
+                                <Label Text="Asistente IA" FontSize="14" FontAttributes="Bold" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#6b5d47, Dark={StaticResource Gray200}}"/>
+                            </HorizontalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Border Grid.Row="2" StrokeShape="RoundRectangle 14"
+                            Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                            BackgroundColor="{AppThemeBinding Light=#FAF6F0, Dark={StaticResource Gray950}}" Padding="12">
+                        <VerticalStackLayout Spacing="3">
+                            <HorizontalStackLayout Spacing="6">
+                                <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="{Binding ParqueColor}"/>
+                                <Label Text="{Binding ParqueTituloTexto}" FontSize="12" FontAttributes="Bold" TextColor="{Binding ParqueColor}"/>
+                            </HorizontalStackLayout>
+                            <Label Text="{Binding ParqueEstadoTexto}" FontSize="11"
+                                   TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- CONTENIDO -->
+            <ScrollView Grid.Column="1">
+                <VerticalStackLayout Padding="28,24,28,40" Spacing="20">
+
+                    <!-- topbar. Antes era un FlexLayout Wrap="Wrap" para pasar a una segunda línea en
+                         ventanas angostas, pero FlexLayout dentro de un ScrollView mide muy mal en
+                         Android (llegaba a colgar el hilo de UI y dejar la pantalla en negro sin
+                         ninguna excepción) — se cambió a Grid. El saludo y los botones no caben en
+                         una sola fila en celular (se superponían), así que en código (ver
+                         OnSizeAllocated) se apilan en dos filas por debajo de cierto ancho, igual
+                         que hacía el Wrap del FlexLayout original. -->
+                    <Grid x:Name="topbarGrid" ColumnDefinitions="*,Auto" ColumnSpacing="10" RowSpacing="10">
+
+                        <HorizontalStackLayout x:Name="topbarGreeting" Grid.Column="0" Spacing="14" Margin="0,0,0,10">
+                            <Border StrokeShape="RoundRectangle 12"
+                                    Stroke="{AppThemeBinding Light=#EFE6DC, Dark={StaticResource Gray600}}"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    WidthRequest="40" HeightRequest="40" Padding="0" VerticalOptions="Center">
+                                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnToggleSidebarTapped"/></Border.GestureRecognizers>
+                                <Image Source="icon_menu.png" WidthRequest="18" HeightRequest="18" Aspect="AspectFit"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+
+                            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                <Label x:Name="lblSaludo" Text="Buenos días" FontSize="20" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}" LineBreakMode="TailTruncation"/>
+                                <Label x:Name="lblFecha" FontSize="12.5"
+                                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout x:Name="topbarActions" Grid.Column="1" Spacing="10" Margin="0,0,0,10">
+                            <Border StrokeShape="RoundRectangle 12"
+                                    Stroke="{AppThemeBinding Light=#EFE6DC, Dark={StaticResource Gray600}}"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    WidthRequest="40" HeightRequest="40" Padding="0" VerticalOptions="Center">
+                                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnNotificacionesTapped"/></Border.GestureRecognizers>
+                                <Label Text="&#xf0f3;" FontFamily="FreeSolid" FontSize="16"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+
+                            <shared:ThemeSwitchView VerticalOptions="Center" HorizontalOptions="Center"/>
+
+                            <Border StrokeShape="RoundRectangle 999" Stroke="Transparent"
+                                    BackgroundColor="#FBEAE6" WidthRequest="40" HeightRequest="40" Padding="0" VerticalOptions="Center">
+                                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnAvatarTapped"/></Border.GestureRecognizers>
+                                <Label x:Name="lblIniciales" Text="--" FontSize="12.5" FontAttributes="Bold" TextColor="#B23A2A"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+
+                            <Button Text="+ Nueva evaluación" Clicked="OnNuevaEvaluacionClicked"
+                                    BackgroundColor="#B23A2A" TextColor="White" FontAttributes="Bold" FontSize="13.5"
+                                    CornerRadius="12" HeightRequest="40" MinimumHeightRequest="40" Padding="16,0" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+
+                    <!-- KPI row. Antes era un FlexLayout Wrap="Wrap" (ver nota en el topbar de arriba
+                         sobre por qué se cambió a Grid en toda esta pantalla). -->
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="14" RowSpacing="14">
+
+                        <Border Grid.Row="0" Grid.Column="0" StrokeShape="RoundRectangle 18" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="8">
+                                <Border StrokeShape="RoundRectangle 10" Stroke="Transparent" BackgroundColor="#E9F5E1"
+                                        WidthRequest="34" HeightRequest="34" Padding="0" HorizontalOptions="Start">
+                                    <Image Source="icon_test.png" WidthRequest="16" HeightRequest="16" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <Label Text="Evaluaciones hoy" FontSize="12.5" TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                <Label Text="{Binding EvaluacionesHoy}" FontSize="26" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Grid.Row="0" Grid.Column="1" StrokeShape="RoundRectangle 18" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="8">
+                                <Border StrokeShape="RoundRectangle 10" Stroke="Transparent" BackgroundColor="#E3EBF5"
+                                        WidthRequest="34" HeightRequest="34" Padding="0" HorizontalOptions="Start">
+                                    <Image Source="icon_usuarios.png" WidthRequest="16" HeightRequest="16" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <Label Text="Visitantes evaluados hoy" FontSize="12.5" TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                <Label Text="{Binding VisitantesHoy}" FontSize="26" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Grid.Row="1" Grid.Column="0" StrokeShape="RoundRectangle 18" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="8">
+                                <Border StrokeShape="RoundRectangle 10" Stroke="Transparent" BackgroundColor="#FBF0DA"
+                                        WidthRequest="34" HeightRequest="34" Padding="0" HorizontalOptions="Start">
+                                    <Label Text="&#xf05a;" FontFamily="FreeSolid" FontSize="14" TextColor="#9C7A1E"
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <Label Text="% Aptos" FontSize="12.5" TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                <Label Text="{Binding PorcentajeAptosTexto}" FontSize="26" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                <Label Text="{Binding AptitudSubtexto}" FontSize="11.5"
+                                       TextColor="{AppThemeBinding Light=#B3A58C, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Grid.Row="1" Grid.Column="1" StrokeShape="RoundRectangle 18" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="8">
+                                <Border StrokeShape="RoundRectangle 10" Stroke="Transparent" BackgroundColor="#E3EBF5"
+                                        WidthRequest="34" HeightRequest="34" Padding="0" HorizontalOptions="Start">
+                                    <Label Text="&#xf086;" FontFamily="FreeSolid" FontSize="14" TextColor="#3A5A8C"
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <Label Text="Consultas Asistente IA" FontSize="12.5" TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                <Label Text="{Binding ConsultasIAHoy}" FontSize="26" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!-- HERO: mapa + intensidad. Antes era un FlexLayout Wrap="Wrap" (ver nota del
+                         topbar); acá simplemente se apilan en vez de ir lado a lado en pantallas
+                         anchas, para no reintroducir el mismo riesgo de FlexLayout. -->
+                    <VerticalStackLayout Spacing="16">
+
+                        <Border StrokeShape="RoundRectangle 22" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="10">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                        <Label Text="Croquis del parque" FontSize="15.5" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                        <Label Text="Toca el mapa para ampliarlo y guiarte" FontSize="11.5"
+                                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" Text="&#xf00e;" FontFamily="FreeSolid" FontSize="14"
+                                           TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}" VerticalOptions="Center"/>
+                                </Grid>
+                                <Border StrokeShape="RoundRectangle 14" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}" Padding="0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnMapaTapped"/>
+                                    </Border.GestureRecognizers>
+                                    <Image Source="mapa.jpg" Aspect="AspectFill" HeightRequest="280" HorizontalOptions="Fill"/>
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 22" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Atracciones por intensidad" FontSize="15" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                <Label Text="Catálogo de atracciones" FontSize="11.5"
+                                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+
+                                <VerticalStackLayout Spacing="2" BindableLayout.ItemsSource="{Binding PorIntensidad}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="Auto,*,Auto" Padding="2,8" ColumnSpacing="8">
+                                                <BoxView Grid.Column="0" WidthRequest="9" HeightRequest="9" CornerRadius="4.5"
+                                                         Color="{Binding Punto}" VerticalOptions="Center"/>
+                                                <Label Grid.Column="1" Text="{Binding Nombre}" FontSize="13" FontAttributes="Bold" VerticalOptions="Center"
+                                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                                <Label Grid.Column="2" Text="{Binding Resumen}" FontSize="12" VerticalOptions="Center"
+                                                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- SECUNDARIA. Antes era un FlexLayout Wrap="Wrap" (ver nota del topbar); se
+                         apilan en vez de ir en varias columnas en pantallas anchas. -->
+                    <VerticalStackLayout Spacing="16">
+
+                        <Border StrokeShape="RoundRectangle 22" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Restricciones más frecuentes" FontSize="14.5" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                <Label Text="Por estatura mínima registrada" FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+
+                                <VerticalStackLayout Spacing="2" BindableLayout.ItemsSource="{Binding Restricciones}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="*,Auto" Padding="0,7">
+                                                <Label Grid.Column="0" Text="{Binding Texto}" FontSize="12.5" FontAttributes="Bold" VerticalOptions="Center"
+                                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                                <Label Grid.Column="1" Text="{Binding CantidadTexto}" FontSize="12" VerticalOptions="Center"
+                                                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 22" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="10">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" Text="Actividad del Asistente IA" FontSize="14.5" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                    <Label Grid.Column="1" Text="&#xf086;" FontFamily="FreeSolid" FontSize="14" TextColor="#3A5A8C"/>
+                                </Grid>
+                                <Label Text="{Binding ConsultasIAHoy}" FontSize="24" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                       TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                <Label Text="consultas hoy" FontSize="12"
+                                       TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border StrokeShape="RoundRectangle 22" Stroke="{AppThemeBinding Light=#F0E7D9, Dark={StaticResource Gray600}}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                Padding="18">
+                            <VerticalStackLayout Spacing="10">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" Text="Últimas evaluaciones" FontSize="14.5" FontAttributes="Bold" FontFamily="OpenSansSemibold"
+                                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                    <Label Grid.Column="1" Text="Ver todo" FontSize="12" FontAttributes="Bold" TextColor="#B23A2A">
+                                        <Label.GestureRecognizers><TapGestureRecognizer Tapped="OnHistorialTapped"/></Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <VerticalStackLayout Spacing="2" BindableLayout.ItemsSource="{Binding UltimasEvaluaciones}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="*,Auto" Padding="0,7">
+                                                <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                                    <Label Text="{Binding Visitante}" FontSize="13" FontAttributes="Bold"
+                                                           TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                                                    <Label Text="{Binding Hora}" FontSize="11"
+                                                           TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                                                </VerticalStackLayout>
+                                                <Border Grid.Column="1" StrokeShape="RoundRectangle 999" Stroke="Transparent"
+                                                        BackgroundColor="{Binding BadgeFondo}" Padding="9,3" VerticalOptions="Center">
+                                                    <Label Text="{Binding RestriccionesTexto}" FontSize="10.5" FontAttributes="Bold"
+                                                           TextColor="{Binding BadgeTexto}"/>
+                                                </Border>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <shared:SideMenuView x:Name="sideMenu"
+                             PerfilTapped="OnPerfilTapped"
+                             CerrarSesionTapped="OnCerrarSesionTapped"/>
+
+        <shared:AsistenteFlotanteView/>
+    </Grid>
+</ContentPage>

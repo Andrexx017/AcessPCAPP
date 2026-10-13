@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:asistente="clr-namespace:AppParque.Features.Asistente"
+             x:Class="AppParque.Features.Asistente.AsistenteChatView"
+             Title="Asistente"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <!-- Pantalla completa: la usa el celular (ver AsistenteFlotanteView), donde no hace falta el
+         panel flotante de escritorio. El contenido real vive en AsistenteChatContentView, compartido
+         con ese panel para no duplicar la lógica del chat. -->
+    <asistente:AsistenteChatContentView/>
+</ContentPage>

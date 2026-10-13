@@ -75,5 +75,29 @@ public static class UsuariosAdminEndpoints
 
             return Results.NoContent();
         });
+
+        group.MapDelete("/{id:int}", async (int id, AppDbContext db, ClaimsPrincipal caller) =>
+        {
+            var usuario = await db.Usuarios.FindAsync(id);
+            if (usuario is null)
+                return Results.NotFound();
+
+            var callerIdTexto = caller.FindFirstValue(ClaimTypes.NameIdentifier) ?? caller.FindFirstValue("sub");
+            if (callerIdTexto == usuario.Id.ToString())
+                return Results.BadRequest("No puedes eliminar tu propio usuario.");
+
+            // Evaluacion y DiagnosticoGuardado tienen FK Restrict hacia Usuario: un enfermero/admin con
+            // historial no se puede borrar sin perder esos registros, así que se avisa en vez de
+            // dejar que la excepción de FK de la base de datos llegue como un 500 genérico.
+            var tieneHistorial = await db.Evaluaciones.AnyAsync(e => e.UsuarioId == id)
+                || await db.DiagnosticosGuardados.AnyAsync(d => d.UsuarioId == id);
+            if (tieneHistorial)
+                return Results.Conflict("No se puede eliminar: el usuario tiene evaluaciones registradas en su historial. Desactívalo en su lugar.");
+
+            db.Usuarios.Remove(usuario);
+            await db.SaveChangesAsync();
+
+            return Results.NoContent();
+        });
     }
 }

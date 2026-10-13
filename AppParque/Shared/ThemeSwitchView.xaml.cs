@@ -5,16 +5,17 @@ namespace AppParque.Shared
         public ThemeSwitchView()
         {
             InitializeComponent();
-            ThemeSwitch.IsToggled = ThemeService.IsDarkMode;
-            UpdateIcon(ThemeSwitch.IsToggled);
+            UpdateIcon(ThemeService.IsDarkMode);
         }
 
-        private void OnThemeToggled(object sender, ToggledEventArgs e)
+        private void OnTapped(object? sender, TappedEventArgs e)
         {
-            ThemeService.SetDarkMode(e.Value);
-            UpdateIcon(e.Value);
+            bool modoOscuro = !ThemeService.IsDarkMode;
+            ThemeService.SetDarkMode(modoOscuro);
+            UpdateIcon(modoOscuro);
         }
 
-        private void UpdateIcon(bool isDark) => IconLabel.Text = isDark ? "\U0001F319" : "☀";
+        // Font Awesome Free Solid: f185 = sun, f186 = moon.
+        private void UpdateIcon(bool isDark) => IconLabel.Text = isDark ? "" : "";
     }
 }

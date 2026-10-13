@@ -134,7 +134,7 @@ public partial class ConfirmacionEvaluacionView : ContentPage
         UsuarioGlobal.Age = _ultimaEvaluacion?.Edad?.ToString();
         UsuarioGlobal.Stature = _ultimaEvaluacion?.Estatura?.ToString();
 
-        await Navigation.PushAsync(new TestView());
+        await Navigation.PushAsync(EvaluacionFlujo.CrearPagina());
     }
 
     private static string DescribirTiempo(int dias) => dias switch

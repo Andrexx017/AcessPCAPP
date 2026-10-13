@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.AdminAsistente.AdminAsistenteView"
+             Title="Asistente IA"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid>
+        <Grid RowDefinitions="Auto,Auto,*">
+
+            <!-- barra superior -->
+            <Border Grid.Row="0" Padding="20,14" StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Grid.Column="0" Spacing="1" VerticalOptions="Center">
+                        <Label Text="Asistente IA" FontAttributes="Bold" FontSize="18.5"
+                               TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                        <Label Text="Proveedores, modelos y contexto del bot de ayuda" FontSize="12"
+                               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                    <shared:ThemeSwitchView Grid.Column="1" VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- pestañas -->
+            <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,*" ColumnSpacing="24" Padding="20,10,20,0"
+                  BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                <VerticalStackLayout Grid.Column="0" Spacing="8">
+                    <Button x:Name="btnTabProveedores" Text="Proveedores y modelos" Clicked="OnTabProveedoresClicked"
+                            BackgroundColor="Transparent" TextColor="#0F6B5C" FontAttributes="Bold" FontSize="13.5"
+                            Padding="0" HeightRequest="26" HorizontalOptions="Start"/>
+                    <BoxView x:Name="indicadorProveedores" HeightRequest="2.5" BackgroundColor="#0F6B5C"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1" Spacing="8">
+                    <Button x:Name="btnTabDocumentos" Text="Contexto (archivos)" Clicked="OnTabDocumentosClicked"
+                            BackgroundColor="Transparent" TextColor="#8b93a1" FontAttributes="Bold" FontSize="13.5"
+                            Padding="0" HeightRequest="26" HorizontalOptions="Start"/>
+                    <BoxView x:Name="indicadorDocumentos" HeightRequest="2.5" BackgroundColor="Transparent"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="2" Spacing="8">
+                    <Button x:Name="btnTabPrompts" Text="Prompts" Clicked="OnTabPromptsClicked"
+                            BackgroundColor="Transparent" TextColor="#8b93a1" FontAttributes="Bold" FontSize="13.5"
+                            Padding="0" HeightRequest="26" HorizontalOptions="Start"/>
+                    <BoxView x:Name="indicadorPrompts" HeightRequest="2.5" BackgroundColor="Transparent"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid Grid.Row="2">
+
+                <!-- panel: proveedores -->
+                <ScrollView x:Name="panelProveedores">
+                    <VerticalStackLayout Padding="20" Spacing="12">
+                        <Button Text="+ Agregar proveedor" Clicked="OnNuevoProveedorClicked"
+                                BackgroundColor="#0F6B5C" TextColor="White" FontAttributes="Bold" FontSize="13.5"
+                                CornerRadius="10" HeightRequest="42" HorizontalOptions="Start" Padding="16,0"/>
+
+                        <Label Text="La cadena de intentos corre en orden de prioridad (menor primero): si un modelo se queda sin cupo, pasa automáticamente al siguiente."
+                               FontSize="12" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+
+                        <CollectionView x:Name="collectionProveedores" ItemsSource="{Binding Proveedores}" SelectionMode="Single" SelectionChanged="OnProveedorSeleccionado">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,10" Padding="16,14" Opacity="{Binding Opacidad}"
+                                            Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}" StrokeThickness="1"
+                                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Nombre}" FontAttributes="Bold" FontSize="15.5"
+                                                   TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Modelo}" FontSize="12"
+                                                   TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                            <VerticalStackLayout Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Spacing="4" HorizontalOptions="End">
+                                                <Label Text="{Binding PrioridadTexto}" FontSize="11" HorizontalTextAlignment="End"
+                                                       TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                                <Label Text="{Binding EstadoTexto}" FontSize="11.5" FontAttributes="Bold" HorizontalTextAlignment="End"
+                                                       TextColor="{Binding EstadoColor}"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <!-- panel: documentos de contexto -->
+                <ScrollView x:Name="panelDocumentos" IsVisible="False">
+                    <VerticalStackLayout Padding="20" Spacing="12">
+                        <Button Text="+ Agregar documento" Clicked="OnNuevoDocumentoClicked"
+                                BackgroundColor="#0F6B5C" TextColor="White" FontAttributes="Bold" FontSize="13.5"
+                                CornerRadius="10" HeightRequest="42" HorizontalOptions="Start" Padding="16,0"/>
+
+                        <Label Text="Guías internas que el bot busca cuando le preguntan cómo usar una parte de la app."
+                               FontSize="12" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+
+                        <CollectionView x:Name="collectionDocumentos" ItemsSource="{Binding Documentos}" SelectionMode="Single" SelectionChanged="OnDocumentoSeleccionado">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,10" Padding="16,14" Opacity="{Binding Opacidad}"
+                                            Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}" StrokeThickness="1"
+                                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="15"
+                                                   TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                            <Label Text="{Binding Detalle}" FontSize="11.5"
+                                                   TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <!-- panel: prompts editables -->
+                <ScrollView x:Name="panelPrompts" IsVisible="False">
+                    <VerticalStackLayout Padding="20" Spacing="14">
+                        <Label Text="Cada uno gobierna una herramienta distinta del bot. Se concatenan en este orden para formar las instrucciones que recibe el modelo."
+                               FontSize="12" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+
+                        <CollectionView ItemsSource="{Binding Prompts}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,14" Padding="16,14"
+                                            Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}" StrokeThickness="1"
+                                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+                                        <VerticalStackLayout Spacing="8">
+                                            <Label Text="{Binding Titulo}" FontAttributes="Bold" FontSize="15"
+                                                   TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                            <Label Text="{Binding Subtitulo}" FontSize="11.5"
+                                                   TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                            <Editor Text="{Binding Contenido}" AutoSize="TextChanges" MinimumHeightRequest="160"
+                                                    FontSize="12.5" FontFamily="Courier"/>
+                                            <Button Text="Guardar este prompt" Clicked="OnGuardarPromptClicked"
+                                                    BackgroundColor="#0F6B5C" TextColor="White" FontAttributes="Bold" FontSize="13"
+                                                    CornerRadius="10" HeightRequest="42" HorizontalOptions="Start" Padding="16,0"/>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   Color="#0F6B5C" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,40,0,0"/>
+            </Grid>
+        </Grid>
+
+        <!-- modal: alta/edición de proveedor -->
+        <Grid x:Name="modalProveedor" IsVisible="False" BackgroundColor="#99000000">
+            <Border Margin="20" Padding="0" MaximumWidthRequest="480" MaximumHeightRequest="640"
+                    VerticalOptions="Center" HorizontalOptions="Center" StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                <Border.StrokeShape><RoundRectangle CornerRadius="18"/></Border.StrokeShape>
+                <ScrollView>
+                    <VerticalStackLayout Padding="22" Spacing="14">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label x:Name="lblModalProveedorTitulo" Text="Nuevo proveedor" FontAttributes="Bold" FontSize="18"/>
+                            <Button Grid.Column="1" Text="✕" FontSize="16" Padding="8" BackgroundColor="Transparent"
+                                    TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"
+                                    Clicked="OnCerrarModalProveedorClicked"/>
+                        </Grid>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Nombre" FontAttributes="Bold" FontSize="12.5"/>
+                            <Entry x:Name="entryProvNombre" Placeholder="Groq · Llama 3.3 70B" HeightRequest="42"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="URL base (API compatible con OpenAI)" FontAttributes="Bold" FontSize="12.5"/>
+                            <Entry x:Name="entryProvBaseUrl" Placeholder="https://api.groq.com/openai/v1" Keyboard="Url" HeightRequest="42"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Modelo" FontAttributes="Bold" FontSize="12.5"/>
+                            <Entry x:Name="entryProvModelo" Placeholder="llama-3.3-70b-versatile" HeightRequest="42"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="API key" FontAttributes="Bold" FontSize="12.5"/>
+                            <Entry x:Name="entryProvApiKey" Placeholder="gsk_..." IsPassword="True" HeightRequest="42"/>
+                            <Label x:Name="lblProvApiKeyNota" Text="Dejar en blanco para conservar la key que ya está guardada." FontSize="11"
+                                   IsVisible="False" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Prioridad (menor = se intenta primero)" FontAttributes="Bold" FontSize="12.5"/>
+                            <Entry x:Name="entryProvPrioridad" Keyboard="Numeric" Placeholder="1" HeightRequest="42"/>
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                <Label Text="Activo" FontAttributes="Bold" FontSize="13"/>
+                                <Label Text="Entra en la cadena de intentos." FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" x:Name="switchProvActivo" IsToggled="True" VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                <Label Text="Soporta tool calling" FontAttributes="Bold" FontSize="13"/>
+                                <Label Text="Si este modelo no llama herramientas de forma confiable, apágalo: puede inventar respuestas." FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" x:Name="switchProvToolCalling" IsToggled="True" VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                <Label Text="Soporta visión" FontAttributes="Bold" FontSize="13"/>
+                                <Label Text="Puede leer imágenes adjuntas (ej. gpt-4o, Gemini). Groq gpt-oss y o3-mini NO la soportan." FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" x:Name="switchProvVision" IsToggled="False" VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Button Text="Guardar" Clicked="OnGuardarProveedorClicked"
+                                BackgroundColor="#0F6B5C" TextColor="White" FontAttributes="Bold" FontSize="15"
+                                CornerRadius="12" HeightRequest="48" Margin="0,6,0,0"/>
+
+                        <Button x:Name="btnEliminarProveedor" Text="Eliminar proveedor" Clicked="OnEliminarProveedorClicked"
+                                BackgroundColor="Transparent" TextColor="#8A2317" FontAttributes="Bold" FontSize="13.5"
+                                IsVisible="False"/>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+
+        <!-- modal: alta de documento -->
+        <Grid x:Name="modalDocumento" IsVisible="False" BackgroundColor="#99000000">
+            <Border Margin="20" Padding="0" MaximumWidthRequest="480" MaximumHeightRequest="640"
+                    VerticalOptions="Center" HorizontalOptions="Center" StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+                <Border.StrokeShape><RoundRectangle CornerRadius="18"/></Border.StrokeShape>
+                <ScrollView>
+                    <VerticalStackLayout Padding="22" Spacing="14">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Nuevo documento de contexto" FontAttributes="Bold" FontSize="18"/>
+                            <Button Grid.Column="1" Text="✕" FontSize="16" Padding="8" BackgroundColor="Transparent"
+                                    TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"
+                                    Clicked="OnCerrarModalDocumentoClicked"/>
+                        </Grid>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Nombre" FontAttributes="Bold" FontSize="12.5"/>
+                            <Entry x:Name="entryDocNombre" Placeholder="Cómo registrar un visitante" HeightRequest="42"/>
+                        </VerticalStackLayout>
+
+                        <Button Text="Cargar desde archivo (.txt, .md)" Clicked="OnCargarArchivoClicked"
+                                BackgroundColor="Transparent" BorderColor="#0F6B5C" BorderWidth="1.5" TextColor="#0F6B5C"
+                                FontAttributes="Bold" FontSize="13" CornerRadius="10" HeightRequest="42"/>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Contenido" FontAttributes="Bold" FontSize="12.5"/>
+                            <Editor x:Name="editorDocContenido" AutoSize="TextChanges" MinimumHeightRequest="140"
+                                    Placeholder="Pega el texto de la guía, o cárgalo desde un archivo arriba."/>
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                <Label Text="Activo" FontAttributes="Bold" FontSize="13"/>
+                                <Label Text="El bot solo busca en documentos activos." FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" x:Name="switchDocActivo" IsToggled="True" VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Button Text="Guardar" Clicked="OnGuardarDocumentoClicked"
+                                BackgroundColor="#0F6B5C" TextColor="White" FontAttributes="Bold" FontSize="15"
+                                CornerRadius="12" HeightRequest="48" Margin="0,6,0,0"/>
+
+                        <Button x:Name="btnEliminarDocumento" Text="Eliminar documento" Clicked="OnEliminarDocumentoClicked"
+                                BackgroundColor="Transparent" TextColor="#8A2317" FontAttributes="Bold" FontSize="13.5"
+                                IsVisible="False"/>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>

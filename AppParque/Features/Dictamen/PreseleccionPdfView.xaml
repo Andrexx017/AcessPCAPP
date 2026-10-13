@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Dictamen.PreseleccionPdfView"
+             Title="Revisar selección"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- cabecera -->
+        <Border Grid.Row="0"
+                Padding="16,12"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="10">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                        <Label Text="Revisar selección"
+                               FontAttributes="Bold" FontSize="17"
+                               TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                        <Label Text="Elige qué atracciones incluir en tu guía"
+                               FontSize="12.5"
+                               TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                    </VerticalStackLayout>
+                    <shared:ThemeSwitchView Grid.Column="1" VerticalOptions="Center" />
+                </Grid>
+
+                <Border BackgroundColor="#E7F1EF"
+                        StrokeThickness="0"
+                        Padding="12,6"
+                        HorizontalOptions="Start">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="999" /></Border.StrokeShape>
+                    <Label Text="{Binding ResumenTexto}" FontSize="13" FontAttributes="Bold" TextColor="#0A4D42" />
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- lista -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,14,16,20" Spacing="18">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label FontSize="11" FontAttributes="Bold"
+                           Text="{Binding Incluidas.Count, StringFormat='INCLUIDAS ({0})'}"
+                           TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+
+                    <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Incluidas}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="13,13"
+                                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                        Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}"
+                                        StrokeThickness="1">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="15"
+                                                   TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                                            <Label Text="{Binding Meta}" FontSize="12"
+                                                   TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                                        </VerticalStackLayout>
+                                        <Switch Grid.Column="1" IsToggled="{Binding Incluida, Mode=TwoWay}"
+                                                OnColor="#0F6B5C" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label FontSize="11" FontAttributes="Bold"
+                           Text="{Binding Excluidas.Count, StringFormat='NO INCLUIDAS ({0})'}"
+                           TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+
+                    <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Excluidas}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="13,13"
+                                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                        Stroke="{Binding Borde}"
+                                        StrokeThickness="1">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                    <VerticalStackLayout Spacing="9">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                                <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="15"
+                                                       TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                                                <Label Text="{Binding Meta}" FontSize="12"
+                                                       TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                                            </VerticalStackLayout>
+                                            <Switch Grid.Column="1" IsToggled="{Binding Incluida, Mode=TwoWay}"
+                                                    OnColor="#0F6B5C" VerticalOptions="Center" />
+                                        </Grid>
+
+                                        <Border IsVisible="{Binding TieneMotivo}"
+                                                BackgroundColor="{Binding BadgeFondo}"
+                                                StrokeThickness="0" Padding="10,8">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="{Binding BadgeLabel}" FontSize="11" FontAttributes="Bold" TextColor="{Binding BadgeTexto}" />
+                                                <Label Text="{Binding Motivo}" FontSize="12" TextColor="{Binding BadgeTexto}" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- pie -->
+        <Border Grid.Row="2"
+                Padding="16,10,16,14"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Atrás"
+                        Clicked="OnAtrasClicked"
+                        BackgroundColor="Transparent"
+                        BorderColor="#0F6B5C"
+                        BorderWidth="2"
+                        TextColor="#0F6B5C"
+                        FontAttributes="Bold"
+                        FontSize="14.5"
+                        CornerRadius="12"
+                        MinimumHeightRequest="50" />
+                <Button Grid.Column="1"
+                        Text="Generar PDF"
+                        Clicked="OnGenerarClicked"
+                        IsEnabled="{Binding PuedeGenerar}"
+                        BackgroundColor="#0F6B5C"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="14.5"
+                        CornerRadius="12"
+                        MinimumHeightRequest="50" />
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

@@ -116,6 +116,7 @@ public static class AtraccionesEndpoints
         atraccion.AlturaMinima = request.AlturaMinima;
         atraccion.AlturaMaxima = request.AlturaMaxima;
         atraccion.Activa = request.Activa;
+        atraccion.Intensidad = request.Intensidad;
         return atraccion;
     }
 }

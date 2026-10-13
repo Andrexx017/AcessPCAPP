@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Features.Asistente.AsistenteChatContentView">
+
+    <!-- Contenido del chat del asistente, independiente de cómo se presente: a pantalla completa
+         (AsistenteChatView, celular) o dentro del panel flotante de escritorio (AsistenteFlotanteView). -->
+    <Grid RowDefinitions="Auto,*,Auto,Auto"
+          BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+        <!-- encabezado -->
+        <Border Grid.Row="0" Padding="18,12" StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Border Grid.Column="0" WidthRequest="38" HeightRequest="38" StrokeThickness="0"
+                        BackgroundColor="#0F6B5C" VerticalOptions="Center" Margin="0,0,12,0">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="19"/></Border.StrokeShape>
+                    <Label Text="🩺" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+                <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                    <Label Text="Asistente del Parque del Café" FontAttributes="Bold" FontSize="15.5"
+                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                    <Label Text="{Binding Subtitulo}" FontSize="11.5"
+                           TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                </VerticalStackLayout>
+
+                <!-- solo visible dentro de una conversación ya iniciada -->
+                <Button Grid.Column="2" Text="↺ Cambiar de tema" FontSize="11" Padding="10,0"
+                        IsVisible="{Binding MostrandoMenu, Converter={StaticResource InverseBoolConverter}}"
+                        BackgroundColor="Transparent" TextColor="#0F6B5C" Clicked="OnCambiarTemaClicked"/>
+            </Grid>
+        </Border>
+
+        <!-- menú de temas: obligatorio antes de poder escribir -->
+        <ScrollView Grid.Row="1" IsVisible="{Binding MostrandoMenu}">
+            <VerticalStackLayout Padding="16" Spacing="10">
+                <Label Text="¿Sobre qué necesitas ayuda?" FontAttributes="Bold" FontSize="14.5"
+                       Margin="2,0,0,6" TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Temas}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="14,12" StrokeThickness="1"
+                                    Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}"
+                                    BackgroundColor="{AppThemeBinding Light=#fbfcfd, Dark={StaticResource Gray900}}">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTemaSeleccionado"/>
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="40,*" ColumnSpacing="10">
+                                    <Label Grid.Column="0" Text="{Binding Icono}" FontSize="22"
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label Text="{Binding Titulo}" FontAttributes="Bold" FontSize="13.5"
+                                               TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                        <Label Text="{Binding Subtitulo}" FontSize="11.5" LineHeight="1.2"
+                                               TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- mensajes -->
+        <ScrollView x:Name="scrollMensajes" Grid.Row="1" IsVisible="{Binding MostrandoMenu, Converter={StaticResource InverseBoolConverter}}">
+            <VerticalStackLayout x:Name="listaMensajes" Padding="16" Spacing="14"
+                                  BindableLayout.ItemsSource="{Binding Mensajes}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="38,*,38" ColumnSpacing="8">
+
+                            <!-- avatar del asistente: un círculo teal con un símbolo médico — el
+                                 "café" de la marca ya lo lleva el color, que es el mismo verde azulado
+                                 que usa toda la app ("Cuidamos cada visita"). -->
+                            <Border Grid.Column="0" IsVisible="{Binding EsAsistente}"
+                                    WidthRequest="34" HeightRequest="34" StrokeThickness="0"
+                                    BackgroundColor="#0F6B5C" VerticalOptions="Start">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="17"/></Border.StrokeShape>
+                                <Label Text="🩺" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5" HorizontalOptions="{Binding Alineacion}">
+                                <Border MaximumWidthRequest="300" Padding="13,10"
+                                        BackgroundColor="{Binding Fondo}" StrokeThickness="0"
+                                        HorizontalOptions="{Binding Alineacion}">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+                                    <Label Text="{Binding Texto}" FontSize="13.5" TextColor="{Binding ColorTexto}" LineHeight="1.25"/>
+                                </Border>
+
+                                <HorizontalStackLayout Spacing="16" IsVisible="{Binding MostrarAcciones}" Margin="4,0,0,0">
+                                    <Button Text="📋 Copiar" Clicked="OnCopiarClicked"
+                                            BackgroundColor="Transparent" TextColor="#0F6B5C" FontSize="11.5"
+                                            Padding="0" HeightRequest="22"/>
+                                    <Button Text="↗ Compartir" Clicked="OnCompartirClicked"
+                                            BackgroundColor="Transparent" TextColor="#0F6B5C" FontSize="11.5"
+                                            Padding="0" HeightRequest="22"/>
+                                </HorizontalStackLayout>
+
+                                <!-- hipervínculo sugerido por el bot (solo en el tema "ayuda con la app") -->
+                                <Border IsVisible="{Binding TieneNav}" Padding="10,6" StrokeThickness="1"
+                                        Stroke="#0F6B5C" BackgroundColor="Transparent" Margin="4,0,0,0">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="16"/></Border.StrokeShape>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnNavTapped"/>
+                                    </Border.GestureRecognizers>
+                                    <Label Text="{Binding NavEtiqueta, StringFormat='Ir a {0} →'}"
+                                           FontSize="12" TextColor="#0F6B5C" FontAttributes="Bold"/>
+                                </Border>
+
+                                <!-- "¿tu duda fue resuelta?" -->
+                                <HorizontalStackLayout Spacing="8" IsVisible="{Binding MostrarBotonesCierre}" Margin="4,2,0,0">
+                                    <Border Padding="10,6" StrokeThickness="0" BackgroundColor="#0F6B5C">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnListoTapped"/>
+                                        </Border.GestureRecognizers>
+                                        <Label Text="✅ Listo, gracias" FontSize="11.5" TextColor="White"/>
+                                    </Border>
+                                    <Border Padding="10,6" StrokeThickness="1" Stroke="#0F6B5C" BackgroundColor="Transparent">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnOtraPreguntaTapped"/>
+                                        </Border.GestureRecognizers>
+                                        <Label Text="💬 Tengo otra pregunta" FontSize="11.5" TextColor="#0F6B5C"/>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+
+                            <!-- avatar del usuario: su foto de perfil, o sus iniciales si no cargó una
+                                 (mismo patrón que SideMenuView.SetAvatar). -->
+                            <Grid Grid.Column="2" IsVisible="{Binding EsUsuario}"
+                                  WidthRequest="34" HeightRequest="34" VerticalOptions="Start">
+                                <Border StrokeThickness="0" BackgroundColor="#E3EBF5">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="17"/></Border.StrokeShape>
+                                    <Image Source="{Binding FotoUsuarioImagen}" Aspect="AspectFill"
+                                           IsVisible="{Binding TieneFotoUsuario}"/>
+                                </Border>
+                                <Label Text="{Binding InicialesUsuario}" IsVisible="{Binding TieneFotoUsuario, Converter={StaticResource InverseBoolConverter}}"
+                                       FontSize="12" FontAttributes="Bold" TextColor="#163E6E"
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                           Color="#0F6B5C" HorizontalOptions="Start" VerticalOptions="End" Margin="20,0,0,14"/>
+
+        <!-- imagen pendiente de enviar -->
+        <Border x:Name="previaImagen" Grid.Row="2" IsVisible="False" Padding="10,8" Margin="14,0,14,6"
+                BackgroundColor="{AppThemeBinding Light=#E7F1EF, Dark={StaticResource Gray900}}"
+                Stroke="#0F6B5C" StrokeThickness="1">
+            <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                <Image x:Name="imgPrevia" Grid.Column="0" WidthRequest="36" HeightRequest="36" Aspect="AspectFill"/>
+                <Label Grid.Column="1" Text="Imagen lista para enviar" FontSize="12" VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#0A4D42, Dark=White}"/>
+                <Button Grid.Column="2" Text="✕" FontSize="14" Padding="6" BackgroundColor="Transparent"
+                        TextColor="#0A4D42" Clicked="OnQuitarImagenClicked"/>
+            </Grid>
+        </Border>
+
+        <!-- entrada: oculta mientras se está eligiendo tema -->
+        <Border Grid.Row="3" Padding="14,10" StrokeThickness="0"
+                IsVisible="{Binding MostrandoMenu, Converter={StaticResource InverseBoolConverter}}"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                <Button Grid.Column="0" Text="📎" FontSize="18" WidthRequest="42" HeightRequest="42" CornerRadius="21"
+                        BackgroundColor="{AppThemeBinding Light=#f0f2f5, Dark={StaticResource Gray950}}"
+                        TextColor="#0F6B5C" Padding="0" Clicked="OnAdjuntarImagenClicked"
+                        SemanticProperties.Description="Adjuntar imagen"/>
+                <Border Grid.Column="1"
+                        Stroke="{AppThemeBinding Light=#e3e7ec, Dark={StaticResource Gray600}}" StrokeThickness="1"
+                        BackgroundColor="{AppThemeBinding Light=#fbfcfd, Dark={StaticResource Gray950}}"
+                        Padding="14,0" HeightRequest="46">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="23"/></Border.StrokeShape>
+                    <Entry x:Name="entryMensaje" Placeholder="Escribe tu pregunta..." VerticalOptions="Center"
+                           ReturnType="Send" Completed="OnEnviarClicked"/>
+                </Border>
+                <Button Grid.Column="2" Text="➤" FontSize="18" WidthRequest="46" HeightRequest="46" CornerRadius="23"
+                        BackgroundColor="#0F6B5C" TextColor="White" Padding="0" Clicked="OnEnviarClicked"/>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentView>

@@ -14,6 +14,7 @@ public static class EvaluacionesEndpoints
         var group = app.MapGroup("/api/evaluaciones").WithTags("Evaluaciones").RequireAuthorization();
 
         group.MapGet("/", ListarHistorialAsync);
+        group.MapGet("/aptitud-hoy", ObtenerAptitudHoyAsync);
         group.MapPost("/", CrearAsync);
         group.MapGet("/{id:int}", ObtenerAsync);
         group.MapPut("/{id:int}/atracciones/{atraccionId:int}", AjustarAsync);
@@ -60,6 +61,33 @@ public static class EvaluacionesEndpoints
             .ToListAsync();
 
         return Results.Ok(resultado);
+    }
+
+    /// <summary>Agregado para el dashboard de inicio (ver AptitudHoyResponse). Mismo criterio de
+    /// visibilidad que el historial: Enfermero solo ve lo suyo, Admin ve todo.</summary>
+    private static async Task<IResult> ObtenerAptitudHoyAsync(AppDbContext db, ClaimsPrincipal user)
+    {
+        var usuarioIdTexto = user.FindFirstValue(ClaimTypes.NameIdentifier) ?? user.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (!int.TryParse(usuarioIdTexto, out var usuarioId))
+            return Results.Unauthorized();
+
+        var esAdmin = user.IsInRole("Admin");
+        var hoy = DateTime.UtcNow.Date;
+        var manana = hoy.AddDays(1);
+
+        var resultados = db.EvaluacionAtraccionResultados
+            .Include(r => r.Evaluacion)
+            .Where(r => r.Evaluacion.Fecha >= hoy && r.Evaluacion.Fecha < manana);
+
+        if (!esAdmin)
+            resultados = resultados.Where(r => r.Evaluacion.UsuarioId == usuarioId);
+
+        var aptitudes = await resultados.Select(r => r.ValidadaPersonal ?? r.PreseleccionadaAutomatica).ToListAsync();
+
+        var total = aptitudes.Count;
+        var aptos = aptitudes.Count(apto => apto);
+
+        return Results.Ok(new AptitudHoyResponse(total, aptos, total - aptos));
     }
 
     private static async Task<IResult> CrearAsync(CrearEvaluacionRequest request, AppDbContext db, ClaimsPrincipal user)

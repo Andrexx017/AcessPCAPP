@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Features.EvaluacionAccesibilidad.ZonaSecuenciaView"
+             Title="{Binding Nombre}"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- cabecera con el progreso de ESTA zona -->
+        <Border Grid.Row="0"
+                Padding="16,12"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="10">
+                <VerticalStackLayout Spacing="1">
+                    <Label Text="{Binding Nombre}"
+                           FontAttributes="Bold" FontSize="15"
+                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                    <Label Text="{Binding Contador}"
+                           FontSize="11.5"
+                           TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}" />
+                </VerticalStackLayout>
+
+                <HorizontalStackLayout Spacing="4" BindableLayout.ItemsSource="{Binding Segmentos}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <BoxView Color="{Binding Color}"
+                                     HeightRequest="5"
+                                     WidthRequest="60"
+                                     CornerRadius="3" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- la pregunta -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,24,16,14" Spacing="18">
+
+                <VerticalStackLayout Spacing="9">
+                    <Border IsVisible="{Binding TieneEje}"
+                            BackgroundColor="{Binding EjeColor}"
+                            StrokeThickness="0"
+                            Padding="7,4"
+                            HorizontalOptions="Start">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="5" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding EjeTexto}"
+                               FontSize="9.5" FontAttributes="Bold"
+                               TextColor="White" />
+                    </Border>
+
+                    <Label Text="{Binding Titulo}"
+                           FontAttributes="Bold" FontSize="25"
+                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+
+                    <Label Text="{Binding Ayuda}"
+                           IsVisible="{Binding TieneAyuda}"
+                           FontSize="13"
+                           TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                </VerticalStackLayout>
+
+                <!-- opciones -->
+                <VerticalStackLayout IsVisible="{Binding EsOpciones}"
+                                     Spacing="9"
+                                     BindableLayout.ItemsSource="{Binding Opciones}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    Stroke="{Binding Trazo}"
+                                    StrokeThickness="{Binding Grosor}"
+                                    Padding="15,13"
+                                    MinimumHeightRequest="64"
+                                    SemanticProperties.Description="{Binding Texto}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="13" />
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnOpcionTapped" />
+                                </Border.GestureRecognizers>
+                                <Label Text="{Binding Texto}"
+                                       FontSize="16"
+                                       FontAttributes="{Binding Peso}"
+                                       TextColor="{Binding ColorTexto}"
+                                       VerticalOptions="Center" />
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- dato numérico -->
+                <Grid IsVisible="{Binding EsNumero}" ColumnDefinitions="*,Auto" ColumnSpacing="11">
+                    <Entry Grid.Column="0"
+                           Text="{Binding ValorNumero, Mode=TwoWay}"
+                           Keyboard="Numeric"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           MinimumHeightRequest="60"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                    <Label Grid.Column="1"
+                           Text="{Binding Unidad}"
+                           FontSize="17"
+                           VerticalOptions="Center"
+                           TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- pie -->
+        <Border Grid.Row="2"
+                Padding="16,12,16,15"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="9">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Button Grid.Column="0"
+                            Text="Atrás"
+                            Clicked="OnAtrasClicked"
+                            BackgroundColor="Transparent"
+                            BorderColor="{AppThemeBinding Light=#d5dce4, Dark={StaticResource Gray600}}"
+                            BorderWidth="1"
+                            TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"
+                            FontSize="15"
+                            CornerRadius="12"
+                            MinimumHeightRequest="50"
+                            Padding="20,0" />
+
+                    <Button Grid.Column="1"
+                            Text="{Binding TextoSiguiente}"
+                            Clicked="OnSiguienteClicked"
+                            IsEnabled="{Binding PuedeAvanzar}"
+                            BackgroundColor="#0F6B5C"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            CornerRadius="12"
+                            MinimumHeightRequest="50" />
+                </Grid>
+
+                <Button Text="No sabe o no responde"
+                        Clicked="OnSaltarClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#8A5A00"
+                        FontSize="13"
+                        MinimumHeightRequest="44" />
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

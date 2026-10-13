@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParque.Features.Administracion.Inicio.MapaZoomView"
+             BackgroundColor="#E6000000">
+
+    <Grid>
+
+        <!-- visor: pellizca para hacer zoom (táctil) o arrastra cuando está ampliado -->
+        <Grid x:Name="visor" IsClippedToBounds="True">
+            <Grid.GestureRecognizers>
+                <PinchGestureRecognizer PinchUpdated="OnPinchUpdated"/>
+                <PanGestureRecognizer PanUpdated="OnPanUpdated"/>
+                <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="OnDobleTapRestablecer"/>
+            </Grid.GestureRecognizers>
+            <Image x:Name="imgMapa" Source="mapa.jpg" Aspect="AspectFit"/>
+        </Grid>
+
+        <Label Text="Croquis del parque — pellizca o usa los botones para ampliar"
+               TextColor="White" FontSize="13" FontAttributes="Bold"
+               HorizontalOptions="Center" VerticalOptions="Start" Margin="20,22,20,0"
+               HorizontalTextAlignment="Center"/>
+
+        <Border StrokeShape="RoundRectangle 999" Stroke="Transparent" BackgroundColor="#33FFFFFF"
+                WidthRequest="42" HeightRequest="42" Padding="0"
+                HorizontalOptions="End" VerticalOptions="Start" Margin="0,18,18,0">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCerrarTapped"/>
+            </Border.GestureRecognizers>
+            <Label Text="&#xf00d;" FontFamily="FreeSolid" FontSize="17" TextColor="White"
+                   HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Border>
+
+        <Border StrokeShape="RoundRectangle 22" Stroke="Transparent" BackgroundColor="#33FFFFFF"
+                Padding="6" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,28">
+            <HorizontalStackLayout Spacing="4">
+                <Button Text="&#xf068;" FontFamily="FreeSolid" FontSize="15" TextColor="White"
+                        BackgroundColor="Transparent" WidthRequest="44" HeightRequest="44" Padding="0"
+                        Clicked="OnAlejarClicked"/>
+                <Button Text="Restablecer" FontSize="12.5" FontAttributes="Bold" TextColor="White"
+                        BackgroundColor="Transparent" Padding="10,0" Clicked="OnRestablecerClicked"/>
+                <Button Text="&#xf067;" FontFamily="FreeSolid" FontSize="15" TextColor="White"
+                        BackgroundColor="Transparent" WidthRequest="44" HeightRequest="44" Padding="0"
+                        Clicked="OnAcercarClicked"/>
+            </HorizontalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

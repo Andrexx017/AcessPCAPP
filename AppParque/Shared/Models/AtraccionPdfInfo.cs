@@ -9,4 +9,8 @@ public class AtraccionPdfInfo
     public string? ImagenUrl { get; set; }
     public int? AlturaMinima { get; set; }
     public int? AlturaMaxima { get; set; }
+
+    /// <summary>Condición para poder entrar (ej. "Debe ir con acompañante adulto") o advertencia
+    /// operativa (ej. "Asegurar bien la prótesis antes de embarcar"). Null si no aplica ninguna.</summary>
+    public string? Nota { get; set; }
 }

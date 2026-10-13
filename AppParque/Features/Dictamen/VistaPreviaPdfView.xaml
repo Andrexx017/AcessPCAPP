@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Dictamen.VistaPreviaPdfView"
+             Title="Vista previa del PDF"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- cabecera -->
+        <Border Grid.Row="0"
+                Padding="16,12"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                    <Label Text="Vista previa del PDF"
+                           FontAttributes="Bold" FontSize="17"
+                           TextColor="{AppThemeBinding Light=#1f2430, Dark=White}" />
+                    <Label Text="{Binding ResumenTexto}"
+                           FontSize="12.5"
+                           TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                </VerticalStackLayout>
+                <shared:ThemeSwitchView Grid.Column="1" VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!-- documento -->
+        <Grid Grid.Row="1">
+            <ScrollView>
+                <VerticalStackLayout HorizontalOptions="Center" Padding="0,20,0,10" Spacing="0">
+                    <Border WidthRequest="320" StrokeThickness="0" BackgroundColor="White">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="4" /></Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="Black" Opacity="0.18" Radius="14" Offset="0,2" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="0">
+
+                            <VerticalStackLayout BackgroundColor="#f0f0f0" Padding="16,14,16,12" Spacing="3">
+                                <Label Text="Guía Personalizada de Atracciones" FontSize="14" FontAttributes="Bold" TextColor="#CC0000" />
+                                <Label Text="Tu seguridad y diversión son nuestra prioridad" FontSize="9.5" FontAttributes="Bold" TextColor="#66CC66" />
+                            </VerticalStackLayout>
+
+                            <Label FontSize="8.5" TextColor="#222" Padding="16,12,16,0" LineBreakMode="WordWrap">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="¡Hola " />
+                                        <Span Text="{Binding NombreVisitante}" FontAttributes="Bold" />
+                                        <Span Text="! Hoy, " />
+                                        <Span Text="{Binding FechaHoy}" FontAttributes="Bold" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Label Text="Te damos la bienvenida al Parque del Café con esta Guía Personalizada de Atracciones, creada especialmente para ti."
+                                   FontSize="8" TextColor="#333" Padding="16,6,16,0" LineHeight="1.4" />
+
+                            <Border Margin="16,10,16,0" BackgroundColor="#f0f0f0" StrokeThickness="0" Padding="10,8">
+                                <VerticalStackLayout Spacing="3">
+                                    <Label Text="Recomendaciones de Seguridad" FontSize="9" FontAttributes="Bold" TextColor="#CC0000" />
+                                    <Label Text="◆ Mantente hidratado y usa protector solar." FontSize="7.5" TextColor="#222" />
+                                    <Label Text="◆ Sigue las instrucciones del personal del parque." FontSize="7.5" TextColor="#222" />
+                                    <Label Text="◆ Respeta las restricciones de altura de cada atracción." FontSize="7.5" TextColor="#222" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <VerticalStackLayout Margin="16,10,16,16" Spacing="8" BindableLayout.ItemsSource="{Binding Atracciones}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BackgroundColor="#f0f0f0" Stroke="#bbb" StrokeThickness="1" Padding="8">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="6" /></Border.StrokeShape>
+                                            <Grid ColumnDefinitions="48,*" ColumnSpacing="8">
+                                                <Border Grid.Column="0" BackgroundColor="#d8d8d8" StrokeThickness="0" HeightRequest="36" WidthRequest="48">
+                                                    <Border.StrokeShape><RoundRectangle CornerRadius="4" /></Border.StrokeShape>
+                                                </Border>
+                                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                                    <Label Text="{Binding Nombre}" FontSize="9" FontAttributes="Bold" TextColor="#CC0000" />
+                                                    <Label Text="{Binding Descripcion}" FontSize="7" TextColor="#333" LineBreakMode="WordWrap" />
+                                                    <Label Text="{Binding Alturas}" FontSize="6.5" TextColor="#777" />
+                                                    <Label Text="{Binding Nota}" IsVisible="{Binding TieneNota}" FontSize="7" FontAttributes="Bold" TextColor="#2f9e6e" />
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- overlay de progreso: evita que la espera al generar el PDF se vea como que la app se congeló -->
+            <Grid IsVisible="{Binding IsBusy}"
+                  BackgroundColor="{AppThemeBinding Light=#80000000, Dark=#80000000}">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" />
+                    <Label Text="Generando PDF..." TextColor="White" FontAttributes="Bold" />
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
+
+        <!-- pie -->
+        <Border Grid.Row="2"
+                Padding="16,10,16,14"
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Compartir"
+                        Clicked="OnCompartirClicked"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                        BackgroundColor="Transparent"
+                        BorderColor="#0F6B5C"
+                        BorderWidth="2"
+                        TextColor="#0F6B5C"
+                        FontAttributes="Bold"
+                        FontSize="14.5"
+                        CornerRadius="12"
+                        MinimumHeightRequest="50" />
+                <Button Grid.Column="1"
+                        Text="Descargar PDF"
+                        Clicked="OnDescargarClicked"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                        BackgroundColor="#0F6B5C"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="14.5"
+                        CornerRadius="12"
+                        MinimumHeightRequest="50" />
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

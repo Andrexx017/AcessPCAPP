@@ -46,3 +46,8 @@ public record HistorialItemResponse(
     int? Estatura,
     List<RestriccionDto> GruposActivados,
     List<RestriccionDto> CondicionesActivadas);
+
+/// <summary>Agregado para el dashboard de inicio: de los resultados por atracción generados hoy
+/// (en UTC), cuántos quedaron aptos. "Apto" = el ajuste manual si existe, si no la preselección
+/// automática — el mismo criterio que ve el personal en el detalle de la evaluación.</summary>
+public record AptitudHoyResponse(int Total, int Aptos, int NoAptos);

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:AppParque.Shared"
+             x:Class="AppParque.Features.Administracion.AdminZonas.AdminZonasView"
+             Title="Catálogo del test"
+             BackgroundColor="{AppThemeBinding Light=#f5f7fa, Dark={StaticResource OffBlack}}">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="10">
+
+                <shared:ThemeSwitchView />
+
+                <Label Text="Zonas y preguntas del test guiado de accesibilidad. Las 7 zonas &quot;en el cuerpo&quot; tienen una posición fija en el mapa visual — se pueden editar y reordenar, pero no crear ni eliminar. Las zonas &quot;aparte&quot; sí."
+                       FontSize="12.5"
+                       TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+
+                <Label Text="EN EL CUERPO" FontSize="12" FontAttributes="Bold" Margin="0,10,0,0"
+                       TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+
+                <CollectionView x:Name="collectionCuerpo"
+                                ItemsSource="{Binding ZonasCuerpo}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnZonaSeleccionada">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="14" Padding="12" Margin="0,0,0,10" BorderColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}">
+                                <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                                    <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                        <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="14" TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                        <Label Text="{Binding Detalle}" FontSize="11" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                    </VerticalStackLayout>
+                                    <Switch Grid.Column="1" IsToggled="{Binding Activa}" VerticalOptions="Center"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label Text="APARTE" FontSize="12" FontAttributes="Bold" Margin="0,10,0,0"
+                       TextColor="{AppThemeBinding Light=#6B5C46, Dark={StaticResource Gray300}}"/>
+
+                <CollectionView x:Name="collectionAparte"
+                                ItemsSource="{Binding ZonasAparte}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnZonaSeleccionada">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="14" Padding="12" Margin="0,0,0,10" BorderColor="{AppThemeBinding Light=#edeff3, Dark={StaticResource Gray600}}">
+                                <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                                    <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                        <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="14" TextColor="{AppThemeBinding Light=#1f2430, Dark=White}"/>
+                                        <Label Text="{Binding Detalle}" FontSize="11" TextColor="{AppThemeBinding Light=#8b93a1, Dark={StaticResource Gray400}}"/>
+                                    </VerticalStackLayout>
+                                    <Switch Grid.Column="1" IsToggled="{Binding Activa}" VerticalOptions="Center"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <BoxView HeightRequest="70"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="#0F6B5C"
+                            HorizontalOptions="Center" VerticalOptions="Center"/>
+
+        <Button Text="+"
+                FontSize="28"
+                WidthRequest="56" HeightRequest="56" CornerRadius="28"
+                BackgroundColor="#4CAF50" TextColor="White"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="0,0,16,16"
+                Clicked="OnNuevaZonaClicked"/>
+    </Grid>
+</ContentPage>

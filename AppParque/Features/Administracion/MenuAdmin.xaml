@@ -103,7 +103,7 @@
                         <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.08"/>
                     </Border.Shadow>
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnCatalogosClicked"/>
+                        <TapGestureRecognizer Tapped="OnCatalogoZonasClicked"/>
                     </Border.GestureRecognizers>
                     <VerticalStackLayout Spacing="2">
                         <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" BackgroundColor="#FBF0DA"
@@ -111,9 +111,31 @@
                             <Image Source="icon_catalogos.png" WidthRequest="27" HeightRequest="27"
                                    HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Border>
-                        <Label Text="Catálogos" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
+                        <Label Text="Catálogo del test" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
                                TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
-                        <Label Text="Preguntas y atracciones del parque" FontSize="12.5"
+                        <Label Text="Zonas y preguntas del test de accesibilidad" FontSize="12.5"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 24" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="24" WidthRequest="260" Margin="10">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.08"/>
+                    </Border.Shadow>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCatalogoAtraccionesClicked"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2">
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" BackgroundColor="#FBF0DA"
+                                WidthRequest="56" HeightRequest="56" Padding="0" HorizontalOptions="Start">
+                            <Image Source="icon_catalogos.png" WidthRequest="27" HeightRequest="27"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="Catálogo de atracciones" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="Atracciones del parque" FontSize="12.5"
                                TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
                     </VerticalStackLayout>
                 </Border>
@@ -140,6 +162,28 @@
                     </VerticalStackLayout>
                 </Border>
 
+                <Border StrokeShape="RoundRectangle 24" Stroke="Transparent"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                        Padding="24" WidthRequest="260" Margin="10">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,6" Radius="18" Opacity="0.08"/>
+                    </Border.Shadow>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAsistenteIAClicked"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2">
+                        <Border StrokeShape="RoundRectangle 16" Stroke="Transparent" BackgroundColor="#E3EBF5"
+                                WidthRequest="56" HeightRequest="56" Padding="0" HorizontalOptions="Start">
+                            <Image Source="icon_catalogos.png" WidthRequest="27" HeightRequest="27"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="Asistente IA" FontSize="16.5" FontAttributes="Bold" Margin="0,14,0,0"
+                               TextColor="{AppThemeBinding Light=#2E2013, Dark=White}"/>
+                        <Label Text="Proveedores, modelos y contexto del bot" FontSize="12.5"
+                               TextColor="{AppThemeBinding Light=#9A8C76, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
             </FlexLayout>
 
             <Label Grid.Row="3"
@@ -154,5 +198,7 @@
     <shared:SideMenuView x:Name="sideMenu"
                          PerfilTapped="OnPerfilTapped"
                          CerrarSesionTapped="OnCerrarSesionTapped"/>
+
+    <shared:AsistenteFlotanteView/>
     </Grid>
 </ContentPage>
