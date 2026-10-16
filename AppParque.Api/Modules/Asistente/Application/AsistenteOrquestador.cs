@@ -34,7 +34,20 @@ public class AsistenteOrquestador(
     HorarioParqueService horarioParqueService)
 {
     private const string PropositoProteccion = "AsistenteIA.ApiKeys.v1";
-    private const int MaxLlamadasHerramientas = 8;
+    private const int MaxLlamadasHerramientas = 16;
+
+    /// <summary>Regla de formato común a los cinco temas, a propósito fuera de PromptsIA (no la
+    /// puede desactivar sin querer un admin editando un solo tema): la burbuja de chat de la app
+    /// (AsistenteChatContentView) es angosta y solo interpreta **negrita**, nada más. Una tabla
+    /// Markdown ahí no se "ve rara" — se vuelve ilegible, y encabezados o listas numeradas largas no
+    /// caben en una burbuja de celular.</summary>
+    private const string FormatoChat = """
+        Formato de las respuestas: esto se muestra en una burbuja de chat angosta de celular, no en
+        una página de ancho libre. Nunca uses tablas (con | o líneas de separación) ni encabezados
+        (#) — ahí se ven totalmente desordenados. Usa líneas cortas y viñetas con "•"; **negrita**
+        sí se ve bien (es lo único de Markdown que la app interpreta), úsala solo para resaltar un
+        nombre o un veredicto puntual, no párrafos enteros.
+        """;
 
     /// <summary>"Memoria" del chat: mientras el último mensaje de la sesión tenga menos de esto,
     /// el siguiente mensaje ve el historial. No es un borrado explícito — es el filtro de
@@ -197,7 +210,7 @@ public class AsistenteOrquestador(
             ? ClavesPrompt.Todas.OrderByDescending(c => c == modo)
             : ClavesPrompt.Todas.AsEnumerable();
 
-        var cuerpo = string.Join("\n\n", orden.Select(c => prompts[c].Contenido));
+        var cuerpo = FormatoChat + "\n\n" + string.Join("\n\n", orden.Select(c => prompts[c].Contenido));
 
         if (modo is null || !ClavesPrompt.Todas.Contains(modo))
             return cuerpo;

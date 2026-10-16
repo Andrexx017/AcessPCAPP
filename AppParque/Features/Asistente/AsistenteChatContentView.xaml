@@ -86,7 +86,7 @@
                                         BackgroundColor="{Binding Fondo}" StrokeThickness="0"
                                         HorizontalOptions="{Binding Alineacion}">
                                     <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
-                                    <Label Text="{Binding Texto}" FontSize="13.5" TextColor="{Binding ColorTexto}" LineHeight="1.25"/>
+                                    <Label FormattedText="{Binding TextoFormateado}" FontSize="13.5" TextColor="{Binding ColorTexto}" LineHeight="1.25"/>
                                 </Border>
 
                                 <HorizontalStackLayout Spacing="16" IsVisible="{Binding MostrarAcciones}" Margin="4,0,0,0">

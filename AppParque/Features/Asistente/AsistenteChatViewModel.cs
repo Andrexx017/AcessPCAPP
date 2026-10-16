@@ -28,6 +28,44 @@ public class MensajeChatItem : BaseViewModel
     /// el propio usuario acaba de escribir (ya lo tiene).</summary>
     public bool MostrarAcciones => !EsUsuario && !EsError;
 
+    private static readonly Regex RegexNegrita = new(@"\*\*(.+?)\*\*", RegexOptions.Compiled);
+
+    /// <summary>El Label de la burbuja (ver AsistenteChatContentView) no interpreta Markdown: sin
+    /// esto, "**Permitidas**" se veía con los asteriscos literales. Solo se traduce negrita — es lo
+    /// único que el prompt del asistente usa (ver FormatoChat en AsistenteOrquestador, que además
+    /// le prohíbe tablas y encabezados porque tampoco tendrían dónde verse bien en una burbuja
+    /// angosta de celular).</summary>
+    public FormattedString TextoFormateado
+    {
+        get
+        {
+            var formateado = new FormattedString();
+            var posicion = 0;
+
+            foreach (Match coincidencia in RegexNegrita.Matches(Texto))
+            {
+                if (coincidencia.Index > posicion)
+                    formateado.Spans.Add(NuevoSpan(Texto[posicion..coincidencia.Index], negrita: false));
+
+                formateado.Spans.Add(NuevoSpan(coincidencia.Groups[1].Value, negrita: true));
+                posicion = coincidencia.Index + coincidencia.Length;
+            }
+
+            if (posicion < Texto.Length || formateado.Spans.Count == 0)
+                formateado.Spans.Add(NuevoSpan(Texto[posicion..], negrita: false));
+
+            return formateado;
+        }
+    }
+
+    private Span NuevoSpan(string texto, bool negrita) => new()
+    {
+        Text = texto,
+        TextColor = ColorTexto,
+        FontSize = 13.5,
+        FontAttributes = negrita ? FontAttributes.Bold : FontAttributes.None,
+    };
+
     /// <summary>Clave de pantalla (ver whitelist en AsistenteChatContentView) que el modelo sugirió
     /// con el marcador [[ir:clave]] al final de su respuesta — ya validada contra la whitelist y el
     /// rol del usuario. Null = no hay destino, o el que sugirió no es válido.</summary>

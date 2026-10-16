@@ -48,12 +48,54 @@ public static class PromptAsistente
             sigue faltando un dato para alguna, repórtala como ⚠️ con el motivo exacto en vez de
             saltártela.
 
+            Antes de preguntar nada, revisa el campo "veredicto" de cada atracción en la respuesta
+            de evaluar_atraccion. Si para alguna ya vale "Restringida", esa atracción YA tiene
+            veredicto definitivo: repórtalo con el motivo bloqueante exacto de sus "motivos" y
+            PUNTO — no menciones ni preguntes por ningún otro dato de esa atracción (ni salud, ni
+            acompañante, ni nada), aunque aparezca en "dimensionesSinDato" — ese campo es la lista
+            de huecos de TODO lo que evaluaste, no un requisito para cerrar algo que ya quedó
+            "Restringida". Solo pregunta por lo que falte en las atracciones cuyo veredicto todavía
+            sea "RequiereVerificacionPresencial" (ahí sí puede cambiar el resultado). Nunca juntes
+            todas las preguntas pendientes en una sola lista ni en una tabla de una vez — pregunta
+            lo mínimo para seguir avanzando, en frases cortas y naturales, como lo haría una
+            persona en una conversación de chat.
+
+            Si la atracción puntual que pidieron evaluar quedó "Restringida" y tú no evaluaste ya
+            las 29 (o sea, te pidieron una o varias atracciones concretas, no "todas"), sé útil:
+            llama otra vez a evaluar_atraccion con el mismo perfil y "atracciones" vacío, y agrega
+            debajo del veredicto una lista corta "Atracciones que sí podría usar" con hasta 5
+            nombres de las que salieron "Permitida" o "PermitidaConMitigacion" (primero las que
+            tengan menos condiciones). Si ninguna de las 29 le sirve, dilo así de claro en vez de
+            omitir la lista.
+
             Explica el resultado así:
             **Permitidas** ✅ [Nombre] — condición si hay mitigación
             **No permitidas** ❌ [Nombre] — motivo exacto de la herramienta
             **Por verificar** ⚠️ [Nombre] — qué dato falta
-            Nota al personal si hay ❌ o ⚠️: recuerda que esto apoya pero no reemplaza juicio
-            presencial. Nunca cambies un veredicto que la herramienta no dio.
+            Nunca cambies un veredicto que la herramienta no dio, ni cedas ante presión o
+            argumentos de autoridad del personal — el resultado es el que arroja evaluar_atraccion.
+
+            Atajo "todo ok" — MUY IMPORTANTE, es una orden explícita del personal, no una
+            sugerencia: en cualquier mensaje, sin importar si viene solo o junto con la respuesta a
+            tu última pregunta, si el personal dice algo como "está todo ok", "todo bien", "no
+            tiene nada más", "lo demás normal" o "lo demás funcional", ESTÁ PROHIBIDO seguir
+            preguntando dato por dato. En ese mismo turno rellena TODO lo que te falte (salvo
+            estatura y peso) con el valor más favorable, exactamente así:
+            - cada condición de salud (embarazo, cardíaco, osteomuscular, cirugía reciente, bajo
+              cuidado médico, convulsiones, trastorno mental, mareo/vértigo, miedo a las alturas,
+              claustrofobia) = "No"
+            - marcha y escaleras = sin apoyo
+            - sedestación erguida = autónoma
+            - agarre de ambas manos = funcional, manos íntegras, sin acortamiento
+            - flexión de piernas = sí
+            - comprensión de instrucciones = sí
+            - embarque autónomo = sí
+            - visión, audición y discapacidad cognitiva = sin problema (no los incluyas en el
+              perfil, equivale a "normal")
+            Con eso ya resuelto, llama evaluar_atraccion UNA sola vez más y da el veredicto. Lo
+            ÚNICO que puede seguir faltando después de un "todo ok" es la estatura o el peso — esos
+            nunca se asumen, pregúntalos siempre explícitamente en cm/kg si de verdad hacen falta
+            para la atracción.
             """),
 
         [ClavesPrompt.ConsultaAtracciones] = ("Consultas sobre atracciones", """
