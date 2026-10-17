@@ -106,8 +106,10 @@ public record RequisitosRol
     /// la atracción, no como regla cruzada con la marcha.</summary>
     public string Agarre { get; init; } = "ninguno";
 
-    /// <summary>H-06: solo Paseo a Caballo y los Karts. En botes y carros chocones el ambiente es
-    /// controlado, así que basta sujetarse; en caballos y karts el visitante queda expuesto.</summary>
+    /// <summary>H-06: Paseo a Caballo, los Karts y Krater — las fichas de esas atracciones piden
+    /// literalmente "sujetarse Y MANIOBRAR con ambas manos", no solo sujetarse. En botes y carros
+    /// chocones el ambiente es controlado, así que basta sujetarse; en caballos, karts y Krater el
+    /// visitante queda expuesto o sometido a fuerzas bruscas.</summary>
     public bool RequiereManiobrarDosManos { get; init; }
 
     public bool RequiereEmbarqueAutonomo { get; init; }

@@ -14,18 +14,25 @@ namespace AppParque.Services
         private const string LogoUrl = "https://parquedelcafe.co/wp-content/uploads/2021/05/Logo-Parque-Del-Cafe.png";
         private const string MapaUrl = "https://parquedelcafe.co/wp-content/uploads/2024/12/Mapa-web-min-scaled.jpg";
 
-        private static readonly HttpClient _http = new HttpClient();
-        // ConcurrentDictionary porque las imágenes ahora se piden en paralelo (Task.WhenAll en GeneratePdfInternal)
-        private readonly ConcurrentDictionary<string, byte[]> _imageCache = new();
+        // _http es compartido entre TODAS las instancias (static), así que su configuración solo
+        // puede tocarse una vez, acá en el inicializador estático — nunca en el constructor de
+        // instancia: HttpClient lanza InvalidOperationException ("this instance has already
+        // started one or more requests") si se le cambia Timeout o un header después de la primera
+        // petición, y PdfGeneratorService se instancia más de una vez por sesión de la app (flujo
+        // en vivo + Historial), así que ponerlo en el constructor tumbaba la segunda vez.
+        private static readonly HttpClient _http = CrearHttpClient();
 
-        public PdfGeneratorService()
+        private static HttpClient CrearHttpClient()
         {
             // Corto a propósito: el logo y el mapa son decorativos (ver DrawLogo / sección de mapa,
             // que ya toleran imagen nula), así que una imagen caída no debe congelar la generación del PDF.
-            _http.Timeout = TimeSpan.FromSeconds(8);
-            if (_http.DefaultRequestHeaders.UserAgent.Count == 0)
-                _http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; PdfGenerator/1.0)");
+            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(8) };
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; PdfGenerator/1.0)");
+            return client;
         }
+
+        // ConcurrentDictionary porque las imágenes ahora se piden en paralelo (Task.WhenAll en GeneratePdfInternal)
+        private readonly ConcurrentDictionary<string, byte[]> _imageCache = new();
 
         public async Task GenerateAttractionsPdfFromListAsync(string path, IEnumerable<AtraccionPdfInfo> atraccionesSeleccionadas, string? nombreVisitante = null)
         {

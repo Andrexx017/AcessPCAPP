@@ -13,7 +13,7 @@
                 Padding="16,12"
                 StrokeThickness="0"
                 BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}">
-            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="10">
                 <VerticalStackLayout Grid.Column="0" Spacing="2">
                     <Label Text="{Binding NombreVisitante}"
                            FontAttributes="Bold" FontSize="16"
@@ -29,7 +29,25 @@
                        VerticalOptions="Center"
                        TextColor="#0F6B5C" />
 
-                <shared:ThemeSwitchView Grid.Column="2" VerticalOptions="Center" />
+                <Border Grid.Column="2"
+                        Padding="10,6"
+                        VerticalOptions="Center"
+                        StrokeThickness="1"
+                        Stroke="{AppThemeBinding Light=#d5dce4, Dark={StaticResource Gray600}}"
+                        BackgroundColor="Transparent"
+                        SemanticProperties.Description="Cerrar la valoración y volver al inicio">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCerrarValoracionTapped" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Cerrar valoración"
+                           FontSize="11.5" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#6b7280, Dark={StaticResource Gray400}}" />
+                </Border>
+
+                <shared:ThemeSwitchView Grid.Column="3" VerticalOptions="Center" />
             </Grid>
         </Border>
 

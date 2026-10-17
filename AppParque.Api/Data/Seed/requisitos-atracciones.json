@@ -83,7 +83,7 @@
       "codigo": "krater",
       "nombre": "Krater",
       "intensidad": "extrema",
-      "descripcion": "Montaña rusa extrema: grandes velocidades y alturas, fuertes descensos, giros invertidos y fuerzas multidireccionales bruscas. Requiere caminar y embarcar de forma totalmente autónoma. No permite ningún tipo de prótesis.",
+      "descripcion": "Montaña rusa extrema: grandes velocidades y alturas, fuertes descensos, giros invertidos y fuerzas multidireccionales bruscas. Requiere caminar y embarcar de forma totalmente autónoma, y sujetarse y maniobrar con ambas manos. No permite ningún tipo de prótesis.",
       "restriccionesMedicas": [
         "embarazo", "cardiaco", "osteomuscular", "cirugia_reciente", "bajo_cuidado_medico",
         "convulsiones", "trastorno_mental", "mareo_vertigo", "miedo_alturas"
@@ -95,6 +95,7 @@
         "requiereSentarseErguido": true,
         "requiereDoblarPiernas": true,
         "agarre": "ambas_manos",
+        "requiereManiobrarDosManos": true,
         "requiereEmbarqueAutonomo": true,
         "requiereComprensionInstrucciones": true
       },

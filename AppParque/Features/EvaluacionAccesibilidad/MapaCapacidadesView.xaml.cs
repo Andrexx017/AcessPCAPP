@@ -65,4 +65,45 @@ public partial class MapaCapacidadesView : ContentPage
         // confirma con OK, después de revisar las respuestas y de preguntarle a la IA si hace falta.
         await Navigation.PushAsync(new ResumenDiagnosticoView(_vm));
     }
+
+    private async void OnCerrarValoracionTapped(object sender, TappedEventArgs e)
+    {
+        var confirmacion = await DisplayAlert(
+            "Cerrar valoración",
+            "¿Deseas salir? El progreso de esta valoración no queda guardado.",
+            "Sí, cerrar", "Cancelar");
+
+        if (confirmacion)
+            await VolverAlMenuAsync();
+    }
+
+    /// <summary>
+    /// Mismo patrón que DictamenView.VolverAlMenuAsync: PopToRootAsync no sirve porque la raíz de
+    /// la pila es LoginView, así que en vez de eso se quita todo lo que hay entre el Menú Principal
+    /// y esta pantalla y se hace un solo PopAsync animado hasta el menú.
+    /// </summary>
+    private async Task VolverAlMenuAsync()
+    {
+        var pila = Navigation.NavigationStack;
+        var indiceMenu = -1;
+        for (var i = 0; i < pila.Count; i++)
+        {
+            if (pila[i] is AppParque.Features.MenuPrincipal.MenuPrincipal)
+            {
+                indiceMenu = i;
+                break;
+            }
+        }
+
+        if (indiceMenu < 0)
+        {
+            await Navigation.PopToRootAsync();
+            return;
+        }
+
+        for (var i = pila.Count - 2; i > indiceMenu; i--)
+            Navigation.RemovePage(pila[i]);
+
+        await Navigation.PopAsync();
+    }
 }
